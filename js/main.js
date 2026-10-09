@@ -1297,10 +1297,16 @@ class Game {
     // headroom; dusk trades warm sun/ground lift for neutral sky/IBL fill; night
     // preserves the established restrained fixture response.
     this.renderer.toneMappingExposure = renderLook.exposure;
-    // Daylight fog starts further out so the middle distance stays crisp; night
-    // venues keep their tuned values, which also hide the unlit far field.
+    // Night venues keep their tuned linear fog, which also hides the unlit far
+    // field. Day and dusk get aerial-perspective haze instead: exponential, so
+    // it builds gradually (about 25% at 500 m, 70% at 1 km) the way distance
+    // softens in Forza-style open-world racers, rather than a linear wall that
+    // started beyond most street scenery. Its colour is the sky's own horizon
+    // (set once the HDRI loads, below).
     const fogReach = th.night ? 1 : 1.6;
-    this.scene.fog = new THREE.Fog(th.fog, (th.fogNear ?? 300) * fogReach, (th.fogFar ?? 1600) * fogReach);
+    this.scene.fog = th.night
+      ? new THREE.Fog(th.fog, (th.fogNear ?? 300) * fogReach, (th.fogFar ?? 1600) * fogReach)
+      : new THREE.FogExp2(th.fog, 0.0011);
     // sky dome: gradient + soft clouds BAKED into the texture (day/dusk).
     // Clouds must never be separate transparent quads again -- sprites read as
     // tinted slab panes (removed in e29383d); baked into the dome they cannot.
@@ -1557,7 +1563,7 @@ class Game {
     fill.position.set(0, 3.2, -3.5);
     car.add(fill);
     // see further down the road (exposure and ambient floors live in RENDER_LOOK)
-    if (this.scene.fog) {
+    if (this.scene.fog?.isFog) {
       this.scene.fog.near = Math.max(this.scene.fog.near, 220);
       this.scene.fog.far = Math.max(this.scene.fog.far, 600);
     }
