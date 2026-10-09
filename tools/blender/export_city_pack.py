@@ -10,7 +10,7 @@
 import bpy, sys, os, json
 from mathutils import Vector
 
-MAX_TEX = 1024
+MAX_TEX = 2048   # the pack's photos are <= 1600 px: keep them at full resolution
 argv = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
 OUT = os.path.abspath(argv[0] if argv else 'assets/city-real')
 SKIP_COLLECTIONS = {'Pipes'}                # kitbash bits
@@ -20,10 +20,10 @@ SKIP_OBJECTS = {'road', 'side_walk', 'lane_x2', 'straight01_d:_25m', 'backlight_
 # so the source meshes (up to 68k triangles after modifiers) are reduced:
 # first coplanar faces are merged (no visible change on flat facades), then a
 # collapse decimate brings anything still over budget down to it.
-BUDGET = {'Buildings': 5000, 'Shops': 1500, 'Extras': 1500, 'Road_sign': 400, 'Traffic_light': 3000,
+BUDGET = {'Buildings': 8000, 'Shops': 2500, 'Extras': 1500, 'Road_sign': 400, 'Traffic_light': 3000,
           'Roads': 1500}
 PROP_BUDGET = 2500                           # anything else (street furniture)
-HEAVY_BUDGET = 9000                          # the large back-row blocks
+HEAVY_BUDGET = 14000                         # the large back-row blocks
 HEAVY = {'building_1', 'building_3', 'building_8', 'building_9'}
 
 
@@ -33,6 +33,26 @@ def tri_count(obj):
     n = sum(len(p.vertices) - 2 for p in me.polygons)
     ev.to_mesh_clear()
     return n
+
+
+def soften(obj):
+    """Round the sharp corners a little and shade curved parts smoothly, so a
+    facade catches the light along its edges instead of reading as a flat box."""
+    import math
+    bpy.ops.object.select_all(action='DESELECT')
+    obj.select_set(True)
+    bpy.context.view_layer.objects.active = obj
+    try:
+        bpy.ops.object.shade_smooth_by_angle(angle=math.radians(35))
+    except Exception:
+        pass
+    bevel = obj.modifiers.new('soften_bevel', 'BEVEL')
+    bevel.width = 0.06
+    bevel.segments = 2
+    bevel.limit_method = 'ANGLE'
+    bevel.angle_limit = math.radians(40)
+    bevel.harden_normals = True
+    bevel.use_clamp_overlap = True
 
 
 def fit_budget(obj, budget):
@@ -96,6 +116,9 @@ for obj in roots:
             bpy.context.scene.collection.objects.link(p)
     bpy.context.view_layer.update()
     budget = HEAVY_BUDGET if name in HEAVY else BUDGET.get(coll, PROP_BUDGET)
+    if coll in ('Buildings', 'Shops') and name not in HEAVY:   # back-row blocks are seen from afar
+        for p in parts:
+            soften(p)
     for p in parts:
         fit_budget(p, max(200, budget // len(parts)))
     depsgraph = bpy.context.evaluated_depsgraph_get()

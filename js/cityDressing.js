@@ -529,6 +529,9 @@ export async function dressCity(circuit, { night = false, carsReady = null } = {
         // (GLTFLoader also turns depth writes off for blended materials.)
         if (m.transparent) { m.transparent = false; m.alphaTest = 0; m.depthWrite = true; }
         m.color.multiplyScalar(0.9);
+        // facades are seen at a slant from the road: anisotropic filtering
+        // keeps them sharp instead of smearing into blur
+        for (const t of [m.map, m.normalMap, m.roughnessMap]) if (t) { t.anisotropy = 8; t.needsUpdate = true; }
         if (m.emissive && m.emissive.getHex() !== 0) m.emissiveIntensity = Math.min(m.emissiveIntensity ?? 1, 0.45);
       }
       return m;
@@ -540,7 +543,9 @@ export async function dressCity(circuit, { night = false, carsReady = null } = {
         // lit facades and figures so the city does not vanish after dark
         mat.emissive = new THREE.Color(0xffffff);
         mat.emissiveMap = mat.map;
-        mat.emissiveIntensity = path.startsWith('people') ? 0.35 : 0.22;
+        // photo facades glow only faintly (an even glow flattened them);
+        // the street lamps light the road
+        mat.emissiveIntensity = path.startsWith('people') ? 0.35 : path.startsWith('real:') ? 0.09 : 0.22;
       }
       const mesh = new THREE.InstancedMesh(part.geometry, mat, list.length);
       mesh.name = `city-${path.replace(/[:/]/g, '-')}`;

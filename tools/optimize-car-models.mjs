@@ -10,7 +10,7 @@
 //       resized to 2048 and re-encoded as WebP
 //   assets/cars/local-only/opt/<name>.far.glb  far copy for the distant-car LOD
 //       (55 m and beyond): cockpit parts and anything smaller than SMALL_PART of
-//       the car's length removed, simplified to FAR_TRIS, textures at 512
+//       the car's length removed, simplified to FAR_TRIS, textures at 1024
 //
 // Material names are preserved, so the drop / paint / wheel lists in
 // js/modelCars.js apply unchanged to both copies. js/modelCars.js prefers the
@@ -26,7 +26,7 @@ import { MeshoptSimplifier } from 'meshoptimizer';
 import sharp from 'sharp';
 
 const NEAR_TRIS = 100_000;
-const FAR_TRIS = 12_000;
+const FAR_TRIS = 24_000;   // 12k with a 5% error read as blocky past 55 m
 const SMALL_PART = 0.05;
 // Material names that mark cabin parts in the models we have seen so far.
 const INTERIOR = /(^|[^a-z])(int|interior|cockpit|cpit|seat|steer|belt|dash|rollcage|net|pedal|gauge|lcd|motec)/i;
@@ -140,7 +140,7 @@ async function main() {
     const near = await build(io, src, path.join(OUT_DIR, `${name}.glb`),
       { tris: NEAR_TRIS, texSize: 2048, error: 0.004 });
     const far = await build(io, src, path.join(OUT_DIR, `${name}.far.glb`),
-      { tris: FAR_TRIS, texSize: 512, error: 0.05, far: true });
+      { tris: FAR_TRIS, texSize: 1024, error: 0.012, far: true });
     console.log(`${name.padEnd(20)} source ${near.before.toLocaleString().padStart(8)} tris ${srcMb.toFixed(1).padStart(5)} MB`
       + ` | near ${near.after.toLocaleString().padStart(8)} tris ${near.mb.toFixed(1).padStart(5)} MB`
       + ` | far ${far.after.toLocaleString().padStart(7)} tris ${far.mb.toFixed(1).padStart(5)} MB`);

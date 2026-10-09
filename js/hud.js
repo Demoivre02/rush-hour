@@ -359,6 +359,8 @@ export class HUD {
   nextCockpitPage() { return this.cockpit.nextPage(); }
 
   updateSimulationState(snapshot = {}) {
+    // arcade races have no weather strategy, wing damage or race control badges
+    if (this.session?.arcade) snapshot = {};
     const values = {
       weather: snapshot.weather?.condition === 'rain'
         ? `RAIN ${Math.round((snapshot.weather.intensity || 0) * 100)}%` : '',

@@ -829,6 +829,8 @@ export class RaceSession {
 
   /** Public offline integration hook for incident directors and scripted races. */
   requestRaceControl(kind, options = {}) {
+    // arcade races run green throughout: no yellows, VSC or safety car
+    if (this.arcade && kind !== 'green') return null;
     return this.raceControl.deploy(kind, options);
   }
 
@@ -873,6 +875,7 @@ export class RaceSession {
   /** Queue an engineer radio line. Contextual chatter is gated to 1 per 12s;
    *  mandated race-control calls pass force=true. */
   _radio(text, tone = 'info', force = false, meta = null) {
+    if (this.arcade) return false;            // no race engineer in arcade races
     if (!force && this._radioCool > 0) return false;
     this._radioCool = 12;
     const item = { text, tone };
@@ -1010,7 +1013,7 @@ export class RaceSession {
       if (ev.shifted && e.isPlayer) this._shiftEvent = ev.shifted; // ±1: up/down for audio character
       if (racing) {
         this._sectorTiming(e);
-        if (this.mode === 'race') this._trackLimits(e, dt);
+        if (this.mode === 'race' && !this.arcade) this._trackLimits(e, dt);   // no track-limit penalties in arcade
       }
       // mechanical retirement (AI only, race only)
       // Reliability is now subsystem-based and applies to every car. The
@@ -1187,6 +1190,7 @@ export class RaceSession {
 
   /** Legacy VSC hook retained for headless tooling. */
   _startVSC(secs) {
+    if (this.arcade) return;                  // no virtual safety car in arcade races
     this._vscEnding = false;
     this._vscViol = 0;
     this._vscWarned = false;
@@ -1301,7 +1305,8 @@ export class RaceSession {
 
   // ---- front wing damage ----
   _maybeWingDamage(e, source = 'car') {
-    if (e.wingDamage > 0 || e.dnf || e.finished || e.pitState) return;
+    // arcade: contact wrecks (takedowns) but never sends anyone to the pits
+    if (this.arcade || e.wingDamage > 0 || e.dnf || e.finished || e.pitState) return;
     // Wall and car incidents have independent debounce windows: a wall brush
     // must not suppress damage from a subsequent nose-to-tail impact (or vice
     // versa). `_contactCool` is retained only as harmless legacy state for old
@@ -1484,7 +1489,7 @@ export class RaceSession {
     }
 
     // pit entry
-    if ((e.boxThisLap || (!e.isPlayer && e.lap === e.plannedPitLap) ||
+    if (!this.arcade && (e.boxThisLap || (!e.isPlayer && e.lap === e.plannedPitLap) ||
         (!e.isPlayer && e.phys.wear > 0.72 && e.lap < this.laps - 2 && this.laps >= 8))
         && e.lap > 0 && e.lap < this.laps && !e.finished) {
       this._enterPit(e);
