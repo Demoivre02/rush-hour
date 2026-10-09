@@ -2462,6 +2462,7 @@ class Game {
         }, 900);
       }
       this.updateCamera(renderDt);
+      this.circuit?.updateCity?.(this.camera);
       // AI detail selection uses the final smoothed/shaken camera for every
       // camera mode. RaceSession internally limits this presentation-only pass
       // to 10 Hz; callers that never invoke it retain full-fidelity cars.

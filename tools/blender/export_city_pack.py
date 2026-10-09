@@ -15,6 +15,39 @@ argv = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
 OUT = os.path.abspath(argv[0] if argv else 'assets/city-real')
 SKIP_COLLECTIONS = {'Pipes', 'Roads'}       # kitbash bits and road tiles the circuit already has
 
+# Triangle budget per collection. A street repeats each model dozens of times,
+# so the source meshes (up to 68k triangles after modifiers) are reduced:
+# first coplanar faces are merged (no visible change on flat facades), then a
+# collapse decimate brings anything still over budget down to it.
+BUDGET = {'Buildings': 5000, 'Shops': 1500, 'Extras': 1500, 'Road_sign': 400, 'Traffic_light': 3000}
+HEAVY_BUDGET = 9000                          # the large back-row blocks
+HEAVY = {'building_1', 'building_3', 'building_8', 'building_9'}
+
+
+def tri_count(obj):
+    ev = obj.evaluated_get(bpy.context.evaluated_depsgraph_get())
+    me = ev.to_mesh()
+    n = sum(len(p.vertices) - 2 for p in me.polygons)
+    ev.to_mesh_clear()
+    return n
+
+
+def fit_budget(obj, budget):
+    """Append decimation so the evaluated mesh lands at or under `budget`."""
+    if tri_count(obj) <= budget:
+        return
+    planar = obj.modifiers.new('fit_planar', 'DECIMATE')
+    planar.decimate_type = 'DISSOLVE'
+    planar.angle_limit = 0.0175           # 1 degree
+    planar.use_dissolve_boundaries = False
+    planar.delimit = {'UV', 'MATERIAL'}
+    n = tri_count(obj)
+    if n > budget:
+        collapse = obj.modifiers.new('fit_collapse', 'DECIMATE')
+        collapse.decimate_type = 'COLLAPSE'
+        collapse.ratio = budget / n
+        collapse.use_collapse_triangulate = True
+
 # downscale every texture once (they are packed in the .blend)
 for im in bpy.data.images:
     if im.size[0] == 0:
@@ -34,6 +67,9 @@ for coll in bpy.data.collections:
     for obj in coll.objects:
         if obj.type != 'MESH':
             continue
+        name0 = obj.name.lower().replace(' ', '_')
+        fit_budget(obj, HEAVY_BUDGET if name0 in HEAVY else BUDGET.get(coll.name, 5000))
+        depsgraph = bpy.context.evaluated_depsgraph_get()
         # world-space bounds of the evaluated (modifier-applied) mesh
         ev = obj.evaluated_get(depsgraph)
         corners = [obj.matrix_world @ Vector(c) for c in ev.bound_box]

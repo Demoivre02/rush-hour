@@ -19,8 +19,8 @@ const DIR = 'assets/city/';
 // by tools/blender/export_city_pack.py. In-house only (git-ignored): when the
 // folder is absent the Kenney kits below are used instead.
 const REAL_DIR = 'assets/city-real/';
-const REAL_FRONTS = [2, 5, 6, 7, 9].map((n) => `real:buildings/building_${n}`);
-const REAL_HEAVY = [1, 3, 8].map((n) => `real:buildings/building_${n}`);   // 30-70k triangles: back row only
+const REAL_FRONTS = [2, 5, 6, 7].map((n) => `real:buildings/building_${n}`);
+const REAL_HEAVY = [1, 3, 8, 9].map((n) => `real:buildings/building_${n}`);   // ~9k triangles each: back row only
 const REAL_SHOPS = [1, 2, 3, 4, 5, 6, 7, 8].map((n) => `real:shops/shop_${n}`);
 
 async function realPackAvailable() {
@@ -310,7 +310,7 @@ export async function dressCity(circuit, { night = false, carsReady = null } = {
   // (downtown and mixed venues; the suburban venue keeps its houses)
   const real = style !== 'suburban' && await realPackAvailable();
   const want = real
-    ? [...REAL_FRONTS, ...REAL_HEAVY, ...REAL_SHOPS, ...TREES, ...PEOPLE]
+    ? [...REAL_FRONTS, ...REAL_HEAVY, ...REAL_SHOPS, ...PEOPLE]   // no cartoon trees beside photo facades
     : style === 'suburban'
     ? [...HOUSES, ...TREES, ...COMMERCIAL.slice(0, 6), ...PEOPLE]
     : style === 'mixed'
@@ -396,7 +396,7 @@ export async function dressCity(circuit, { night = false, carsReady = null } = {
             // the block sits just behind the facade (its front face 0.6 m back)
             const bo = off + 0.3;
             const bx = s.p.x + nx * bo, bz = s.p.z + nz * bo;
-            blocks.push({ x: bx, z: bz, y: groundAt(bx, bz), yaw, w: front.w - 0.05, h: front.h - 0.1 });
+            blocks.push({ x: bx, z: bz, y: groundAt(bx, bz), yaw, w: front.w - 0.05, h: front.h - 0.1, path: front.path });
           } else add(front.path, x, z, yaw);
           placed.push({ x, z, r });
           sidewalks.push({ i, side, x: s.p.x + nx * (wall + 4.2), z: s.p.z + nz * (wall + 4.2), yaw });
@@ -441,14 +441,33 @@ export async function dressCity(circuit, { night = false, carsReady = null } = {
     }
   }
 
-  // Instanced draw: one InstancedMesh per kit model.
+  // Instanced draw: one InstancedMesh per kit model and stretch of the lap.
+  const CULL_M = 600;
+  const cityMeshes = [];
   let count = 0;
   const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), sc = new THREE.Vector3(), pv = new THREE.Vector3();
   const UP = new THREE.Vector3(0, 1, 0);
   for (const [key, list] of instances) {
     const path = key.split('|')[0];
     const model = models.get(path);
-    model.cityMaterials = model.cityMaterials || model.parts.map((p) => p.material.clone());
+    model.cityMaterials = model.cityMaterials || model.parts.map((p) => {
+      const m = p.material.clone();
+      if (path.startsWith('real:')) {
+        // Photo facades already contain their light and shade: keep sky
+        // reflections low (white plaster otherwise bleaches to blue-white)
+        // and draw them opaque (the exporter marks some as blended).
+        m.envMapIntensity = 0.35;
+        m.roughness = Math.max(m.roughness ?? 1, 0.85);
+        m.metalness = 0;
+        // Opaque, ignoring texture alpha: the shop glass is see-through in the
+        // source, and cutting it out showed the bare block behind the facade.
+        // (GLTFLoader also turns depth writes off for blended materials.)
+        if (m.transparent) { m.transparent = false; m.alphaTest = 0; m.depthWrite = true; }
+        m.color.multiplyScalar(0.9);
+        if (m.emissive && m.emissive.getHex() !== 0) m.emissiveIntensity = Math.min(m.emissiveIntensity ?? 1, 0.45);
+      }
+      return m;
+    });
     model.parts.forEach((part, pi) => {
       const mat = model.cityMaterials[pi];
       if (night && !mat.userData.nightLit && mat.map) {
@@ -471,13 +490,36 @@ export async function dressCity(circuit, { night = false, carsReady = null } = {
       });
       mesh.computeBoundingSphere();
       circuit.group.add(mesh);
+      cityMeshes.push(mesh);
     });
     count += list.length;
   }
+  // Distance culling: a stretch of city further than CULL_M from the camera is
+  // hidden (frustum culling alone still drew every stretch ahead to the horizon).
+  circuit.updateCity = (camera) => {
+    const cp = camera.position;
+    for (const mesh of cityMeshes) {
+      const bs = mesh.boundingSphere;
+      mesh.visible = bs.center.distanceTo(cp) - bs.radius < CULL_M;
+    }
+  };
   // the shopfronts' blocks: one instanced box, scaled per shop
   if (blocks.length) {
+    // a darker flat roof; the walls take the colour of the shop's own facade
     const geo = new THREE.BoxGeometry(1, 1, 1).translate(0, 0.5, 0);
-    const mat = new THREE.MeshStandardMaterial({ color: 0x8d877d, roughness: 0.92 });
+    const nrm = geo.attributes.normal;
+    const vcol = new Float32Array(nrm.count * 3);
+    for (let i = 0; i < nrm.count; i++) vcol.fill(nrm.getY(i) > 0.5 ? 0.42 : 1, i * 3, i * 3 + 3);
+    geo.setAttribute('color', new THREE.BufferAttribute(vcol, 3));
+    const mat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.92, vertexColors: true, envMapIntensity: 0.35 });
+    const facadeTone = (path) => {
+      const part = models.get(path)?.parts.find((p) => p.material.map);
+      const c = part && textureColour(part.material.map);
+      // a plaster tone near the facade's average, never too dark or saturated
+      const out = new THREE.Color(0x8d877d);
+      if (c) out.lerp(c, 0.55);
+      return out;
+    };
     if (night) { mat.emissive = new THREE.Color(0x2a2620); }
     const mesh = new THREE.InstancedMesh(geo, mat, blocks.length);
     mesh.name = 'city-shop-blocks';
@@ -488,6 +530,7 @@ export async function dressCity(circuit, { night = false, carsReady = null } = {
       pv.set(b.x, b.y - 0.05, b.z);
       m4.compose(pv, q, sc);
       mesh.setMatrixAt(k, m4);
+      mesh.setColorAt(k, facadeTone(b.path));
     });
     mesh.computeBoundingSphere();
     circuit.group.add(mesh);
