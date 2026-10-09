@@ -55,7 +55,8 @@ const BUDGETS = {
   // +3 KB for the garage screen (css/menus.css).
   // +3 KB for the arcade main menu.
   // +2 KB for the event picker, event status badge and results banner.
-  cssBytes: 94_000,
+  // +4 KB for the career screens (tabs, wallet, dealership, reward banner).
+  cssBytes: 98_000,
   menuJavaScriptBytes: 2_200_000,
   deferredJavaScriptBytes: 1_200_000,
   // October 2026: +20 KB for js/modelCars.js (25-model registry plus the
@@ -75,7 +76,9 @@ const BUDGETS = {
   // +10 KB: photo-textured city pack support in js/cityDressing.js (multi-
   // material models, shopfront blocks; the pack itself is in-house only).
   // +10 KB: street furniture and night lamp pools, distance culling.
-  allJavaScriptBytes: 2_935_000,
+  // +20 KB / +1 module / +1 request: js/career.js and the career screens
+  // (events, stars, credits, dealership, paid garage).
+  allJavaScriptBytes: 2_955_000,
   // October 2026: +5.4 MB / +9 requests for the scanned CC0 ground materials
   // (textures/pbr/, asphalt 2K + grass and gravel 1K, colour/normal/roughness).
   sessionPhotoBytes: 18_000_000,
@@ -105,10 +108,10 @@ const BUDGETS = {
   // and sharpening pass.
   // +2 modules / +2 requests for garage.js and garageView.js.
   // +1 module / +1 request: js/speedBlur.js (radial speed blur pass).
-  moduleFiles: 68,
+  moduleFiles: 69,
   menuBootRequests: 65,
-  selectedSessionRequests: 92,
-  allThemeInventoryRequests: 94,
+  selectedSessionRequests: 93,
+  allThemeInventoryRequests: 95,
 };
 
 function fail(message) {

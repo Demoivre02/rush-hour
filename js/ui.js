@@ -86,7 +86,7 @@ export class UI {
       carId: null,
     };
     this.screens = {};
-    for (const id of ['main', 'discipline', 'car', 'garage', 'team', 'track', 'settings', 'standings', 'loading', 'results', 'pause', 'boot']) {
+    for (const id of ['main', 'career', 'discipline', 'car', 'garage', 'team', 'track', 'settings', 'standings', 'loading', 'results', 'pause', 'boot']) {
       this.screens[id] = document.getElementById('screen-' + id);
     }
     this._factTimer = null;
@@ -260,13 +260,14 @@ export class UI {
         <button type="button" class="nav-item tile tile-play race-now" data-a="raceNow">
           <span><h3>PLAY NOW</h3><p>START YOUR ENGINE · ${last ? 'your car' : 'Skyline GT-R R34'} · Miami street circuit</p></span>
         </button>
-        <button type="button" class="nav-item tile tile-modes" data-a="disciplines">
-          <span><h3>RACE MODES</h3><p>Pick a mode, choose and tune your car, pick the venue</p></span>
+        <button type="button" class="nav-item tile tile-career" data-a="career">
+          <span><h3>CAREER</h3><p>Win events, earn credits, buy and upgrade cars · classes D to S</p></span>
         </button>
-        <button type="button" class="nav-item tile tile-formula" data-a="${champAction}">
-          <span><h3>FORMULA CUP</h3><p>${champSub}</p></span>
+        <button type="button" class="nav-item tile tile-modes" data-a="disciplines">
+          <span><h3>RACE MODES</h3><p>Free play: any car, free upgrades, any venue</p></span>
         </button>
         <div class="tile-row">
+          <button type="button" class="nav-item tile tile-small tile-formula" data-a="${champAction}"><span><h3>FORMULA CUP</h3><p>${champSub}</p></span></button>
           <button type="button" class="nav-item tile tile-small" data-a="trial"><span><h3>TIME TRIAL</h3><p>Chase the perfect lap</p></span></button>
           <button type="button" class="nav-item tile tile-small" data-a="pilot"><span><h3>RACE WEEKEND</h3><p>Practice · qualifying · race</p></span></button>
           ${champ && champ.active ? '<button type="button" class="nav-item tile tile-small" data-a="standings"><span><h3>STANDINGS</h3><p>Formula Cup tables</p></span></button>' : ''}
@@ -509,6 +510,168 @@ export class UI {
     this._enter(el);
   }
 
+  // ============ CAREER ============
+  async loadCareerModules() {
+    const [C, D] = await Promise.all([import('./career.js'), this.loadDisciplines()]);
+    // every car the career can use: the street roster (D-A) and hypercars (S)
+    const cars = [...D.carsForDiscipline('street'), ...D.carsForDiscipline('hypercar')]
+      .filter((c, i, all) => c.performance && all.findIndex((x) => x.id === c.id) === i);
+    return { C, D, cars };
+  }
+
+  /** Discipline a career car races in (hypercars have their own field). */
+  careerDisciplineFor(D, carId) {
+    return D.carsForDiscipline('street').some((c) => c.id === carId) ? 'street' : 'hypercar';
+  }
+
+  async showCareer(tab = this._careerTab) {
+    const { C, cars } = await this.loadCareerModules();
+    const state = C.ensureStarted(C.loadCareer(), cars);
+    const stars = C.totalStars(state);
+    const tier = tab || C.TIERS.filter((t) => C.tierUnlocked(state, t.id)).at(-1).id;
+    this._careerTab = tier;
+    this.hideAll();
+    const el = this.screens.career;
+    el.className = 'screen active menu-screen career-screen';
+    const tabs = C.TIERS.map((t) => {
+      const open = C.tierUnlocked(state, t.id);
+      return `<button type="button" class="career-tab c-${t.id}${t.id === tier ? ' on' : ''}${open ? '' : ' locked'}"
+        data-t="${t.id}" ${open ? '' : 'disabled'} aria-pressed="${t.id === tier}">
+        <b>${t.id}</b><span>${t.label}</span><i>${open ? '' : `★ ${t.stars}`}</i></button>`;
+    }).join('');
+    const typeLabel = { race: 'RACE', elimination: 'ELIMINATION', takedown: 'TAKEDOWN RUSH', drift: 'DRIFT' };
+    const events = C.CAREER_EVENTS.filter((e) => e.tier === tier).map((e) => {
+      const got = state.stars[e.id] || 0;
+      const t = TRACKS[e.trackId];
+      const starRow = [1, 2, 3].map((n) => `<i class="${n <= got ? 'on' : ''}">★</i>`).join('');
+      return `<div class="select-card career-event" role="button" tabindex="0" data-e="${e.id}"
+          aria-label="${e.title}, ${typeLabel[e.event]}, ${t?.name || e.trackId}">
+        <div class="map-wrap"><canvas width="230" height="110"></canvas></div>
+        <div class="card-body">
+          <span class="ce-type">${typeLabel[e.event]}${e.event === 'race' ? ` · ${e.laps} LAPS` : ''}</span>
+          <h4>${e.title}</h4>
+          <div class="sub">${FLAGS[e.trackId] || ''} ${t?.name || e.trackId}</div>
+          <div class="ce-foot"><span class="ce-stars">${starRow}</span><b>${e.reward.toLocaleString()} CR</b></div>
+        </div></div>`;
+    }).join('');
+    el.innerHTML = `
+      ${header('CAREER <small>WORLD TOUR</small>')}
+      <div class="menu-body">
+        <div class="career-wallet">
+          <span class="cw-credits"><i>CREDITS</i><b>${state.credits.toLocaleString()}</b></span>
+          <span class="cw-stars"><i>STARS</i><b>★ ${stars}</b></span>
+          <span class="cw-cars"><i>GARAGE</i><b>${state.owned.length} cars</b></span>
+          <button class="f1-btn ghost" id="btn-dealer"><span>DEALERSHIP</span></button>
+        </div>
+        <div class="career-tabs" role="group" aria-label="Class">${tabs}</div>
+        <div class="card-grid career-grid">${events}</div>
+        <div class="btn-row"><button class="f1-btn ghost" id="btn-back"><span>← BACK</span></button></div>
+      </div>
+      <div class="menu-footer"><span>1st = ★★★ · podium = ★★ · top 6 = ★ · timed events: success = ★★★ · stars open the next class</span></div>`;
+    el.querySelectorAll('.career-event').forEach((card) => {
+      const e = C.eventById(card.dataset.e);
+      const t = TRACKS[e.trackId];
+      if (t) drawTrackPreview(card.querySelector('canvas'), t.points);
+      const go = () => this.cb('careerEvent', e.id);
+      card.addEventListener('click', go);
+      card.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); go(); } });
+    });
+    el.querySelectorAll('.career-tab').forEach((b) => b.addEventListener('click', () => this.showCareer(b.dataset.t)));
+    el.querySelector('#btn-dealer').addEventListener('click', () => this.showDealership());
+    el.querySelector('#btn-back').addEventListener('click', () => this.cb('back', 'main'));
+    this._enter(el);
+  }
+
+  /** Card for one car in the career screens. */
+  _careerCarCard(C, c, state, extra = '') {
+    const cls = c.performance.performance_class;
+    return `<div class="select-card car-card career-car" role="button" tabindex="0" data-c="${c.id}"
+        aria-label="${c.name}, class ${cls}">
+      <div class="car-thumb"><img src="${carThumb(c)}" alt="" loading="lazy"><span class="g-class c-${cls}">${cls}</span></div>
+      <div class="card-body">
+        <h4>${c.model}</h4>
+        <div class="sub">${c.make} · ${c.year}</div>
+        <div class="tstats">
+          <span class="tstat"><b>${c.performance.power_hp}</b><i>HP</i></span>
+          <span class="tstat"><b>${c.performance.top_speed_kmh}</b><i>KM/H</i></span>
+          <span class="tstat"><b>${c.performance.performance_index}</b><i>PI</i></span>
+        </div>
+        ${extra}
+      </div></div>`;
+  }
+
+  /** Pick one of your cars that is eligible for the event. */
+  async showCareerCars(eventId) {
+    const { C, D, cars } = await this.loadCareerModules();
+    const state = C.loadCareer();
+    const event = C.eventById(eventId);
+    if (!event) { this.showCareer(); return; }
+    const mine = cars.filter((c) => state.owned.includes(c.id))
+      .sort((a, b) => b.performance.performance_index - a.performance.performance_index);
+    const ok = mine.filter((c) => C.carEligible(c, event));
+    const tooFast = mine.filter((c) => !C.carEligible(c, event));
+    this.hideAll();
+    const el = this.screens.career;
+    el.className = 'screen active menu-screen career-screen';
+    el.innerHTML = `
+      ${header(`${event.title.toUpperCase()} <small>CHOOSE YOUR CAR</small>`)}
+      <div class="menu-body">
+        <p class="career-note">Class ${event.tier} event: cars of class ${event.tier} or lower may enter.</p>
+        ${ok.length ? `<div class="card-grid car-grid">${ok.map((c) => this._careerCarCard(C, c, state)).join('')}</div>`
+          : `<p class="career-empty">None of your cars can enter. Buy a class ${event.tier} car (or lower) at the dealership.</p>`}
+        ${tooFast.length ? `<p class="career-note dim">Too fast for this class: ${tooFast.map((c) => c.model).join(', ')}</p>` : ''}
+        <div class="btn-row">
+          <button class="f1-btn ghost" id="btn-back"><span>← EVENTS</span></button>
+          <button class="f1-btn ghost" id="btn-dealer"><span>DEALERSHIP</span></button>
+        </div>
+      </div>`;
+    el.querySelectorAll('.career-car').forEach((card) => {
+      const go = () => this.cb('careerCar', {
+        eventId, carId: card.dataset.c, discipline: this.careerDisciplineFor(D, card.dataset.c),
+      });
+      card.addEventListener('click', go);
+      card.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); go(); } });
+    });
+    el.querySelector('#btn-back').addEventListener('click', () => this.showCareer());
+    el.querySelector('#btn-dealer').addEventListener('click', () => this.showDealership(eventId));
+    this._enter(el);
+  }
+
+  /** Buy cars with career credits. */
+  async showDealership(returnEvent = null) {
+    const { C, cars } = await this.loadCareerModules();
+    const state = C.loadCareer();
+    const list = [...cars].sort((a, b) => a.performance.performance_index - b.performance.performance_index);
+    this.hideAll();
+    const el = this.screens.career;
+    el.className = 'screen active menu-screen career-screen';
+    const cards = list.map((c) => {
+      const owned = state.owned.includes(c.id);
+      const price = C.CAR_PRICE[c.performance.performance_class] ?? C.CAR_PRICE.S;
+      const afford = state.credits >= price;
+      return this._careerCarCard(C, c, state, owned
+        ? '<div class="dealer-row owned"><span>OWNED</span></div>'
+        : `<div class="dealer-row"><b>${price.toLocaleString()} CR</b>
+            <button class="f1-btn${afford ? '' : ' ghost'} buy" data-buy="${c.id}" ${afford ? '' : 'disabled'}><span>${afford ? 'BUY' : 'NEED CR'}</span></button></div>`);
+    }).join('');
+    el.innerHTML = `
+      ${header('DEALERSHIP <small>CAREER</small>')}
+      <div class="menu-body">
+        <div class="career-wallet"><span class="cw-credits"><i>CREDITS</i><b>${state.credits.toLocaleString()}</b></span></div>
+        <div class="card-grid car-grid">${cards}</div>
+        <div class="btn-row"><button class="f1-btn ghost" id="btn-back"><span>← BACK</span></button></div>
+      </div>`;
+    el.querySelectorAll('[data-buy]').forEach((b) => b.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      const car = list.find((c) => c.id === b.dataset.buy);
+      const r = C.buyCar(C.loadCareer(), car);
+      if (r.ok) this.showDealership(returnEvent);
+    }));
+    el.querySelector('#btn-back').addEventListener('click', () =>
+      (returnEvent ? this.showCareerCars(returnEvent) : this.showCareer()));
+    this._enter(el);
+  }
+
   /** Garage id of the F1 car a driver races (their team's car). */
   formulaCarIdFor(driverId) {
     const team = DRIVERS.find((d) => d.id === driverId)?.team;
@@ -526,6 +689,9 @@ export class UI {
     const stock = formulaTeam ? G.formulaCar(formulaTeam)
       : carsForDiscipline(this.sel.discipline).find((c) => c.id === this.sel.carId);
     if (!stock) { this.cb('garageDone', { ...this.sel }); return; }
+    // Career: a separate saved setup per car, and upgrades cost credits.
+    const career = this.sel.career ? await import('./career.js') : null;
+    const key = career ? career.careerSetupKey(stock.id) : stock.id;
     this.hideAll();
     const el = this.screens.garage;
     el.className = 'screen active menu-screen garage-screen';
@@ -547,9 +713,9 @@ export class UI {
         <aside class="garage-panel">
           <section class="g-stats" id="g-stats"></section>
           <section>
-            <h5>UPGRADES <em>FREE</em></h5>
+            <h5>UPGRADES <em id="g-upnote">${career ? '' : 'FREE'}</em></h5>
             <div class="g-parts" id="g-parts"></div>
-            <div class="g-actions">
+            <div class="g-actions" ${career ? 'hidden' : ''}>
               <button class="f1-btn ghost" id="g-max"><span>MAX ALL</span></button>
               <button class="f1-btn ghost" id="g-reset"><span>STOCK</span></button>
             </div>
@@ -560,7 +726,7 @@ export class UI {
           </section>
           <div class="btn-row">
             <button class="f1-btn ghost" id="btn-back"><span>← CARS</span></button>
-            <button class="f1-btn" id="g-go"><span>RACE ›</span></button>
+            <button class="f1-btn" id="g-go"><span>${career ? 'START EVENT ›' : 'RACE ›'}</span></button>
           </div>
         </aside>
       </div>`;
@@ -570,7 +736,9 @@ export class UI {
     const loading = el.querySelector('#g-loading');
     let shownPaint;
     const render = () => {
-      const setup = G.garageFor(stock.id);
+      const setup = G.garageFor(key);
+      const wallet = career ? career.loadCareer() : null;
+      if (wallet) el.querySelector('#g-upnote').textContent = `${wallet.credits.toLocaleString()} CR`;
       const car = G.tunedCar(stock, setup);
       const p = car.performance;
       const bars = G.statBars(car);
@@ -592,8 +760,13 @@ export class UI {
         return `<div class="g-part">
           <div class="g-part-name"><b>${u.label}</b><small>${u.blurb}</small></div>
           <div class="g-pips">${pips}</div>
-          <button class="g-step" data-part="${u.id}" data-d="-1" ${n <= 0 ? 'disabled' : ''} aria-label="Downgrade ${u.label}">−</button>
-          <button class="g-step up" data-part="${u.id}" data-d="1" ${n >= G.MAX_LEVEL ? 'disabled' : ''} aria-label="Upgrade ${u.label}">+</button>
+          ${career ? '' : `<button class="g-step" data-part="${u.id}" data-d="-1" ${n <= 0 ? 'disabled' : ''} aria-label="Downgrade ${u.label}">−</button>`}
+          ${career ? (() => {
+            const cost = career.upgradeCost(stock, u.id);
+            const afford = cost != null && wallet.credits >= cost;
+            return `<button class="g-step up g-buy" data-part="${u.id}" data-d="1" ${afford ? '' : 'disabled'}
+              aria-label="Upgrade ${u.label}${cost != null ? ` for ${cost} credits` : ''}">${cost == null ? 'MAX' : `+ ${cost.toLocaleString()}`}</button>`;
+          })() : `<button class="g-step up" data-part="${u.id}" data-d="1" ${n >= G.MAX_LEVEL ? 'disabled' : ''} aria-label="Upgrade ${u.label}">+</button>`}
         </div>`;
       }).join('');
       el.querySelector('#g-paint').innerHTML = G.PAINTS.map((c) => `
@@ -604,11 +777,12 @@ export class UI {
         (G.PAINTS.find((c) => c.hex === setup.paint) || G.PAINTS[0]).label;
       el.querySelectorAll('.g-step').forEach((b) => b.addEventListener('click', () => {
         const part = b.dataset.part;
-        G.setLevel(stock.id, part, G.garageFor(stock.id).levels[part] + Number(b.dataset.d));
+        if (career) career.buyUpgrade(career.loadCareer(), stock, part);
+        else G.setLevel(key, part, G.garageFor(key).levels[part] + Number(b.dataset.d));
         render();
       }));
       el.querySelectorAll('.g-swatch').forEach((b) => b.addEventListener('click', () => {
-        G.setPaint(stock.id, b.dataset.hex || null);
+        G.setPaint(key, b.dataset.hex || null);
         render();
       }));
       if (setup.paint !== shownPaint) {
@@ -619,17 +793,20 @@ export class UI {
     };
     render();
     el.querySelector('#g-max').addEventListener('click', () => {
-      for (const u of G.UPGRADES) G.setLevel(stock.id, u.id, G.MAX_LEVEL);
+      for (const u of G.UPGRADES) G.setLevel(key, u.id, G.MAX_LEVEL);
       render();
     });
     el.querySelector('#g-reset').addEventListener('click', () => {
-      const paint = G.garageFor(stock.id).paint;
-      G.resetCar(stock.id);
-      G.setPaint(stock.id, paint);
+      const paint = G.garageFor(key).paint;
+      G.resetCar(key);
+      G.setPaint(key, paint);
       render();
     });
     el.querySelector('#g-go').addEventListener('click', () => this.cb('garageDone', { ...this.sel }));
-    el.querySelector('#btn-back').addEventListener('click', () => this.cb('back', formulaTeam ? 'team' : 'car'));
+    el.querySelector('#btn-back').addEventListener('click', () => {
+      if (career) { this.showCareerCars(this.sel.career); return; }
+      this.cb('back', formulaTeam ? 'team' : 'car');
+    });
     if (formulaTeam) el.querySelector('#btn-back span').textContent = '← TEAMS';
     this._enter(el);
   }
@@ -959,11 +1136,18 @@ export class UI {
     // set by main.js for arcade events (Elimination, Takedown Rush, Drift)
     const outcome = this.eventOutcome;
     this.eventOutcome = null;
+    const reward = this.careerReward;          // set by main.js for career events
+    this.careerReward = null;
     el.innerHTML = `
       ${header('RACE <small>CLASSIFICATION</small>')}
       <div class="menu-body">
         ${outcome ? `<div class="event-outcome ${outcome.success ? 'win' : 'lose'}">
           <b>${outcome.label}</b><span>${outcome.success ? 'SUCCESS' : 'FAILED'}</span><i>${outcome.detail}</i></div>` : ''}
+        ${reward ? `<div class="career-reward">
+          <b>${reward.title}</b>
+          <span class="cr-stars">${[1, 2, 3].map((n) => `<i class="${n <= reward.stars ? 'on' : ''}">★</i>`).join('')}</span>
+          <span class="cr-credits">+${reward.credits.toLocaleString()} CR</span>
+          <i>${reward.newBest ? 'New best · ' : ''}${reward.balance.toLocaleString()} CR · ★ ${reward.totalStars}</i></div>` : ''}
         <div class="podium-strip">
           ${podium.map((r, i) => `
             <div class="podium-card shine p${i + 1}" style="border-top-color:${hex(r.team.color)};--shine-delay:${i * 260}ms">
@@ -986,12 +1170,13 @@ export class UI {
             <td class="pts${r.isPlayer ? ' pts-count' : ''}">${r.isPlayer ? '' : (r.points || '')}</td></tr>`).join('')}
         </table>
         <div class="btn-row">
-          <button class="f1-btn" id="btn-continue"><span>${champActive ? 'CONTINUE →' : 'MAIN MENU'}</span></button>
+          <button class="f1-btn" id="btn-continue"><span>${champActive ? 'CONTINUE →' : reward ? 'CAREER →' : 'MAIN MENU'}</span></button>
           ${champActive ? '' : '<button class="f1-btn ghost" id="btn-restart"><span>RESTART RACE</span></button>'}
         </div>
       </div>
       <div class="menu-footer"><span>${race.gp}${fastestLap ? ` · FASTEST LAP: ${fastestLap.name} ${fmtTime(fastestLap.time)}` : ''}</span></div>`;
-    el.querySelector('#btn-continue').addEventListener('click', () => this.cb(champActive ? 'afterRaceChamp' : 'back', 'main'));
+    el.querySelector('#btn-continue').addEventListener('click', () =>
+      this.cb(champActive ? 'afterRaceChamp' : 'back', reward ? 'career' : 'main'));
     const restartBtn = el.querySelector('#btn-restart');
     if (restartBtn) restartBtn.addEventListener('click', () => this.cb('restartRace'));
     if (player) this._countUp(el.querySelector('.pts-count'), player.points || 0);

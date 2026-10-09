@@ -783,9 +783,10 @@ class Game {
           });
         }
         else if (payload === 'raceNow') {
+          this.ui.sel.career = null;
           this.startCoastRun();
         }
-        else if (payload === 'disciplines') { this.state = 'discipline'; this.ui.showDisciplineSelect(); }
+        else if (payload === 'disciplines') { this.ui.sel.career = null; this.state = 'discipline'; this.ui.showDisciplineSelect(); }
         else if (payload === 'quick') {
           this.state = 'discipline';
           this.ui.showDisciplineSelect();
@@ -800,6 +801,7 @@ class Game {
         }
         else if (payload === 'standings') { this.state = 'standings'; this.ui.showStandings(this.champ, true); }
         else if (payload === 'settings') { this.state = 'settings'; this.ui.showSettings('main'); }
+        else if (payload === 'career') { this.state = 'career'; this.ui.showCareer(); }
         break;
       case 'disciplineChosen': {
         // Every discipline except Formula picks a car first.
@@ -816,6 +818,7 @@ class Game {
         this.ui.showGarage();
         break;
       case 'garageDone':
+        if (this.ui.sel.career) { this.startCareerEvent(this.ui.sel.career, this.ui.sel.carId); break; }
         // remembered for PLAY NOW and the main-menu showroom
         this.ui.settings.lastCar = { discipline: this.ui.sel.discipline, carId: this.ui.sel.carId };
         this.ui.saveSettings();
@@ -959,6 +962,21 @@ class Game {
         else if (payload === 'discipline') this.ui.showDisciplineSelect();
         else if (payload === 'car') this.ui.showCarSelect();
         else if (payload === 'garage') this.ui.showGarage();
+        else if (payload === 'career') this.ui.showCareer();
+        break;
+      case 'careerEvent':
+        // payload: event id; pick one of your eligible cars next
+        this.ui.sel.career = payload;
+        this.state = 'careerCars';
+        this.ui.showCareerCars(payload);
+        break;
+      case 'careerCar':
+        // payload: { eventId, carId, discipline }: tune it in the career garage
+        this.ui.sel.career = payload.eventId;
+        this.ui.sel.carId = payload.carId;
+        this.ui.sel.discipline = payload.discipline;
+        this.state = 'garage';
+        this.ui.showGarage();
         break;
       case 'pause':
         if (payload === 'resume') this.togglePause(false);
@@ -1017,6 +1035,48 @@ class Game {
       discipline,
       playerCarId: carId,
     });
+  }
+
+  /** Start a career event in the chosen (owned) car, with its career setup. */
+  async startCareerEvent(eventId, carId) {
+    const C = await import('./career.js');
+    this._careerModule = C;
+    const event = C.eventById(eventId);
+    if (!event || !TRACKS[event.trackId]) return;
+    const race = CALENDAR.find((r) => r.trackId === event.trackId) || {
+      trackId: event.trackId, round: 1, gp: TRACKS[event.trackId].name,
+      date: '', country: TRACKS[event.trackId].country || '',
+    };
+    const driverId = DRIVERS.some((d) => d.id === COAST_RUN.driverId) ? COAST_RUN.driverId : DRIVERS[0]?.id;
+    this.ui.sel.mode = 'quick';
+    this.ui.sel.driverId = driverId;
+    this.ui.sel.trackId = event.trackId;
+    this.startSession({
+      race, driverId, mode: 'race',
+      discipline: C.tierOf(event.tier).discipline,
+      playerCarId: carId,
+      event: event.event,
+      laps: event.event === 'race' ? event.laps : undefined,
+      career: event.id,
+    });
+  }
+
+  /** Career bookkeeping when a career race classifies: stars and credits. */
+  careerPayout(s, results) {
+    const C = this._careerModule;
+    const event = C?.eventById(this.raceConfig.career);
+    if (!event) return null;
+    const me = results.find((r) => r.isPlayer);
+    const state = C.loadCareer();
+    const out = C.recordResult(state, event, {
+      pos: me?.pos ?? 99,
+      // a knocked-out driver still earns stars for where they finished
+      finished: !!me && (!me.dnf || event.event === 'elimination'),
+      success: !!s.eventState?.success,
+      takedowns: s.takedowns || 0,
+      nearMisses: s.nearMisses || 0,
+    });
+    return { ...out, title: event.title, balance: state.credits };
   }
 
   startChampRace() {
@@ -1078,7 +1138,7 @@ class Game {
         weatherSeed: deriveSeed(sessionSeed, 'weather'),
       });
       this.setupEnvironment(effectsRandom, environmentKey);
-      const laps = cfg.mode === 'race' ? this.ui.raceLapsFor(cfg.race.trackId) : 1;
+      const laps = cfg.mode === 'race' ? (cfg.laps || this.ui.raceLapsFor(cfg.race.trackId)) : 1;
       this.session = new RaceSession({
         scene: this.scene,
         circuit: this.circuit,
@@ -1097,6 +1157,7 @@ class Game {
         discipline: cfg.discipline || 'formula',
         playerCarId: cfg.playerCarId || null,
         event: cfg.event || 'race',
+        setupPrefix: cfg.career ? 'career:' : '',
         random: simulationRandom,
         seed: sessionSeed,
         onMessage: (t, c, meta) => { this.hud.message(t, c, meta); },
@@ -2504,6 +2565,7 @@ class Game {
           this.audio.stopEngine();
           this.state = 'results';
           this.ui.eventOutcome = eventOutcome(s);
+          this.ui.careerReward = this.raceConfig.career ? this.careerPayout(s, results) : null;
           this.ui.showResults(results, s.fastestLap, this.raceConfig.race, 'race', !!this.raceConfig.champRound);
         }, 900);
       }

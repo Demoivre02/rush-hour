@@ -43,6 +43,7 @@
     "test:pbr": "node tools/validate-pbr-surfaces.mjs",
     "test:effects": "node tools/validate-effects.mjs",
     "test:events": "node tools/validate-events.mjs",
+    "test:career": "node tools/validate-career.mjs",
     "test:browser": "npm run build && playwright test",
     "test:simulation-contract": "node tools/validate-simulation-upgrade.mjs",
     "test:simulation-browser": "npm run build && playwright test --config=playwright.simulation.config.mjs",

@@ -706,3 +706,39 @@
 .event-outcome span { font-size: 26px; font-weight: 900; color: #fff; }
 .event-outcome i { margin-left: auto; opacity: 0.8; }
 .event-outcome.lose { background: rgba(255, 59, 59, 0.1); border-left-color: #ff3b3b; }
+
+/* ===== career ===== */
+.tile-career { background: linear-gradient(110deg, rgba(255,176,32,.22), rgba(255,90,40,.10)); border-color: rgba(255,176,32,.45); }
+.career-wallet { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; margin: 0 0 14px; }
+.career-wallet span { display: flex; flex-direction: column; font-style: italic; }
+.career-wallet i { font-size: 11px; font-style: normal; letter-spacing: .14em; opacity: .65; }
+.career-wallet b { font-size: 24px; font-weight: 900; }
+.career-wallet .cw-credits b { color: #ffcf3a; }
+.career-wallet .f1-btn { margin-left: auto; }
+.career-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
+.career-tab { flex: 1 1 140px; display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 10px;
+  padding: 8px 12px; background: rgba(255,255,255,.04); color: #cfd8e3; border: 1px solid rgba(255,255,255,.1);
+  border-radius: 4px; cursor: pointer; text-align: left; font: inherit; }
+.career-tab b { grid-row: span 2; font-size: 26px; font-style: italic; font-weight: 900; }
+.career-tab span { font-size: 12px; font-weight: 700; }
+.career-tab i { font-size: 11px; font-style: normal; color: #ffcf3a; }
+.career-tab.on { border-color: #ffcf3a; background: rgba(255,207,58,.12); color: #fff; }
+.career-tab.locked { opacity: .45; cursor: not-allowed; }
+.career-event .ce-type { font-size: 11px; letter-spacing: .12em; color: #2ec8ff; font-weight: 800; }
+.career-event .ce-foot, .dealer-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; }
+.ce-stars i, .cr-stars i { font-style: normal; color: rgba(255,255,255,.18); font-size: 18px; }
+.ce-stars i.on, .cr-stars i.on { color: #ffcf3a; text-shadow: 0 0 10px rgba(255,207,58,.5); }
+.career-event .ce-foot b, .dealer-row b { color: #ffcf3a; font-style: italic; }
+.dealer-row .f1-btn { padding: 6px 14px; min-width: 0; }
+.dealer-row.owned span { color: #7cdc1e; font-weight: 800; letter-spacing: .1em; font-size: 12px; }
+.career-car .car-thumb { position: relative; }
+.career-car .g-class { position: absolute; top: 8px; left: 8px; }
+.career-note { opacity: .8; margin: 0 0 12px; }
+.career-note.dim { opacity: .5; margin-top: 12px; }
+.career-empty { padding: 18px; border: 1px dashed rgba(255,255,255,.2); border-radius: 4px; }
+.g-step.g-buy { width: auto; padding: 0 10px; font-size: 12px; white-space: nowrap; }
+.career-reward { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin: 0 0 14px; padding: 12px 18px;
+  background: rgba(255,207,58,.1); border-left: 4px solid #ffcf3a; border-radius: 4px; font-style: italic; }
+.career-reward b { font-size: 14px; letter-spacing: .08em; }
+.career-reward .cr-credits { font-size: 24px; font-weight: 900; color: #ffcf3a; }
+.career-reward > i { margin-left: auto; opacity: .8; }

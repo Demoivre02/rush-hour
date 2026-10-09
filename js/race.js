@@ -5,6 +5,9 @@ import { buildRoadCarMesh, releaseRoadCarMesh } from './roadCar.js';
 import { setBrakeLamps } from './modelCars.js';
 // re-exported for main.js: lazily loaded modules must sit in the session graph
 export { dressCity, trafficBodies } from './cityDressing.js';
+// The career module (menus load it lazily) is kept inside the session graph,
+// like the garage; see tools/validate-performance-budget.mjs.
+export { loadCareer } from './career.js';
 import { cityStyleFor } from './cityDressing.js';
 import { Traffic } from './traffic.js';
 import { tunedCar, PAINTS, garageFor, tunedFormulaProfile, paintedTeam, FORMULA_CAR_PREFIX } from './garage.js';
@@ -406,7 +409,7 @@ export class RaceSession {
       // they picked (and tuned in the garage), when they picked one.
       const picked = opts.playerCarId && carsForDiscipline(d.id).find((car) => car.id === opts.playerCarId);
       if (!picked) return { spec: profile, cars: null, roster: null, classCar };
-      const playerCar = tunedCar(picked);
+      const playerCar = tunedCar(picked, garageFor(`${opts.setupPrefix || ''}${picked.id}`));
       return {
         spec: profile, cars: null, roster: null, classCar,
         playerCar, playerProfile: buildVehicleProfile(d.vehicleClass, playerCar),
@@ -415,7 +418,9 @@ export class RaceSession {
     const pool = carsForDiscipline(d.id);
     if (!pool.length) return { spec: vehicleClass(d.vehicleClass), cars: null };
     // the player's car carries its garage setup: paint and upgrades
-    const playerCar = tunedCar(pool.find((car) => car.id === opts.playerCarId) || pool[0]);
+    // (career races read the car's career setup: `setupPrefix` 'career:')
+    const chosen = pool.find((car) => car.id === opts.playerCarId) || pool[0];
+    const playerCar = tunedCar(chosen, garageFor(`${opts.setupPrefix || ''}${chosen.id}`));
     const rivals = sortRivalsForVariedGrid(
       pool.filter((car) => car.id !== playerCar.id),
       playerCar,
@@ -1799,6 +1804,7 @@ export class RaceSession {
       if (d < 3.1 && d > 2.0 && closing > 5 && Math.abs(pp.v) > 20 && !pp.carScrape) {
         pp.battery = Math.min(1, pp.battery + 0.08);
         this._nearMissCool.set(e, 2.5);
+        this.nearMisses = (this.nearMisses || 0) + 1;
         this.onMessage('NEAR MISS', 'green');
       }
     }
