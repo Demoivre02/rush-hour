@@ -4,13 +4,14 @@
 export const QUALITY_ORDER = ['low', 'medium', 'high'];
 
 // Medium renders at the display's own pixel density and high supersamples it
-// (1.5x, capped at 2), both with FXAA off: FXAA smears texture detail, while
-// supersampling smooths edges and keeps it. On a Retina screen both land on 2.
-// Only low trades sharpness for speed.
+// (1.25x, capped at 2), both with 4x MSAA and FXAA off: FXAA smears texture
+// detail, while multisampling smooths edges and keeps it. On a Retina screen
+// both land on 2. Only low trades sharpness for speed (FXAA, no MSAA).
 export const QUALITY_PRESETS = {
   low: {
     pixelRatio: 1.25,
     fxaa: true,
+    msaa: 0,
     gtao: false,
     gtaoScale: 0.5,
     bloom: false,
@@ -21,6 +22,7 @@ export const QUALITY_PRESETS = {
     pixelRatio: 2,
     supersample: 1,
     fxaa: false,
+    msaa: 4,
     gtao: true,
     gtaoScale: 0.5,
     bloom: true,
@@ -29,8 +31,9 @@ export const QUALITY_PRESETS = {
   },
   high: {
     pixelRatio: 2,
-    supersample: 1.5,
+    supersample: 1.25,   // with 4x MSAA on top (was 1.5x alone)
     fxaa: false,
+    msaa: 4,
     gtao: true,
     gtaoScale: 0.5,
     bloom: true,
@@ -168,6 +171,14 @@ export class QualityController {
     if (this.gtao) this.gtao.enabled = p.gtao;
     if (this.bloom) this.bloom.enabled = p.bloom;
     if (this.fxaa) this.fxaa.enabled = p.fxaa;
+    // MSAA lives on the composer's scene targets; a sample-count change needs
+    // the targets reallocated
+    if (this.composer?.renderTarget1) {
+      const samples = p.msaa || 0;
+      for (const t of [this.composer.renderTarget1, this.composer.renderTarget2]) {
+        if (t && t.samples !== samples) { t.samples = samples; t.dispose(); }
+      }
+    }
     if (this.sun) {
       const sizeChanged = this.sun.shadow.mapSize.x !== p.shadowMap;
       this.sun.castShadow = p.shadows;

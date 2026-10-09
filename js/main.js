@@ -6,6 +6,7 @@ import { UnrealBloomPass } from '../lib/postprocessing/UnrealBloomPass.js';
 import { ScaledGTAOPass } from '../lib/postprocessing/ScaledGTAOPass.js';
 import { OutputPass } from '../lib/postprocessing/OutputPass.js';
 import { createColorGradePass } from './colorGrade.js';
+import { createSpeedBlurPass } from './speedBlur.js';
 import { FXAAPass } from '../lib/postprocessing/FXAAPass.js';
 import { RGBELoader } from '../lib/loaders/RGBELoader.js';
 import {
@@ -1482,7 +1483,14 @@ class Game {
     }
 
     // post-processing: AO grounds everything, bloom lifts lights, then output
-    this.composer = new EffectComposer(this.renderer);
+    // Multisampled (MSAA) scene target: clean edges on fences, poles and car
+    // bodies without FXAA's smear. Low quality drops back to FXAA (quality.js).
+    const msaaTarget = new THREE.WebGLRenderTarget(
+      Math.max(1, Math.floor(innerWidth * this.renderer.getPixelRatio())),
+      Math.max(1, Math.floor(innerHeight * this.renderer.getPixelRatio())),
+      { type: THREE.HalfFloatType, samples: 4 },
+    );
+    this.composer = new EffectComposer(this.renderer, msaaTarget);
     this.composer.addPass(new RenderPass(this.scene, this.camera));
     this.gtao = new ScaledGTAOPass(this.scene, this.camera, innerWidth, innerHeight, 0.5, {
       noiseRandom: createRendererNoiseRandom(),
@@ -1501,6 +1509,9 @@ class Game {
     );
     this.composer.addPass(this.bloom);
     this.composer.addPass(new OutputPass());
+    // radial speed blur toward the vanishing point; the car stays sharp
+    this.speedBlur = createSpeedBlurPass();
+    this.composer.addPass(this.speedBlur);
     // contrast, vibrance and sharpening on the display-ready image
     this.grade = createColorGradePass();
     this.grade.setLook(renderLookKey);
@@ -2138,6 +2149,27 @@ class Game {
     return cameraModeSpec(this.camMode).kind === 'cockpit';
   }
 
+  /**
+   * Speed blur from the followed car's speed: none below ~70 km/h, full by
+   * ~270 km/h, a little more under nitro; off in the cockpit and the crash
+   * replay. Eased so it swells and fades rather than popping.
+   */
+  _updateSpeedBlur(dt) {
+    const pass = this.speedBlur;
+    if (!pass) return;
+    const e = this.session?.focusEntry || this.session?.player;
+    const mode = cameraModeSpec(this.camMode);
+    let target = 0;
+    if (e && !this.paused && !this._takedown && mode.kind === 'chase' && this.ui.settings.speedBlur !== false) {
+      const kmh = (e.renderPose?.v ?? e.phys.v) * 3.6;
+      target = Math.min(1, Math.max(0, (kmh - 70) / 200)) * 0.85 + (e.phys.boosting ? 0.25 : 0);
+    }
+    const u = pass.uniforms;
+    u.strength.value += (Math.min(1, target) - u.strength.value) * Math.min(1, dt * 3);
+    pass.enabled = u.strength.value > 0.003;
+    u.aspect.value = innerWidth / Math.max(1, innerHeight);
+  }
+
   /** Traffic cars at their pose between the last two simulation ticks. */
   _drawTraffic(traffic, alpha) {
     const bodies = this._trafficBodies;
@@ -2471,6 +2503,7 @@ class Game {
       }
       this.updateCamera(renderDt);
       this.circuit?.updateCity?.(this.camera);
+      this._updateSpeedBlur(renderDt);
       // AI detail selection uses the final smoothed/shaken camera for every
       // camera mode. RaceSession internally limits this presentation-only pass
       // to 10 Hz; callers that never invoke it retain full-fidelity cars.

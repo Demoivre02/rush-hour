@@ -104,10 +104,11 @@ const BUDGETS = {
   // +1 module / +1 request for colorGrade.js, the final contrast, vibrance
   // and sharpening pass.
   // +2 modules / +2 requests for garage.js and garageView.js.
-  moduleFiles: 67,
+  // +1 module / +1 request: js/speedBlur.js (radial speed blur pass).
+  moduleFiles: 68,
   menuBootRequests: 65,
-  selectedSessionRequests: 91,
-  allThemeInventoryRequests: 93,
+  selectedSessionRequests: 92,
+  allThemeInventoryRequests: 94,
 };
 
 function fail(message) {
