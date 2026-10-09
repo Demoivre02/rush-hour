@@ -22,6 +22,14 @@ const REAL_DIR = 'assets/city-real/';
 const REAL_FRONTS = [2, 5, 6, 7].map((n) => `real:buildings/building_${n}`);
 const REAL_HEAVY = [1, 3, 8, 9].map((n) => `real:buildings/building_${n}`);   // ~9k triangles each: back row only
 const REAL_SHOPS = [1, 2, 3, 4, 5, 6, 7, 8].map((n) => `real:shops/shop_${n}`);
+// street furniture (exported from both packs by the same tool)
+const REAL_LIGHT = 'real:roads/street_light';            // arm reaches +Z, pole 3.7 m behind centre
+const REAL_GANTRY = 'real:traffic_light/final_signal_light'; // arm along -X from a pole at +5.2 m
+const REAL_SIGNAL = 'real:traffic_light_03/traffic_light_03';
+const REAL_BUS = 'real:bus_stop/bus_stop';
+const REAL_CLUTTER = ['real:garbage/trash_can_01', 'real:electricalbox04/electrical_box_04',
+  'real:extras/dust_bin_blue', 'real:extras/dust_bin_green'];
+const REAL_PROPS = [REAL_LIGHT, REAL_GANTRY, REAL_SIGNAL, REAL_BUS, ...REAL_CLUTTER];
 
 async function realPackAvailable() {
   try {
@@ -310,7 +318,7 @@ export async function dressCity(circuit, { night = false, carsReady = null } = {
   // (downtown and mixed venues; the suburban venue keeps its houses)
   const real = style !== 'suburban' && await realPackAvailable();
   const want = real
-    ? [...REAL_FRONTS, ...REAL_HEAVY, ...REAL_SHOPS, ...PEOPLE]   // no cartoon trees beside photo facades
+    ? [...REAL_FRONTS, ...REAL_HEAVY, ...REAL_SHOPS, ...REAL_PROPS, ...PEOPLE]   // no cartoon trees beside photo facades
     : style === 'suburban'
     ? [...HOUSES, ...TREES, ...COMMERCIAL.slice(0, 6), ...PEOPLE]
     : style === 'mixed'
@@ -420,6 +428,63 @@ export async function dressCity(circuit, { night = false, carsReady = null } = {
           add(pick(trees), x, z, rnd() * Math.PI * 2, 0.8 + rnd() * 0.4);
           placed.push({ x, z, r: 2.5 });
         }
+      }
+    }
+  }
+
+  // Street furniture on the real-pack venues: lamp posts down both sides,
+  // signal gantries over the road, bus stops, small signals and bins.
+  const lampHeads = [];                        // road-level spots under each lamp, for the night pools
+  if (real) {
+    const lamp = models.get(REAL_LIGHT);
+    const gantry = models.get(REAL_GANTRY);
+    const lampStep = Math.max(1, Math.round(45 / circuit.ds));
+    let k = 0;
+    for (let i = 0; i < circuit.N; i += lampStep, k++) {
+      const s = circuit.samples[i];
+      const side = k % 2 ? 1 : -1;
+      const nx = s.n.x * side, nz = s.n.z * side;
+      const yaw = Math.atan2(-nx, -nz);
+      const poleOff = wall + 2;
+      const px = s.p.x + nx * poleOff, pz = s.p.z + nz * poleOff;
+      if (lamp && clear(px, pz, 0.8, wall + 1)) {
+        const c = poleOff - 3.7;                 // model centre sits toward the road from its pole
+        add(REAL_LIGHT, s.p.x + nx * c, s.p.z + nz * c, yaw);
+        placed.push({ x: px, z: pz, r: 0.8 });
+        const h = poleOff - 7.4;                 // lamp head, over the track edge
+        lampHeads.push({ x: s.p.x + nx * h, z: s.p.z + nz * h, y: groundAt(px, pz) });
+      }
+      // an overhead signal gantry every ~700 m, on straight-ish stretches
+      if (gantry && i % Math.round(700 / circuit.ds) < lampStep && Math.abs(s.curv || 0) < 0.004) {
+        const gOff = wall + 2.5;
+        const gx = s.p.x - nx * gOff, gz = s.p.z - nz * gOff;   // the other side from this lamp
+        if (clear(gx, gz, 1, wall + 1)) {
+          // local -X must point at the road: yaw = atan2(r.z, -r.x) with r toward the road
+          const rx = nx, rz = nz;
+          const gyaw = Math.atan2(rz, -rx);
+          add(REAL_GANTRY, gx + rx * 5.2, gz + rz * 5.2, gyaw);
+          placed.push({ x: gx, z: gz, r: 1 });
+        }
+      }
+    }
+    // the pavement in front of the buildings: bus stops, signals and clutter
+    const bus = models.get(REAL_BUS), signal = models.get(REAL_SIGNAL);
+    const clutter = REAL_CLUTTER.filter((p) => models.has(p));
+    for (const spot of sidewalks) {
+      const s = circuit.samples[spot.i];
+      const nx = s.n.x * spot.side, nz = s.n.z * spot.side;
+      const r = rnd();
+      if (bus && r < 0.025) {
+        // shelter on the kerb side of the pavement (the buildings start at wall + 8)
+        const o = wall + 4.4, x = s.p.x + nx * o, z = s.p.z + nz * o;
+        if (clear(x, z, 1.4, wall + 3)) { add(REAL_BUS, x, z, spot.yaw); placed.push({ x, z, r: 2.6 }); }
+      } else if (signal && r < 0.1) {
+        const o = wall + 1.6, x = s.p.x + nx * o + s.t.x * 6, z = s.p.z + nz * o + s.t.z * 6;
+        if (clear(x, z, 0.5, wall + 1)) { add(REAL_SIGNAL, x, z, spot.yaw); placed.push({ x, z, r: 0.5 }); }
+      } else if (clutter.length && r < 0.45) {
+        const o = wall + 2.2 + rnd() * 1.5, along = (rnd() - 0.5) * 12;
+        const x = s.p.x + nx * o + s.t.x * along, z = s.p.z + nz * o + s.t.z * along;
+        if (clear(x, z, 1.1, wall + 1)) { add(pick(clutter), x, z, spot.yaw + (rnd() - 0.5) * 0.4); placed.push({ x, z, r: 1.1 }); }
       }
     }
   }
@@ -534,6 +599,43 @@ export async function dressCity(circuit, { night = false, carsReady = null } = {
     });
     mesh.computeBoundingSphere();
     circuit.group.add(mesh);
+  }
+
+  // Night: each street lamp throws a warm pool of light on the road below it
+  // (an additive decal, not a real light: dozens of lights would be too slow)
+  // and its head glows for the bloom pass.
+  if (night && lampHeads.length) {
+    const c = document.createElement('canvas');
+    c.width = c.height = 128;
+    const g2 = c.getContext('2d');
+    const grad = g2.createRadialGradient(64, 64, 0, 64, 64, 64);
+    grad.addColorStop(0, 'rgba(255,214,150,0.85)');
+    grad.addColorStop(0.45, 'rgba(255,190,120,0.35)');
+    grad.addColorStop(1, 'rgba(255,170,100,0)');
+    g2.fillStyle = grad;
+    g2.fillRect(0, 0, 128, 128);
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    const poolMat = new THREE.MeshBasicMaterial({
+      map: tex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+      polygonOffset: true, polygonOffsetFactor: -2,
+    });
+    const pools = new THREE.InstancedMesh(new THREE.PlaneGeometry(16, 16).rotateX(-Math.PI / 2), poolMat, lampHeads.length);
+    pools.name = 'city-lamp-pools';
+    const glowMat = new THREE.MeshBasicMaterial({ color: 0xffe2b0 });
+    glowMat.color.multiplyScalar(4);        // over 1: the bloom pass picks it up
+    const heads = new THREE.InstancedMesh(new THREE.SphereGeometry(0.35, 8, 6), glowMat, lampHeads.length);
+    heads.name = 'city-lamp-heads';
+    lampHeads.forEach((h, k) => {
+      m4.makeTranslation(h.x, h.y + 0.06, h.z);
+      pools.setMatrixAt(k, m4);
+      m4.makeTranslation(h.x, h.y + 13.2, h.z);
+      heads.setMatrixAt(k, m4);
+    });
+    for (const mesh of [pools, heads]) {
+      mesh.computeBoundingSphere();
+      circuit.group.add(mesh);
+    }
   }
 
   // Parked cars along the kerb: the detailed models' distant-LOD copies.

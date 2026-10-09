@@ -74,7 +74,8 @@ const BUDGETS = {
   // plus the slow-motion takedown camera.
   // +10 KB: photo-textured city pack support in js/cityDressing.js (multi-
   // material models, shopfront blocks; the pack itself is in-house only).
-  allJavaScriptBytes: 2_925_000,
+  // +10 KB: street furniture and night lamp pools, distance culling.
+  allJavaScriptBytes: 2_935_000,
   // October 2026: +5.4 MB / +9 requests for the scanned CC0 ground materials
   // (textures/pbr/, asphalt 2K + grass and gravel 1K, colour/normal/roughness).
   sessionPhotoBytes: 18_000_000,

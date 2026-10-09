@@ -3,7 +3,7 @@
 #   blender -b assets/city-real/src/city-pack.blend \
 #     --python tools/blender/export_city_pack.py -- assets/city-real
 #
-# Every mesh is exported with its modifiers applied, moved so its footprint is
+# Every top-level asset (with its child parts) is exported with its modifiers applied, moved so its footprint is
 # centred on the origin with its base at y=0, and its textures downscaled to at
 # most MAX_TEX px and re-encoded as JPEG. Writes <out>/<collection>/<name>.glb
 # and <out>/manifest.json (size and triangle count per model).
@@ -13,13 +13,16 @@ from mathutils import Vector
 MAX_TEX = 1024
 argv = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
 OUT = os.path.abspath(argv[0] if argv else 'assets/city-real')
-SKIP_COLLECTIONS = {'Pipes', 'Roads'}       # kitbash bits and road tiles the circuit already has
+SKIP_COLLECTIONS = {'Pipes'}                # kitbash bits
+SKIP_OBJECTS = {'road', 'side_walk', 'lane_x2', 'straight01_d:_25m', 'backlight_2x0.5m', 'bar_chair'}
 
 # Triangle budget per collection. A street repeats each model dozens of times,
 # so the source meshes (up to 68k triangles after modifiers) are reduced:
 # first coplanar faces are merged (no visible change on flat facades), then a
 # collapse decimate brings anything still over budget down to it.
-BUDGET = {'Buildings': 5000, 'Shops': 1500, 'Extras': 1500, 'Road_sign': 400, 'Traffic_light': 3000}
+BUDGET = {'Buildings': 5000, 'Shops': 1500, 'Extras': 1500, 'Road_sign': 400, 'Traffic_light': 3000,
+          'Roads': 1500}
+PROP_BUDGET = 2500                           # anything else (street furniture)
 HEAVY_BUDGET = 9000                          # the large back-row blocks
 HEAVY = {'building_1', 'building_3', 'building_8', 'building_9'}
 
@@ -58,49 +61,76 @@ for im in bpy.data.images:
         im.scale(max(1, int(w * k)), max(1, int(h * k)))
 
 depsgraph = bpy.context.evaluated_depsgraph_get()
-manifest = {}
-for coll in bpy.data.collections:
-    if coll.name in SKIP_COLLECTIONS:
+manifest_path = os.path.join(OUT, 'manifest.json')
+manifest = json.load(open(manifest_path)) if os.path.exists(manifest_path) else {}
+
+
+def folder_for(obj):
+    for c in obj.users_collection:
+        if c.name != 'Scene Collection':
+            return c.name
+    return 'Props'
+
+
+def family(obj):
+    out = [obj]
+    for ch in obj.children_recursive:
+        if ch.type == 'MESH':
+            out.append(ch)
+    return out
+
+
+roots = [o for o in bpy.data.objects
+         if o.type == 'MESH' and o.parent is None and (o.asset_data is not None or not any(x.asset_data for x in bpy.data.objects))]
+for obj in roots:
+    coll = folder_for(obj)
+    name = obj.name.lower().replace(' ', '_')
+    if coll in SKIP_COLLECTIONS or name in SKIP_OBJECTS:
         continue
-    folder = os.path.join(OUT, coll.name.lower())
+    folder = os.path.join(OUT, coll.lower().replace(' ', '_'))
     os.makedirs(folder, exist_ok=True)
-    for obj in coll.objects:
-        if obj.type != 'MESH':
-            continue
-        name0 = obj.name.lower().replace(' ', '_')
-        fit_budget(obj, HEAVY_BUDGET if name0 in HEAVY else BUDGET.get(coll.name, 5000))
-        depsgraph = bpy.context.evaluated_depsgraph_get()
-        # world-space bounds of the evaluated (modifier-applied) mesh
-        ev = obj.evaluated_get(depsgraph)
-        corners = [obj.matrix_world @ Vector(c) for c in ev.bound_box]
-        mn = Vector((min(c.x for c in corners), min(c.y for c in corners), min(c.z for c in corners)))
-        mx = Vector((max(c.x for c in corners), max(c.y for c in corners), max(c.z for c in corners)))
-        shift = Vector(((mn.x + mx.x) / 2, (mn.y + mx.y) / 2, mn.z))
-        saved = obj.matrix_world.copy()
-        obj.matrix_world.translation -= shift
-        bpy.ops.object.select_all(action='DESELECT')
-        obj.hide_set(False)
-        obj.select_set(True)
-        bpy.context.view_layer.objects.active = obj
-        name = obj.name.lower().replace(' ', '_')
-        path = os.path.join(folder, name + '.glb')
-        bpy.ops.export_scene.gltf(
-            filepath=path, export_format='GLB', use_selection=True,
-            export_apply=True, export_image_format='JPEG', export_jpeg_quality=82,
-            export_yup=True, export_cameras=False, export_lights=False,
-            export_animations=False, export_extras=False,
-        )
-        obj.matrix_world = saved
-        ev = obj.evaluated_get(bpy.context.evaluated_depsgraph_get())
-        me = ev.to_mesh()
-        tris = sum(len(p.vertices) - 2 for p in me.polygons)
-        ev.to_mesh_clear()
-        size = mx - mn
-        manifest[f'{coll.name.lower()}/{name}'] = {
-            'w': round(size.x, 2), 'd': round(size.y, 2), 'h': round(size.z, 2),
-            'tris': tris, 'bytes': os.path.getsize(path),
-        }
-        print('EXPORTED', coll.name, name, tris)
+    parts = family(obj)
+    # asset-library files often keep assets out of the scene: link them in
+    for p in parts:
+        if p.name not in bpy.context.view_layer.objects:
+            bpy.context.scene.collection.objects.link(p)
+    bpy.context.view_layer.update()
+    budget = HEAVY_BUDGET if name in HEAVY else BUDGET.get(coll, PROP_BUDGET)
+    for p in parts:
+        fit_budget(p, max(200, budget // len(parts)))
+    depsgraph = bpy.context.evaluated_depsgraph_get()
+    # world-space bounds of the evaluated (modifier-applied) meshes
+    corners = []
+    for p in parts:
+        ev = p.evaluated_get(depsgraph)
+        corners += [p.matrix_world @ Vector(c) for c in ev.bound_box]
+    mn = Vector((min(c.x for c in corners), min(c.y for c in corners), min(c.z for c in corners)))
+    mx = Vector((max(c.x for c in corners), max(c.y for c in corners), max(c.z for c in corners)))
+    shift = Vector(((mn.x + mx.x) / 2, (mn.y + mx.y) / 2, mn.z))
+    saved = obj.matrix_world.copy()
+    obj.matrix_world.translation -= shift     # children follow their parent
+    bpy.context.view_layer.update()
+    bpy.ops.object.select_all(action='DESELECT')
+    for p in parts:
+        p.hide_set(False)
+        p.select_set(True)
+    bpy.context.view_layer.objects.active = obj
+    path = os.path.join(folder, name + '.glb')
+    bpy.ops.export_scene.gltf(
+        filepath=path, export_format='GLB', use_selection=True,
+        export_apply=True, export_image_format='JPEG', export_jpeg_quality=82,
+        export_yup=True, export_cameras=False, export_lights=False,
+        export_animations=False, export_extras=False,
+    )
+    obj.matrix_world = saved
+    bpy.context.view_layer.update()
+    tris = sum(tri_count(p) for p in parts)
+    size = mx - mn
+    manifest[f"{coll.lower().replace(' ', '_')}/{name}"] = {
+        'w': round(size.x, 2), 'd': round(size.y, 2), 'h': round(size.z, 2),
+        'tris': tris, 'bytes': os.path.getsize(path),
+    }
+    print('EXPORTED', coll, name, tris)
 
 with open(os.path.join(OUT, 'manifest.json'), 'w') as f:
     json.dump(manifest, f, indent=1)

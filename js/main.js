@@ -1567,10 +1567,18 @@ class Game {
           previousCompile?.(shader, renderer);
           const common = '#include <common>';
           const begin = '#include <begin_vertex>';
-          const output = '#include <output_fragment>';
-          if (!shader.vertexShader.includes(common) || !shader.vertexShader.includes(begin)
-            || !shader.fragmentShader.includes(common) || !shader.fragmentShader.includes(output)) {
-            throw new Error('Las Vegas rim-light shader chunks changed; refusing an unpinned patch');
+          // three r154 renamed output_fragment to opaque_fragment
+          const output = ['#include <opaque_fragment>', '#include <output_fragment>']
+            .find((chunk) => shader.fragmentShader.includes(chunk));
+          if (!output || !shader.vertexShader.includes(common) || !shader.vertexShader.includes(begin)
+            || !shader.fragmentShader.includes(common)) {
+            // An unknown shader layout: skip the rim light rather than fail
+            // every frame (a throw here stops the whole scene rendering).
+            if (!this._vegasRimWarned) {
+              this._vegasRimWarned = true;
+              console.warn('Las Vegas rim light skipped: shader chunks not found');
+            }
+            return;
           }
           shader.vertexShader = shader.vertexShader
             .replace(common, `${common}\nvarying vec3 vApexVegasWorld;`)
