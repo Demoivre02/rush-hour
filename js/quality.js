@@ -10,6 +10,7 @@ export const QUALITY_ORDER = ['low', 'medium', 'high'];
 export const QUALITY_PRESETS = {
   low: {
     pixelRatio: 1.25,
+    maxPixels: 1_400_000,
     fxaa: true,
     msaa: 0,
     gtao: false,
@@ -21,6 +22,7 @@ export const QUALITY_PRESETS = {
   medium: {
     pixelRatio: 2,
     supersample: 1,
+    maxPixels: 3_000_000,
     fxaa: false,
     msaa: 4,
     gtao: true,
@@ -32,6 +34,7 @@ export const QUALITY_PRESETS = {
   high: {
     pixelRatio: 2,
     supersample: 1.25,   // with 4x MSAA on top (was 1.5x alone)
+    maxPixels: 3_800_000,
     fxaa: false,
     msaa: 4,
     gtao: true,
@@ -83,6 +86,16 @@ export class QualityController {
     this._appliedPixelRatio = null;
     this._appliedWidth = null;
     this._appliedHeight = null;
+    // Dynamic resolution: a 0.6-1 factor on the render resolution, steered by
+    // measured frame time in every mode, so a big window (a 3440x1440
+    // ultrawide is 5 megapixels) stays smooth instead of lagging.
+    this.renderScale = 1;
+    this._drsTime = 0;
+    this._drsFrames = 0;
+    this._drsSlow = 0;
+    this._drsFast = 0;
+    this._drsHold = 0;
+    this._drsProbe = null;
   }
 
   get tier() { return this.mode === 'auto' ? this.autoTier : this.mode; }
@@ -112,7 +125,54 @@ export class QualityController {
     this.apply(true);
   }
 
+  /**
+   * Dynamic resolution, once a second: below ~55 fps the render scale steps
+   * down 8%; after four comfortable seconds (above ~70 fps) it creeps back up
+   * 4%. Small, rare steps: each one reallocates the render targets.
+   */
+  _dynamicResolution(rawDt) {
+    if (!Number.isFinite(rawDt) || rawDt <= 0 || rawDt > 0.25) return;
+    if (this._drsHold > 0) { this._drsHold -= rawDt; return; }
+    this._drsTime += rawDt;
+    this._drsFrames++;
+    if (this._drsTime < 1) return;
+    const frameMs = this._drsTime / this._drsFrames * 1000;
+    this._drsTime = 0;
+    this._drsFrames = 0;
+    // Did the last step down help? If the frame time did not improve, the
+    // slowdown is not the pixel count (CPU, another tab): put the resolution
+    // back and leave it alone for a while rather than blur the picture for
+    // nothing.
+    if (this._drsProbe) {
+      const { from, before } = this._drsProbe;
+      this._drsProbe = null;
+      if (frameMs > before * 0.95) {
+        this.renderScale = from;
+        this._drsHold = 30;
+        this._drsSlow = 0;
+        this._drsFast = 0;
+        this.apply(true);
+        return;
+      }
+    }
+    this._drsSlow = frameMs > 18.2 ? this._drsSlow + 1 : 0;
+    this._drsFast = frameMs < 14.2 ? this._drsFast + 1 : 0;
+    let next = this.renderScale;
+    if (this._drsSlow >= 1) next = Math.max(0.6, this.renderScale - 0.08);
+    else if (this._drsFast >= 4) next = Math.min(1, this.renderScale + 0.04);
+    if (Math.abs(next - this.renderScale) > 0.001) {
+      if (next < this.renderScale) this._drsProbe = { from: this.renderScale, before: frameMs };
+      this.renderScale = next;
+      this._drsSlow = 0;
+      this._drsFast = 0;
+      // the frame after a resize is slow; skip it when measuring
+      this._drsHold = 0.3;
+      this.apply(true);
+    }
+  }
+
   update(rawDt) {
+    this._dynamicResolution(rawDt);
     if (this.mode !== 'auto' || !Number.isFinite(rawDt) || rawDt <= 0) return;
     if (this._cooldown > 0) this._cooldown = Math.max(0, this._cooldown - rawDt);
     // Ignore background-tab gaps; blur/visibility handling pauses the game.
@@ -155,7 +215,10 @@ export class QualityController {
     if (!changed && !force) return;
 
     const dpr = typeof devicePixelRatio === 'number' ? devicePixelRatio : 1;
-    const pixelRatio = Math.min(dpr * (p.supersample || 1), p.pixelRatio);
+    // the tier's ratio, capped by its pixel budget for this window size, then
+    // the dynamic-resolution factor
+    const budgetRatio = p.maxPixels ? Math.sqrt(p.maxPixels / Math.max(1, this.width * this.height)) : Infinity;
+    const pixelRatio = Math.max(0.35, Math.min(dpr * (p.supersample || 1), p.pixelRatio, budgetRatio) * this.renderScale);
     const pixelRatioChanged = pixelRatio !== this._appliedPixelRatio;
     const sizeChanged = this.width !== this._appliedWidth || this.height !== this._appliedHeight;
     this.renderer.setPixelRatio(pixelRatio);
