@@ -1,0 +1,96 @@
+{
+  "id": "aveline-cirrus",
+  "index": 8,
+  "name": "Aveline Cirrus",
+  "manufacturer": "Aveline",
+  "model": "Cirrus",
+  "country": "France",
+  "year": 2021,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "hatch",
+  "seats": 5,
+  "blurb": "Soft, tall-riding, and startlingly composed once you commit to a corner.",
+  "engine": {
+    "code": "i4",
+    "label": "Inline-4",
+    "cylinders": 4,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 800,
+    "redline_rpm": 6800,
+    "sound_family": "i4"
+  },
+  "performance": {
+    "power_hp": 132,
+    "power_kw": 98,
+    "torque_nm": 190,
+    "weight_kg": 1120,
+    "power_to_weight_hp_per_tonne": 117.9,
+    "drivetrain": "FWD",
+    "top_speed_kmh": 199,
+    "top_speed_mph": 124,
+    "accel_0_100_kmh_s": 9.58,
+    "accel_0_200_kmh_s": 48.09,
+    "braking_100_0_m": 45.5,
+    "lateral_g": 0.91,
+    "handling_rating": 32,
+    "performance_index": 343,
+    "performance_class": "C"
+  },
+  "drivetrain_detail": {
+    "gears": 5,
+    "gear_ratios": [
+      3.545,
+      2.293,
+      1.483,
+      0.959,
+      0.62
+    ],
+    "final_drive": 3.83,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 60000,
+    "unlock_level": 4,
+    "race_reward_credits": 2700
+  },
+  "dimensions": {
+    "length_m": 4.06,
+    "width_m": 1.811,
+    "wheelbase_m": 2.436
+  },
+  "visual": {
+    "primary_color": "#C4342E",
+    "accent_color": "#2F6FB2",
+    "livery": "solid",
+    "has_wing": false,
+    "sprite": "sprites/topdown/aveline-cirrus.png",
+    "sprite_shadow": "sprites/shadow/aveline-cirrus_shadow.png",
+    "thumbnail": "sprites/thumbs/aveline-cirrus_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4",
+    "loops": {
+      "idle": "audio/engines/i4/i4_idle.wav",
+      "low": "audio/engines/i4/i4_low.wav",
+      "mid": "audio/engines/i4/i4_mid.wav",
+      "high": "audio/engines/i4/i4_high.wav",
+      "redline": "audio/engines/i4/i4_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4/i4_rev.wav",
+    "startup": "audio/engines/i4/i4_start.wav",
+    "base_pitch_rpm": 800
+  },
+  "tags": [
+    "base",
+    "france",
+    "fwd",
+    "hatch"
+  ],
+  "seed": 1575061441
+}

@@ -1,0 +1,99 @@
+{
+  "id": "ishara-kite-rs-cup",
+  "index": 40,
+  "name": "Ishara Kite RS Cup",
+  "manufacturer": "Ishara",
+  "model": "Kite RS Cup",
+  "country": "Japan",
+  "year": 2024,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "hatch",
+  "seats": 5,
+  "blurb": "Front-drive, limited-slip, and faster round a lap than cars costing four times more.",
+  "engine": {
+    "code": "i4_turbo",
+    "label": "Turbo Inline-4",
+    "cylinders": 4,
+    "aspiration": "turbocharged",
+    "idle_rpm": 820,
+    "redline_rpm": 6900,
+    "sound_family": "i4_turbo"
+  },
+  "performance": {
+    "power_hp": 300,
+    "power_kw": 224,
+    "torque_nm": 400,
+    "weight_kg": 1080,
+    "power_to_weight_hp_per_tonne": 277.8,
+    "drivetrain": "FWD",
+    "top_speed_kmh": 259,
+    "top_speed_mph": 161,
+    "accel_0_100_kmh_s": 4.8,
+    "accel_0_200_kmh_s": 18.8,
+    "braking_100_0_m": 39.8,
+    "lateral_g": 1.04,
+    "handling_rating": 48,
+    "performance_index": 586,
+    "performance_class": "A"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.475,
+      2.462,
+      1.744,
+      1.235,
+      0.875,
+      0.62
+    ],
+    "final_drive": 3.74,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 463000,
+    "unlock_level": 12,
+    "race_reward_credits": 20800
+  },
+  "dimensions": {
+    "length_m": 4.011,
+    "width_m": 1.803,
+    "wheelbase_m": 2.407
+  },
+  "visual": {
+    "primary_color": "#C7382F",
+    "accent_color": "#7EC8C0",
+    "livery": "racing_split",
+    "has_wing": true,
+    "sprite": "sprites/topdown/ishara-kite-rs-cup.png",
+    "sprite_shadow": "sprites/shadow/ishara-kite-rs-cup_shadow.png",
+    "thumbnail": "sprites/thumbs/ishara-kite-rs-cup_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4_turbo",
+    "loops": {
+      "idle": "audio/engines/i4_turbo/i4_turbo_idle.wav",
+      "low": "audio/engines/i4_turbo/i4_turbo_low.wav",
+      "mid": "audio/engines/i4_turbo/i4_turbo_mid.wav",
+      "high": "audio/engines/i4_turbo/i4_turbo_high.wav",
+      "redline": "audio/engines/i4_turbo/i4_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4_turbo/i4_turbo_rev.wav",
+    "startup": "audio/engines/i4_turbo/i4_turbo_start.wav",
+    "base_pitch_rpm": 820
+  },
+  "tags": [
+    "fwd",
+    "hatch",
+    "japan",
+    "lightweight",
+    "tuned",
+    "turbo"
+  ],
+  "seed": 3464289230
+}

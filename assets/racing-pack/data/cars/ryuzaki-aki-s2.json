@@ -1,0 +1,98 @@
+{
+  "id": "ryuzaki-aki-s2",
+  "index": 38,
+  "name": "Ryuzaki Aki S2",
+  "manufacturer": "Ryuzaki",
+  "model": "Aki S2",
+  "country": "Japan",
+  "year": 2020,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "roadster",
+  "seats": 2,
+  "blurb": "Nine thousand revs from four cylinders. Torque is for other people.",
+  "engine": {
+    "code": "i4_vtec",
+    "label": "High-Rev Inline-4",
+    "cylinders": 4,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 880,
+    "redline_rpm": 9000,
+    "sound_family": "i4_vtec"
+  },
+  "performance": {
+    "power_hp": 260,
+    "power_kw": 194,
+    "torque_nm": 240,
+    "weight_kg": 1010,
+    "power_to_weight_hp_per_tonne": 257.4,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 259,
+    "top_speed_mph": 161,
+    "accel_0_100_kmh_s": 4.79,
+    "accel_0_200_kmh_s": 19.4,
+    "braking_100_0_m": 38.7,
+    "lateral_g": 1.05,
+    "handling_rating": 49,
+    "performance_index": 594,
+    "performance_class": "A"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.492,
+      2.471,
+      1.749,
+      1.238,
+      0.876,
+      0.62
+    ],
+    "final_drive": 3.76,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 487500,
+    "unlock_level": 12,
+    "race_reward_credits": 21900
+  },
+  "dimensions": {
+    "length_m": 3.892,
+    "width_m": 1.721,
+    "wheelbase_m": 2.335
+  },
+  "visual": {
+    "primary_color": "#2E7D6B",
+    "accent_color": "#F2A03D",
+    "livery": "solid",
+    "has_wing": false,
+    "sprite": "sprites/topdown/ryuzaki-aki-s2.png",
+    "sprite_shadow": "sprites/shadow/ryuzaki-aki-s2_shadow.png",
+    "thumbnail": "sprites/thumbs/ryuzaki-aki-s2_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4_vtec",
+    "loops": {
+      "idle": "audio/engines/i4_vtec/i4_vtec_idle.wav",
+      "low": "audio/engines/i4_vtec/i4_vtec_low.wav",
+      "mid": "audio/engines/i4_vtec/i4_vtec_mid.wav",
+      "high": "audio/engines/i4_vtec/i4_vtec_high.wav",
+      "redline": "audio/engines/i4_vtec/i4_vtec_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4_vtec/i4_vtec_rev.wav",
+    "startup": "audio/engines/i4_vtec/i4_vtec_start.wav",
+    "base_pitch_rpm": 880
+  },
+  "tags": [
+    "japan",
+    "lightweight",
+    "roadster",
+    "rwd",
+    "tuned"
+  ],
+  "seed": 148143627
+}

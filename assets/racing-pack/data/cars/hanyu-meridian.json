@@ -1,0 +1,96 @@
+{
+  "id": "hanyu-meridian",
+  "index": 5,
+  "name": "Hanyu Meridian",
+  "manufacturer": "Hanyu",
+  "model": "Meridian",
+  "country": "Korea",
+  "year": 2022,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "sedan",
+  "seats": 5,
+  "blurb": "Hanyu's midsize saloon. Comfortable, quiet, quietly quick.",
+  "engine": {
+    "code": "i4",
+    "label": "Inline-4",
+    "cylinders": 4,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 800,
+    "redline_rpm": 6800,
+    "sound_family": "i4"
+  },
+  "performance": {
+    "power_hp": 178,
+    "power_kw": 133,
+    "torque_nm": 265,
+    "weight_kg": 1350,
+    "power_to_weight_hp_per_tonne": 131.9,
+    "drivetrain": "FWD",
+    "top_speed_kmh": 226,
+    "top_speed_mph": 140,
+    "accel_0_100_kmh_s": 8.78,
+    "accel_0_200_kmh_s": 39.6,
+    "braking_100_0_m": 46.5,
+    "lateral_g": 0.89,
+    "handling_rating": 30,
+    "performance_index": 375,
+    "performance_class": "C"
+  },
+  "drivetrain_detail": {
+    "gears": 5,
+    "gear_ratios": [
+      3.526,
+      2.283,
+      1.479,
+      0.957,
+      0.62
+    ],
+    "final_drive": 3.81,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 84000,
+    "unlock_level": 5,
+    "race_reward_credits": 3800
+  },
+  "dimensions": {
+    "length_m": 4.679,
+    "width_m": 1.865,
+    "wheelbase_m": 2.807
+  },
+  "visual": {
+    "primary_color": "#20242A",
+    "accent_color": "#1F3D7A",
+    "livery": "two_tone",
+    "has_wing": false,
+    "sprite": "sprites/topdown/hanyu-meridian.png",
+    "sprite_shadow": "sprites/shadow/hanyu-meridian_shadow.png",
+    "thumbnail": "sprites/thumbs/hanyu-meridian_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4",
+    "loops": {
+      "idle": "audio/engines/i4/i4_idle.wav",
+      "low": "audio/engines/i4/i4_low.wav",
+      "mid": "audio/engines/i4/i4_mid.wav",
+      "high": "audio/engines/i4/i4_high.wav",
+      "redline": "audio/engines/i4/i4_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4/i4_rev.wav",
+    "startup": "audio/engines/i4/i4_start.wav",
+    "base_pitch_rpm": 800
+  },
+  "tags": [
+    "base",
+    "fwd",
+    "korea",
+    "sedan"
+  ],
+  "seed": 3828285275
+}

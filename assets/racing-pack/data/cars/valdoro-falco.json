@@ -1,0 +1,100 @@
+{
+  "id": "valdoro-falco",
+  "index": 69,
+  "name": "Valdoro Falco",
+  "manufacturer": "Valdoro",
+  "model": "Falco",
+  "country": "Italy",
+  "year": 2024,
+  "tier": "super",
+  "tier_label": "Supercar",
+  "body_type": "trackcar",
+  "seats": 2,
+  "blurb": "Rear-drive only, aero everywhere, built for people who've stopped pretending.",
+  "engine": {
+    "code": "v10",
+    "label": "V10",
+    "cylinders": 10,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 900,
+    "redline_rpm": 8700,
+    "sound_family": "v10"
+  },
+  "performance": {
+    "power_hp": 700,
+    "power_kw": 522,
+    "torque_nm": 620,
+    "weight_kg": 1380,
+    "power_to_weight_hp_per_tonne": 507.2,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 326,
+    "top_speed_mph": 203,
+    "accel_0_100_kmh_s": 2.72,
+    "accel_0_200_kmh_s": 9.31,
+    "braking_100_0_m": 29.3,
+    "lateral_g": 1.33,
+    "handling_rating": 84,
+    "performance_index": 822,
+    "performance_class": "X"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.308,
+      2.503,
+      1.893,
+      1.432,
+      1.083,
+      0.82,
+      0.62
+    ],
+    "final_drive": 3.53,
+    "tyre_compound": "Semi-Slick"
+  },
+  "nitro": {
+    "capacity_s": 5.0,
+    "power_mult": 1.26,
+    "refill_s": 10.0
+  },
+  "economy": {
+    "price_credits": 1616500,
+    "unlock_level": 22,
+    "race_reward_credits": 72700
+  },
+  "dimensions": {
+    "length_m": 4.147,
+    "width_m": 1.939,
+    "wheelbase_m": 2.488
+  },
+  "visual": {
+    "primary_color": "#E4620F",
+    "accent_color": "#7BC043",
+    "livery": "racing_split",
+    "has_wing": true,
+    "sprite": "sprites/topdown/valdoro-falco.png",
+    "sprite_shadow": "sprites/shadow/valdoro-falco_shadow.png",
+    "thumbnail": "sprites/thumbs/valdoro-falco_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v10",
+    "loops": {
+      "idle": "audio/engines/v10/v10_idle.wav",
+      "low": "audio/engines/v10/v10_low.wav",
+      "mid": "audio/engines/v10/v10_mid.wav",
+      "high": "audio/engines/v10/v10_high.wav",
+      "redline": "audio/engines/v10/v10_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v10/v10_rev.wav",
+    "startup": "audio/engines/v10/v10_start.wav",
+    "base_pitch_rpm": 900
+  },
+  "tags": [
+    "drift",
+    "italy",
+    "rwd",
+    "super",
+    "track",
+    "trackcar"
+  ],
+  "seed": 3544620230
+}

@@ -1,0 +1,100 @@
+{
+  "id": "scorpetti-fiora-corsa",
+  "index": 62,
+  "name": "Scorpetti Fiora Corsa",
+  "manufacturer": "Scorpetti",
+  "model": "Fiora Corsa",
+  "country": "Italy",
+  "year": 2024,
+  "tier": "super",
+  "tier_label": "Supercar",
+  "body_type": "supercar",
+  "seats": 2,
+  "blurb": "Stripped, caged, and given a rear wing with an opinion.",
+  "engine": {
+    "code": "v8_turbo",
+    "label": "Twin-Turbo V8",
+    "cylinders": 8,
+    "aspiration": "turbocharged",
+    "idle_rpm": 740,
+    "redline_rpm": 7600,
+    "sound_family": "v8_turbo"
+  },
+  "performance": {
+    "power_hp": 710,
+    "power_kw": 529,
+    "torque_nm": 770,
+    "weight_kg": 1390,
+    "power_to_weight_hp_per_tonne": 510.8,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 356,
+    "top_speed_mph": 221,
+    "accel_0_100_kmh_s": 2.7,
+    "accel_0_200_kmh_s": 9.22,
+    "braking_100_0_m": 32.0,
+    "lateral_g": 1.25,
+    "handling_rating": 74,
+    "performance_index": 816,
+    "performance_class": "X"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.304,
+      2.563,
+      1.988,
+      1.542,
+      1.196,
+      0.928,
+      0.72
+    ],
+    "final_drive": 3.53,
+    "tyre_compound": "Semi-Slick"
+  },
+  "nitro": {
+    "capacity_s": 5.0,
+    "power_mult": 1.26,
+    "refill_s": 10.0
+  },
+  "economy": {
+    "price_credits": 1574000,
+    "unlock_level": 21,
+    "race_reward_credits": 70800
+  },
+  "dimensions": {
+    "length_m": 4.668,
+    "width_m": 2.015,
+    "wheelbase_m": 2.801
+  },
+  "visual": {
+    "primary_color": "#DDE1E5",
+    "accent_color": "#F0B429",
+    "livery": "racing_split",
+    "has_wing": true,
+    "sprite": "sprites/topdown/scorpetti-fiora-corsa.png",
+    "sprite_shadow": "sprites/shadow/scorpetti-fiora-corsa_shadow.png",
+    "thumbnail": "sprites/thumbs/scorpetti-fiora-corsa_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v8_turbo",
+    "loops": {
+      "idle": "audio/engines/v8_turbo/v8_turbo_idle.wav",
+      "low": "audio/engines/v8_turbo/v8_turbo_low.wav",
+      "mid": "audio/engines/v8_turbo/v8_turbo_mid.wav",
+      "high": "audio/engines/v8_turbo/v8_turbo_high.wav",
+      "redline": "audio/engines/v8_turbo/v8_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v8_turbo/v8_turbo_rev.wav",
+    "startup": "audio/engines/v8_turbo/v8_turbo_start.wav",
+    "base_pitch_rpm": 740
+  },
+  "tags": [
+    "drift",
+    "italy",
+    "rwd",
+    "super",
+    "supercar",
+    "turbo"
+  ],
+  "seed": 3141392520
+}

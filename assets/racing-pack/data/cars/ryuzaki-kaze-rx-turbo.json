@@ -1,0 +1,100 @@
+{
+  "id": "ryuzaki-kaze-rx-turbo",
+  "index": 36,
+  "name": "Ryuzaki Kaze RX Turbo",
+  "manufacturer": "Ryuzaki",
+  "model": "Kaze RX Turbo",
+  "country": "Japan",
+  "year": 1996,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "coupe",
+  "seats": 4,
+  "blurb": "Boost meets rotary. The tachometer becomes a suggestion.",
+  "engine": {
+    "code": "rotary2_turbo",
+    "label": "Turbo Twin-Rotor",
+    "cylinders": 4,
+    "aspiration": "turbocharged",
+    "idle_rpm": 920,
+    "redline_rpm": 8500,
+    "sound_family": "rotary2_turbo"
+  },
+  "performance": {
+    "power_hp": 320,
+    "power_kw": 239,
+    "torque_nm": 390,
+    "weight_kg": 1250,
+    "power_to_weight_hp_per_tonne": 256.0,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 279,
+    "top_speed_mph": 173,
+    "accel_0_100_kmh_s": 4.81,
+    "accel_0_200_kmh_s": 18.58,
+    "braking_100_0_m": 39.8,
+    "lateral_g": 1.03,
+    "handling_rating": 47,
+    "performance_index": 598,
+    "performance_class": "A"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.467,
+      2.457,
+      1.741,
+      1.234,
+      0.875,
+      0.62
+    ],
+    "final_drive": 3.73,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 625000,
+    "unlock_level": 12,
+    "race_reward_credits": 28100
+  },
+  "dimensions": {
+    "length_m": 4.505,
+    "width_m": 1.801,
+    "wheelbase_m": 2.703
+  },
+  "visual": {
+    "primary_color": "#F2A03D",
+    "accent_color": "#E6E8EA",
+    "livery": "stripe_center",
+    "has_wing": true,
+    "sprite": "sprites/topdown/ryuzaki-kaze-rx-turbo.png",
+    "sprite_shadow": "sprites/shadow/ryuzaki-kaze-rx-turbo_shadow.png",
+    "thumbnail": "sprites/thumbs/ryuzaki-kaze-rx-turbo_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/rotary2_turbo",
+    "loops": {
+      "idle": "audio/engines/rotary2_turbo/rotary2_turbo_idle.wav",
+      "low": "audio/engines/rotary2_turbo/rotary2_turbo_low.wav",
+      "mid": "audio/engines/rotary2_turbo/rotary2_turbo_mid.wav",
+      "high": "audio/engines/rotary2_turbo/rotary2_turbo_high.wav",
+      "redline": "audio/engines/rotary2_turbo/rotary2_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/rotary2_turbo/rotary2_turbo_rev.wav",
+    "startup": "audio/engines/rotary2_turbo/rotary2_turbo_start.wav",
+    "base_pitch_rpm": 920
+  },
+  "tags": [
+    "classic",
+    "coupe",
+    "japan",
+    "rotary",
+    "rwd",
+    "tuned",
+    "turbo"
+  ],
+  "seed": 3489332503
+}

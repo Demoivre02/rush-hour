@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Served from the repo root (python3 tools/devserver.py 8341 .) so the model
+     paths in js/modelCars.js resolve exactly as they do in the game. -->
+<base href="../">
+<title>Car Model Lab</title>
+<script type="importmap">
+{ "imports": { "three": "./lib/three.module.js" } }
+</script>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; background: #15171b; color: #e8eaee; font: 13px/1.4 system-ui, sans-serif; }
+  header { padding: 10px 16px; display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap; }
+  header h1 { font-size: 16px; margin: 0; }
+  header a { color: #8fc1ff; }
+  #grid { position: relative; }
+  canvas { display: block; }
+  .label { position: absolute; padding: 4px 8px; font-weight: 600; pointer-events: none;
+    text-shadow: 0 1px 2px #000; }
+  .label small { display: block; font-weight: 400; opacity: 0.75; }
+  .label.bad { color: #ff7b72; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Car model lab</h1>
+  <span id="status">loading…</span>
+  <span>
+    <a href="tools/model-lab.html">all</a> ·
+    <a href="tools/model-lab.html?explode=1">exploded wheels</a> ·
+    <a href="tools/model-lab.html?view=front">front</a> ·
+    <a href="tools/model-lab.html?view=top">top</a> ·
+    <a href="tools/model-lab.html?far=1">far copies</a> ·
+    <a href="tools/model-lab.html?spin=1">spinning</a>
+  </span>
+</header>
+<div id="grid"></div>
+<script type="module">
+import * as THREE from 'three';
+import { MODEL_CARS, loadModelTemplate } from './js/modelCars.js';
+
+// ?ids=a,b  ?explode=1  ?view=side|front|top|34  ?far=1  ?spin=1
+const q = new URLSearchParams(location.search);
+const ids = q.get('ids') ? q.get('ids').split(',') : Object.keys(MODEL_CARS);
+const explode = q.has('explode');
+const view = q.get('view') || '34';
+const useFar = q.has('far');
+const spin = q.has('spin');
+// ?thumb=1 (one id): transparent 420x180 car-select card image, read back by
+// tools/render-car-thumbs.mjs from window.__thumbData
+const thumb = q.has('thumb');
+
+const COLS = thumb ? 1 : Math.min(Number(q.get('cols')) || 3, ids.length);
+const CELL_W = thumb ? 420 : Math.floor((document.documentElement.clientWidth - 20) / COLS);
+const CELL_H = thumb ? 180 : Math.round(CELL_W * 0.62);
+const ROWS = Math.ceil(ids.length / COLS);
+const grid = document.getElementById('grid');
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: thumb });
+renderer.setPixelRatio(thumb ? 1 : Math.min(devicePixelRatio, 2));
+renderer.setSize(COLS * CELL_W, ROWS * CELL_H);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.setScissorTest(true);
+grid.appendChild(renderer.domElement);
+
+// A small studio for reflections: bright panels around a grey room.
+function studioEnvironment() {
+  const room = new THREE.Scene();
+  room.add(new THREE.Mesh(new THREE.BoxGeometry(20, 10, 20),
+    new THREE.MeshBasicMaterial({ color: 0x3a3d44, side: THREE.BackSide })));
+  for (const [x, y, z, w, h] of [[0, 4.9, 0, 12, 6], [9.9, 2, 0, 0.1, 4], [-9.9, 2, 0, 0.1, 4]]) {
+    const panel = new THREE.Mesh(new THREE.BoxGeometry(w || 0.1, 0.1, h),
+      new THREE.MeshBasicMaterial({ color: 0xffffff }));
+    panel.scale.set(1, 1, 1);
+    panel.position.set(x, y, z);
+    if (x) panel.geometry = new THREE.BoxGeometry(0.1, 3, 8);
+    room.add(panel);
+  }
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  return pmrem.fromScene(room, 0.04).texture;
+}
+const env = studioEnvironment();
+
+const cells = ids.map((id, i) => {
+  const scene = new THREE.Scene();
+  scene.background = thumb ? null : new THREE.Color(0x24272d);
+  scene.environment = env;
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x404040, 0.6));
+  const sun = new THREE.DirectionalLight(0xffffff, 1.6);
+  sun.position.set(4, 8, 5);
+  scene.add(sun);
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(14, 14),
+    new THREE.MeshStandardMaterial({ color: 0x55585e, roughness: 0.9 }));
+  floor.rotation.x = -Math.PI / 2;
+  if (!thumb) scene.add(floor);
+  // 1 m ticks along the car's length, to judge scale
+  for (let z = -3; z <= 3; z++) {
+    const tick = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.003, 0.02),
+      new THREE.MeshBasicMaterial({ color: z === 0 ? 0xffd166 : 0x777a80 }));
+    tick.position.set(0, 0.002, z);
+    if (!thumb) scene.add(tick);
+  }
+  const camera = new THREE.PerspectiveCamera(thumb ? 24 : 30, CELL_W / CELL_H, 0.1, 100);
+  const pos = { side: [8.2, 0.9, 0], front: [0, 1.0, 8.2], top: [0.01, 10, 0], 34: [4.9, 1.9, 5.6] }[view];
+  camera.position.set(...pos);
+  camera.lookAt(0, 0.55, 0);
+  const label = document.createElement('div');
+  label.className = 'label';
+  label.style.left = `${(i % COLS) * CELL_W}px`;
+  label.style.top = `${Math.floor(i / COLS) * CELL_H}px`;
+  label.innerHTML = `${id}<small>loading…</small>`;
+  grid.appendChild(label);
+  return { id, scene, camera, label, wheels: [] };
+});
+
+function place(cell, tpl) {
+  const t = useFar ? tpl.far : tpl;
+  if (!t) { cell.label.classList.add('bad'); cell.label.querySelector('small').textContent = 'no far copy'; return; }
+  const root = new THREE.Group();
+  root.add(t.body.clone(true));
+  for (const [k, w] of Object.entries(t.wheels)) {
+    const g = new THREE.Group();
+    g.rotation.order = 'YXZ';
+    g.position.copy(t.hubs[k]);
+    if (explode) g.position.x += Math.sign(t.hubs[k].x) * 0.7;
+    g.add(w.clone(true));
+    const marker = new THREE.Mesh(new THREE.SphereGeometry(0.035),
+      new THREE.MeshBasicMaterial({ color: k[0] === 'f' ? 0x3ddc84 : 0xff5c5c, depthTest: false }));
+    marker.renderOrder = 10;
+    if (!thumb) g.add(marker);
+    root.add(g);
+    cell.wheels.push(g);
+  }
+  cell.scene.add(root);
+  let tris = 0;
+  root.traverse((o) => {
+    if (o.isMesh && o.geometry.attributes.position) {
+      tris += (o.geometry.index ? o.geometry.index.count : o.geometry.attributes.position.count) / 3;
+    }
+  });
+  const box = new THREE.Box3().setFromObject(t.body);
+  const size = box.getSize(new THREE.Vector3());
+  const wb = (t.hubs.fl.z - t.hubs.rl.z).toFixed(2);
+  cell.label.querySelector('small').textContent =
+    `${Math.round(tris / 1000)}k tris · ${size.z.toFixed(2)} × ${size.x.toFixed(2)} × ${size.y.toFixed(2)} m · wheelbase ${wb} · r ${t.wheelRadius.toFixed(2)}`;
+}
+
+let done = 0;
+const status = document.getElementById('status');
+await Promise.all(cells.map(async (cell) => {
+  const tpl = await loadModelTemplate(cell.id).catch((e) => { console.error(cell.id, e); return null; });
+  if (tpl) place(cell, tpl);
+  else { cell.label.classList.add('bad'); cell.label.querySelector('small').textContent = 'FAILED to load or prepare'; }
+  status.textContent = `${++done}/${cells.length} loaded`;
+}));
+status.textContent = `${cells.length} models · green = front hubs, red = rear`;
+if (thumb) {
+  renderer.setViewport(0, 0, CELL_W, CELL_H);
+  renderer.setScissor(0, 0, CELL_W, CELL_H);
+  renderer.render(cells[0].scene, cells[0].camera);
+  window.__thumbData = renderer.domElement.toDataURL('image/png');
+}
+window.__labReady = true;
+
+function frame(t) {
+  cells.forEach((cell, i) => {
+    if (spin) for (const w of cell.wheels) w.rotation.x = t / 400;
+    const x = (i % COLS) * CELL_W;
+    const y = (ROWS - 1 - Math.floor(i / COLS)) * CELL_H;
+    renderer.setViewport(x, y, CELL_W, CELL_H);
+    renderer.setScissor(x, y, CELL_W, CELL_H);
+    renderer.render(cell.scene, cell.camera);
+  });
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

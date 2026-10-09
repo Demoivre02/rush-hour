@@ -1,0 +1,93 @@
+{
+  "id": "apex-dynamics-surge",
+  "index": 85,
+  "name": "Apex Dynamics Surge",
+  "manufacturer": "Apex Dynamics",
+  "model": "Surge",
+  "country": "USA",
+  "year": 2025,
+  "tier": "super",
+  "tier_label": "Supercar",
+  "body_type": "gt",
+  "seats": 2,
+  "blurb": "Apex's entry point. Still quicker off the line than most things here.",
+  "engine": {
+    "code": "electric",
+    "label": "Electric",
+    "cylinders": 0,
+    "aspiration": "electric",
+    "idle_rpm": 0,
+    "redline_rpm": 18000,
+    "sound_family": "electric"
+  },
+  "performance": {
+    "power_hp": 760,
+    "power_kw": 567,
+    "torque_nm": 980,
+    "weight_kg": 1890,
+    "power_to_weight_hp_per_tonne": 402.1,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 346,
+    "top_speed_mph": 215,
+    "accel_0_100_kmh_s": 2.6,
+    "accel_0_200_kmh_s": 8.82,
+    "braking_100_0_m": 34.5,
+    "lateral_g": 1.18,
+    "handling_rating": 66,
+    "performance_index": 779,
+    "performance_class": "S2"
+  },
+  "drivetrain_detail": {
+    "gears": 1,
+    "gear_ratios": [
+      8.6
+    ],
+    "final_drive": 3.5,
+    "tyre_compound": "Semi-Slick"
+  },
+  "nitro": {
+    "capacity_s": 5.0,
+    "power_mult": 1.26,
+    "refill_s": 10.0
+  },
+  "economy": {
+    "price_credits": 1330000,
+    "unlock_level": 20,
+    "race_reward_credits": 59800
+  },
+  "dimensions": {
+    "length_m": 4.81,
+    "width_m": 1.958,
+    "wheelbase_m": 2.886
+  },
+  "visual": {
+    "primary_color": "#00B7C7",
+    "accent_color": "#B9C0C7",
+    "livery": "solid",
+    "has_wing": true,
+    "sprite": "sprites/topdown/apex-dynamics-surge.png",
+    "sprite_shadow": "sprites/shadow/apex-dynamics-surge_shadow.png",
+    "thumbnail": "sprites/thumbs/apex-dynamics-surge_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/electric",
+    "loops": {
+      "idle": "audio/engines/electric/electric_idle.wav",
+      "low": "audio/engines/electric/electric_low.wav",
+      "mid": "audio/engines/electric/electric_mid.wav",
+      "high": "audio/engines/electric/electric_high.wav",
+      "redline": "audio/engines/electric/electric_redline.wav"
+    },
+    "rev_sweep": "audio/engines/electric/electric_rev.wav",
+    "startup": "audio/engines/electric/electric_start.wav",
+    "base_pitch_rpm": 1200
+  },
+  "tags": [
+    "awd",
+    "electric",
+    "gt",
+    "super",
+    "usa"
+  ],
+  "seed": 3414558389
+}

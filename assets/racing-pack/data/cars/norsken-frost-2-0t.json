@@ -1,0 +1,98 @@
+{
+  "id": "norsken-frost-2-0t",
+  "index": 27,
+  "name": "Norsken Frost 2.0T",
+  "manufacturer": "Norsken",
+  "model": "Frost 2.0T",
+  "country": "Sweden",
+  "year": 2021,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "wagon",
+  "seats": 5,
+  "blurb": "Safe, square, all-wheel drive. Deceptively fast on a wet road.",
+  "engine": {
+    "code": "i4_turbo",
+    "label": "Turbo Inline-4",
+    "cylinders": 4,
+    "aspiration": "turbocharged",
+    "idle_rpm": 820,
+    "redline_rpm": 6900,
+    "sound_family": "i4_turbo"
+  },
+  "performance": {
+    "power_hp": 197,
+    "power_kw": 147,
+    "torque_nm": 300,
+    "weight_kg": 1520,
+    "power_to_weight_hp_per_tonne": 129.6,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 229,
+    "top_speed_mph": 142,
+    "accel_0_100_kmh_s": 7.42,
+    "accel_0_200_kmh_s": 32.42,
+    "braking_100_0_m": 47.6,
+    "lateral_g": 0.88,
+    "handling_rating": 28,
+    "performance_index": 408,
+    "performance_class": "B"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.518,
+      2.486,
+      1.757,
+      1.242,
+      0.877,
+      0.62
+    ],
+    "final_drive": 3.8,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 116000,
+    "unlock_level": 6,
+    "race_reward_credits": 5200
+  },
+  "dimensions": {
+    "length_m": 4.708,
+    "width_m": 1.862,
+    "wheelbase_m": 2.825
+  },
+  "visual": {
+    "primary_color": "#1B2A3A",
+    "accent_color": "#2E7D6B",
+    "livery": "solid",
+    "has_wing": false,
+    "sprite": "sprites/topdown/norsken-frost-2-0t.png",
+    "sprite_shadow": "sprites/shadow/norsken-frost-2-0t_shadow.png",
+    "thumbnail": "sprites/thumbs/norsken-frost-2-0t_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4_turbo",
+    "loops": {
+      "idle": "audio/engines/i4_turbo/i4_turbo_idle.wav",
+      "low": "audio/engines/i4_turbo/i4_turbo_low.wav",
+      "mid": "audio/engines/i4_turbo/i4_turbo_mid.wav",
+      "high": "audio/engines/i4_turbo/i4_turbo_high.wav",
+      "redline": "audio/engines/i4_turbo/i4_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4_turbo/i4_turbo_rev.wav",
+    "startup": "audio/engines/i4_turbo/i4_turbo_start.wav",
+    "base_pitch_rpm": 820
+  },
+  "tags": [
+    "awd",
+    "base",
+    "sweden",
+    "turbo",
+    "wagon"
+  ],
+  "seed": 3987581285
+}

@@ -1,0 +1,94 @@
+{
+  "id": "apex-dynamics-tempest-ev",
+  "index": 96,
+  "name": "Apex Dynamics Tempest EV",
+  "manufacturer": "Apex Dynamics",
+  "model": "Tempest EV",
+  "country": "USA",
+  "year": 2025,
+  "tier": "hyper",
+  "tier_label": "Hypercar",
+  "body_type": "hypercar",
+  "seats": 2,
+  "blurb": "Quad motors. Nineteen hundred horsepower. Silence, then the horizon.",
+  "engine": {
+    "code": "electric",
+    "label": "Electric",
+    "cylinders": 0,
+    "aspiration": "electric",
+    "idle_rpm": 0,
+    "redline_rpm": 18000,
+    "sound_family": "electric"
+  },
+  "performance": {
+    "power_hp": 1900,
+    "power_kw": 1417,
+    "torque_nm": 2360,
+    "weight_kg": 2150,
+    "power_to_weight_hp_per_tonne": 883.7,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 346,
+    "top_speed_mph": 215,
+    "accel_0_100_kmh_s": 1.62,
+    "accel_0_200_kmh_s": 5.16,
+    "braking_100_0_m": 28.7,
+    "lateral_g": 1.38,
+    "handling_rating": 90,
+    "performance_index": 875,
+    "performance_class": "X"
+  },
+  "drivetrain_detail": {
+    "gears": 1,
+    "gear_ratios": [
+      8.6
+    ],
+    "final_drive": 2.9,
+    "tyre_compound": "Track Cup 2"
+  },
+  "nitro": {
+    "capacity_s": 6.0,
+    "power_mult": 1.32,
+    "refill_s": 9.0
+  },
+  "economy": {
+    "price_credits": 2025000,
+    "unlock_level": 24,
+    "race_reward_credits": 91100
+  },
+  "dimensions": {
+    "length_m": 4.758,
+    "width_m": 2.095,
+    "wheelbase_m": 2.855
+  },
+  "visual": {
+    "primary_color": "#101318",
+    "accent_color": "#5B32D6",
+    "livery": "solid",
+    "has_wing": true,
+    "sprite": "sprites/topdown/apex-dynamics-tempest-ev.png",
+    "sprite_shadow": "sprites/shadow/apex-dynamics-tempest-ev_shadow.png",
+    "thumbnail": "sprites/thumbs/apex-dynamics-tempest-ev_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/electric",
+    "loops": {
+      "idle": "audio/engines/electric/electric_idle.wav",
+      "low": "audio/engines/electric/electric_low.wav",
+      "mid": "audio/engines/electric/electric_mid.wav",
+      "high": "audio/engines/electric/electric_high.wav",
+      "redline": "audio/engines/electric/electric_redline.wav"
+    },
+    "rev_sweep": "audio/engines/electric/electric_rev.wav",
+    "startup": "audio/engines/electric/electric_start.wav",
+    "base_pitch_rpm": 1200
+  },
+  "tags": [
+    "awd",
+    "electric",
+    "heavy",
+    "hyper",
+    "hypercar",
+    "usa"
+  ],
+  "seed": 3631672045
+}

@@ -1,0 +1,100 @@
+{
+  "id": "vorst-kessel-s",
+  "index": 44,
+  "name": "Vorst Kessel S",
+  "manufacturer": "Vorst",
+  "model": "Kessel S",
+  "country": "Germany",
+  "year": 2023,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "coupe",
+  "seats": 4,
+  "blurb": "Engine still hanging out the back. Still shouldn't work. Still does.",
+  "engine": {
+    "code": "flat6_turbo",
+    "label": "Twin-Turbo Flat-6",
+    "cylinders": 6,
+    "aspiration": "turbocharged",
+    "idle_rpm": 800,
+    "redline_rpm": 7400,
+    "sound_family": "flat6_turbo"
+  },
+  "performance": {
+    "power_hp": 450,
+    "power_kw": 336,
+    "torque_nm": 530,
+    "weight_kg": 1500,
+    "power_to_weight_hp_per_tonne": 300.0,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 312,
+    "top_speed_mph": 194,
+    "accel_0_100_kmh_s": 4.25,
+    "accel_0_200_kmh_s": 15.42,
+    "braking_100_0_m": 40.6,
+    "lateral_g": 1.01,
+    "handling_rating": 44,
+    "performance_index": 629,
+    "performance_class": "S1"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.413,
+      2.568,
+      1.933,
+      1.455,
+      1.095,
+      0.824,
+      0.62
+    ],
+    "final_drive": 3.66,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 604000,
+    "unlock_level": 13,
+    "race_reward_credits": 27200
+  },
+  "dimensions": {
+    "length_m": 4.518,
+    "width_m": 1.839,
+    "wheelbase_m": 2.711
+  },
+  "visual": {
+    "primary_color": "#1F5FAD",
+    "accent_color": "#D9A93B",
+    "livery": "solid",
+    "has_wing": true,
+    "sprite": "sprites/topdown/vorst-kessel-s.png",
+    "sprite_shadow": "sprites/shadow/vorst-kessel-s_shadow.png",
+    "thumbnail": "sprites/thumbs/vorst-kessel-s_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/flat6_turbo",
+    "loops": {
+      "idle": "audio/engines/flat6_turbo/flat6_turbo_idle.wav",
+      "low": "audio/engines/flat6_turbo/flat6_turbo_low.wav",
+      "mid": "audio/engines/flat6_turbo/flat6_turbo_mid.wav",
+      "high": "audio/engines/flat6_turbo/flat6_turbo_high.wav",
+      "redline": "audio/engines/flat6_turbo/flat6_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/flat6_turbo/flat6_turbo_rev.wav",
+    "startup": "audio/engines/flat6_turbo/flat6_turbo_start.wav",
+    "base_pitch_rpm": 800
+  },
+  "tags": [
+    "coupe",
+    "drift",
+    "germany",
+    "rwd",
+    "tuned",
+    "turbo"
+  ],
+  "seed": 2318493559
+}

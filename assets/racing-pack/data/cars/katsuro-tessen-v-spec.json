@@ -1,0 +1,100 @@
+{
+  "id": "katsuro-tessen-v-spec",
+  "index": 34,
+  "name": "Katsuro Tessen V-Spec",
+  "manufacturer": "Katsuro",
+  "model": "Tessen V-Spec",
+  "country": "Japan",
+  "year": 2004,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "coupe",
+  "seats": 4,
+  "blurb": "Stiffer, wider, angrier. The one on everyone's bedroom wall.",
+  "engine": {
+    "code": "i6_turbo",
+    "label": "Twin-Turbo Inline-6",
+    "cylinders": 6,
+    "aspiration": "turbocharged",
+    "idle_rpm": 760,
+    "redline_rpm": 7200,
+    "sound_family": "i6_turbo"
+  },
+  "performance": {
+    "power_hp": 560,
+    "power_kw": 418,
+    "torque_nm": 660,
+    "weight_kg": 1580,
+    "power_to_weight_hp_per_tonne": 354.4,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 330,
+    "top_speed_mph": 205,
+    "accel_0_100_kmh_s": 3.31,
+    "accel_0_200_kmh_s": 11.63,
+    "braking_100_0_m": 39.8,
+    "lateral_g": 1.03,
+    "handling_rating": 47,
+    "performance_index": 678,
+    "performance_class": "S1"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.367,
+      2.539,
+      1.915,
+      1.445,
+      1.09,
+      0.822,
+      0.62
+    ],
+    "final_drive": 3.61,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 998000,
+    "unlock_level": 15,
+    "race_reward_credits": 44900
+  },
+  "dimensions": {
+    "length_m": 4.514,
+    "width_m": 1.839,
+    "wheelbase_m": 2.708
+  },
+  "visual": {
+    "primary_color": "#111418",
+    "accent_color": "#1B4F9C",
+    "livery": "stripe_center",
+    "has_wing": true,
+    "sprite": "sprites/topdown/katsuro-tessen-v-spec.png",
+    "sprite_shadow": "sprites/shadow/katsuro-tessen-v-spec_shadow.png",
+    "thumbnail": "sprites/thumbs/katsuro-tessen-v-spec_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i6_turbo",
+    "loops": {
+      "idle": "audio/engines/i6_turbo/i6_turbo_idle.wav",
+      "low": "audio/engines/i6_turbo/i6_turbo_low.wav",
+      "mid": "audio/engines/i6_turbo/i6_turbo_mid.wav",
+      "high": "audio/engines/i6_turbo/i6_turbo_high.wav",
+      "redline": "audio/engines/i6_turbo/i6_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i6_turbo/i6_turbo_rev.wav",
+    "startup": "audio/engines/i6_turbo/i6_turbo_start.wav",
+    "base_pitch_rpm": 760
+  },
+  "tags": [
+    "awd",
+    "classic",
+    "coupe",
+    "japan",
+    "tuned",
+    "turbo"
+  ],
+  "seed": 3632407131
+}

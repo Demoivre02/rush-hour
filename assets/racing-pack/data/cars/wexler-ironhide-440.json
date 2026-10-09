@@ -1,0 +1,99 @@
+{
+  "id": "wexler-ironhide-440",
+  "index": 53,
+  "name": "Wexler Ironhide 440",
+  "manufacturer": "Wexler",
+  "model": "Ironhide 440",
+  "country": "USA",
+  "year": 1970,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "muscle",
+  "seats": 4,
+  "blurb": "Big-block classic. Brakes are decorative. Straight lines only, mostly.",
+  "engine": {
+    "code": "v8",
+    "label": "V8",
+    "cylinders": 8,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 700,
+    "redline_rpm": 7200,
+    "sound_family": "v8"
+  },
+  "performance": {
+    "power_hp": 440,
+    "power_kw": 328,
+    "torque_nm": 610,
+    "weight_kg": 1720,
+    "power_to_weight_hp_per_tonne": 255.8,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 296,
+    "top_speed_mph": 184,
+    "accel_0_100_kmh_s": 4.82,
+    "accel_0_200_kmh_s": 17.55,
+    "braking_100_0_m": 45.5,
+    "lateral_g": 0.93,
+    "handling_rating": 35,
+    "performance_index": 555,
+    "performance_class": "A"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.417,
+      2.571,
+      1.934,
+      1.455,
+      1.095,
+      0.824,
+      0.62
+    ],
+    "final_drive": 3.67,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 471000,
+    "unlock_level": 11,
+    "race_reward_credits": 21200
+  },
+  "dimensions": {
+    "length_m": 4.807,
+    "width_m": 1.94,
+    "wheelbase_m": 2.884
+  },
+  "visual": {
+    "primary_color": "#C42B24",
+    "accent_color": "#E39A1D",
+    "livery": "stripe_center",
+    "has_wing": false,
+    "sprite": "sprites/topdown/wexler-ironhide-440.png",
+    "sprite_shadow": "sprites/shadow/wexler-ironhide-440_shadow.png",
+    "thumbnail": "sprites/thumbs/wexler-ironhide-440_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v8",
+    "loops": {
+      "idle": "audio/engines/v8/v8_idle.wav",
+      "low": "audio/engines/v8/v8_low.wav",
+      "mid": "audio/engines/v8/v8_mid.wav",
+      "high": "audio/engines/v8/v8_high.wav",
+      "redline": "audio/engines/v8/v8_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v8/v8_rev.wav",
+    "startup": "audio/engines/v8/v8_start.wav",
+    "base_pitch_rpm": 700
+  },
+  "tags": [
+    "classic",
+    "muscle",
+    "rwd",
+    "tuned",
+    "usa"
+  ],
+  "seed": 2443398259
+}

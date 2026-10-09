@@ -1,0 +1,98 @@
+{
+  "id": "ashcombe-lyre",
+  "index": 30,
+  "name": "Ashcombe Lyre",
+  "manufacturer": "Ashcombe",
+  "model": "Lyre",
+  "country": "UK",
+  "year": 2023,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "coupe",
+  "seats": 4,
+  "blurb": "Ashcombe's junior coupe. Leather, wood, and a surprisingly willing chassis.",
+  "engine": {
+    "code": "i4_turbo",
+    "label": "Turbo Inline-4",
+    "cylinders": 4,
+    "aspiration": "turbocharged",
+    "idle_rpm": 820,
+    "redline_rpm": 6900,
+    "sound_family": "i4_turbo"
+  },
+  "performance": {
+    "power_hp": 232,
+    "power_kw": 173,
+    "torque_nm": 350,
+    "weight_kg": 1440,
+    "power_to_weight_hp_per_tonne": 161.1,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 250,
+    "top_speed_mph": 155,
+    "accel_0_100_kmh_s": 7.07,
+    "accel_0_200_kmh_s": 29.49,
+    "braking_100_0_m": 44.5,
+    "lateral_g": 0.92,
+    "handling_rating": 33,
+    "performance_index": 459,
+    "performance_class": "B"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.503,
+      2.478,
+      1.752,
+      1.239,
+      0.877,
+      0.62
+    ],
+    "final_drive": 3.78,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 182500,
+    "unlock_level": 7,
+    "race_reward_credits": 8200
+  },
+  "dimensions": {
+    "length_m": 4.348,
+    "width_m": 1.814,
+    "wheelbase_m": 2.609
+  },
+  "visual": {
+    "primary_color": "#D5D9DD",
+    "accent_color": "#B99C5E",
+    "livery": "solid",
+    "has_wing": false,
+    "sprite": "sprites/topdown/ashcombe-lyre.png",
+    "sprite_shadow": "sprites/shadow/ashcombe-lyre_shadow.png",
+    "thumbnail": "sprites/thumbs/ashcombe-lyre_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4_turbo",
+    "loops": {
+      "idle": "audio/engines/i4_turbo/i4_turbo_idle.wav",
+      "low": "audio/engines/i4_turbo/i4_turbo_low.wav",
+      "mid": "audio/engines/i4_turbo/i4_turbo_mid.wav",
+      "high": "audio/engines/i4_turbo/i4_turbo_high.wav",
+      "redline": "audio/engines/i4_turbo/i4_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4_turbo/i4_turbo_rev.wav",
+    "startup": "audio/engines/i4_turbo/i4_turbo_start.wav",
+    "base_pitch_rpm": 820
+  },
+  "tags": [
+    "base",
+    "coupe",
+    "rwd",
+    "turbo",
+    "uk"
+  ],
+  "seed": 2130376503
+}

@@ -1,0 +1,97 @@
+{
+  "id": "thornbury-wren",
+  "index": 26,
+  "name": "Thornbury Wren",
+  "manufacturer": "Thornbury",
+  "model": "Wren",
+  "country": "UK",
+  "year": 2019,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "roadster",
+  "seats": 2,
+  "blurb": "Seven hundred and twenty kilograms. No carpet, no radio, no excuses.",
+  "engine": {
+    "code": "i4",
+    "label": "Inline-4",
+    "cylinders": 4,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 800,
+    "redline_rpm": 6800,
+    "sound_family": "i4"
+  },
+  "performance": {
+    "power_hp": 145,
+    "power_kw": 108,
+    "torque_nm": 165,
+    "weight_kg": 720,
+    "power_to_weight_hp_per_tonne": 201.4,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 213,
+    "top_speed_mph": 132,
+    "accel_0_100_kmh_s": 5.94,
+    "accel_0_200_kmh_s": 28.77,
+    "braking_100_0_m": 41.8,
+    "lateral_g": 0.97,
+    "handling_rating": 39,
+    "performance_index": 490,
+    "performance_class": "B"
+  },
+  "drivetrain_detail": {
+    "gears": 5,
+    "gear_ratios": [
+      3.54,
+      2.29,
+      1.481,
+      0.958,
+      0.62
+    ],
+    "final_drive": 3.82,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 234500,
+    "unlock_level": 8,
+    "race_reward_credits": 10600
+  },
+  "dimensions": {
+    "length_m": 3.964,
+    "width_m": 1.714,
+    "wheelbase_m": 2.378
+  },
+  "visual": {
+    "primary_color": "#F2C230",
+    "accent_color": "#DDE2E6",
+    "livery": "stripe_dual",
+    "has_wing": false,
+    "sprite": "sprites/topdown/thornbury-wren.png",
+    "sprite_shadow": "sprites/shadow/thornbury-wren_shadow.png",
+    "thumbnail": "sprites/thumbs/thornbury-wren_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4",
+    "loops": {
+      "idle": "audio/engines/i4/i4_idle.wav",
+      "low": "audio/engines/i4/i4_low.wav",
+      "mid": "audio/engines/i4/i4_mid.wav",
+      "high": "audio/engines/i4/i4_high.wav",
+      "redline": "audio/engines/i4/i4_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4/i4_rev.wav",
+    "startup": "audio/engines/i4/i4_start.wav",
+    "base_pitch_rpm": 800
+  },
+  "tags": [
+    "base",
+    "lightweight",
+    "roadster",
+    "rwd",
+    "uk"
+  ],
+  "seed": 1745165655
+}

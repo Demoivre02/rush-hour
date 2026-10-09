@@ -1,0 +1,100 @@
+{
+  "id": "vorst-kessel-rsr",
+  "index": 70,
+  "name": "Vorst Kessel RSR",
+  "manufacturer": "Vorst",
+  "model": "Kessel RSR",
+  "country": "Germany",
+  "year": 2024,
+  "tier": "super",
+  "tier_label": "Supercar",
+  "body_type": "trackcar",
+  "seats": 2,
+  "blurb": "Naturally aspirated flat six at nine thousand. A homologation special for the road.",
+  "engine": {
+    "code": "flat6",
+    "label": "Flat-6",
+    "cylinders": 6,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 840,
+    "redline_rpm": 8400,
+    "sound_family": "flat6"
+  },
+  "performance": {
+    "power_hp": 640,
+    "power_kw": 477,
+    "torque_nm": 470,
+    "weight_kg": 1420,
+    "power_to_weight_hp_per_tonne": 450.7,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 317,
+    "top_speed_mph": 197,
+    "accel_0_100_kmh_s": 2.98,
+    "accel_0_200_kmh_s": 10.3,
+    "braking_100_0_m": 29.3,
+    "lateral_g": 1.33,
+    "handling_rating": 84,
+    "performance_index": 808,
+    "performance_class": "X"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.333,
+      2.518,
+      1.903,
+      1.438,
+      1.086,
+      0.821,
+      0.62
+    ],
+    "final_drive": 3.56,
+    "tyre_compound": "Semi-Slick"
+  },
+  "nitro": {
+    "capacity_s": 5.0,
+    "power_mult": 1.26,
+    "refill_s": 10.0
+  },
+  "economy": {
+    "price_credits": 1519000,
+    "unlock_level": 21,
+    "race_reward_credits": 68400
+  },
+  "dimensions": {
+    "length_m": 4.251,
+    "width_m": 1.957,
+    "wheelbase_m": 2.551
+  },
+  "visual": {
+    "primary_color": "#C0342C",
+    "accent_color": "#D9DDE1",
+    "livery": "racing_split",
+    "has_wing": true,
+    "sprite": "sprites/topdown/vorst-kessel-rsr.png",
+    "sprite_shadow": "sprites/shadow/vorst-kessel-rsr_shadow.png",
+    "thumbnail": "sprites/thumbs/vorst-kessel-rsr_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/flat6",
+    "loops": {
+      "idle": "audio/engines/flat6/flat6_idle.wav",
+      "low": "audio/engines/flat6/flat6_low.wav",
+      "mid": "audio/engines/flat6/flat6_mid.wav",
+      "high": "audio/engines/flat6/flat6_high.wav",
+      "redline": "audio/engines/flat6/flat6_redline.wav"
+    },
+    "rev_sweep": "audio/engines/flat6/flat6_rev.wav",
+    "startup": "audio/engines/flat6/flat6_start.wav",
+    "base_pitch_rpm": 840
+  },
+  "tags": [
+    "drift",
+    "germany",
+    "rwd",
+    "super",
+    "track",
+    "trackcar"
+  ],
+  "seed": 1160111593
+}

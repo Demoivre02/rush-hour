@@ -1,0 +1,100 @@
+{
+  "id": "ashcombe-thistle-s",
+  "index": 73,
+  "name": "Ashcombe Thistle S",
+  "manufacturer": "Ashcombe",
+  "model": "Thistle S",
+  "country": "UK",
+  "year": 2024,
+  "tier": "super",
+  "tier_label": "Supercar",
+  "body_type": "gt",
+  "seats": 2,
+  "blurb": "The junior Ashcombe. Twin-turbo V8, tail-happy by design.",
+  "engine": {
+    "code": "v8_turbo",
+    "label": "Twin-Turbo V8",
+    "cylinders": 8,
+    "aspiration": "turbocharged",
+    "idle_rpm": 740,
+    "redline_rpm": 7600,
+    "sound_family": "v8_turbo"
+  },
+  "performance": {
+    "power_hp": 665,
+    "power_kw": 496,
+    "torque_nm": 800,
+    "weight_kg": 1700,
+    "power_to_weight_hp_per_tonne": 391.2,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 351,
+    "top_speed_mph": 218,
+    "accel_0_100_kmh_s": 3.33,
+    "accel_0_200_kmh_s": 11.46,
+    "braking_100_0_m": 34.8,
+    "lateral_g": 1.17,
+    "handling_rating": 64,
+    "performance_index": 758,
+    "performance_class": "S2"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.323,
+      2.575,
+      1.996,
+      1.547,
+      1.199,
+      0.929,
+      0.72
+    ],
+    "final_drive": 3.55,
+    "tyre_compound": "Semi-Slick"
+  },
+  "nitro": {
+    "capacity_s": 5.0,
+    "power_mult": 1.26,
+    "refill_s": 10.0
+  },
+  "economy": {
+    "price_credits": 1203500,
+    "unlock_level": 19,
+    "race_reward_credits": 54200
+  },
+  "dimensions": {
+    "length_m": 4.706,
+    "width_m": 1.95,
+    "wheelbase_m": 2.824
+  },
+  "visual": {
+    "primary_color": "#7C1F2E",
+    "accent_color": "#D5D9DD",
+    "livery": "solid",
+    "has_wing": true,
+    "sprite": "sprites/topdown/ashcombe-thistle-s.png",
+    "sprite_shadow": "sprites/shadow/ashcombe-thistle-s_shadow.png",
+    "thumbnail": "sprites/thumbs/ashcombe-thistle-s_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v8_turbo",
+    "loops": {
+      "idle": "audio/engines/v8_turbo/v8_turbo_idle.wav",
+      "low": "audio/engines/v8_turbo/v8_turbo_low.wav",
+      "mid": "audio/engines/v8_turbo/v8_turbo_mid.wav",
+      "high": "audio/engines/v8_turbo/v8_turbo_high.wav",
+      "redline": "audio/engines/v8_turbo/v8_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v8_turbo/v8_turbo_rev.wav",
+    "startup": "audio/engines/v8_turbo/v8_turbo_start.wav",
+    "base_pitch_rpm": 740
+  },
+  "tags": [
+    "drift",
+    "gt",
+    "rwd",
+    "super",
+    "turbo",
+    "uk"
+  ],
+  "seed": 723067121
+}

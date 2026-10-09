@@ -1,0 +1,100 @@
+{
+  "id": "scorpetti-tramonto",
+  "index": 63,
+  "name": "Scorpetti Tramonto",
+  "manufacturer": "Scorpetti",
+  "model": "Tramonto",
+  "country": "Italy",
+  "year": 2024,
+  "tier": "super",
+  "tier_label": "Supercar",
+  "body_type": "supercar",
+  "seats": 2,
+  "blurb": "Roof folds, noise doesn't. Scorpetti's open-top statement piece.",
+  "engine": {
+    "code": "v8_turbo",
+    "label": "Twin-Turbo V8",
+    "cylinders": 8,
+    "aspiration": "turbocharged",
+    "idle_rpm": 740,
+    "redline_rpm": 7600,
+    "sound_family": "v8_turbo"
+  },
+  "performance": {
+    "power_hp": 680,
+    "power_kw": 507,
+    "torque_nm": 760,
+    "weight_kg": 1520,
+    "power_to_weight_hp_per_tonne": 447.4,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 355,
+    "top_speed_mph": 221,
+    "accel_0_100_kmh_s": 3.0,
+    "accel_0_200_kmh_s": 10.3,
+    "braking_100_0_m": 33.1,
+    "lateral_g": 1.21,
+    "handling_rating": 69,
+    "performance_index": 790,
+    "performance_class": "S2"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.317,
+      2.571,
+      1.993,
+      1.545,
+      1.198,
+      0.929,
+      0.72
+    ],
+    "final_drive": 3.54,
+    "tyre_compound": "Semi-Slick"
+  },
+  "nitro": {
+    "capacity_s": 5.0,
+    "power_mult": 1.26,
+    "refill_s": 10.0
+  },
+  "economy": {
+    "price_credits": 1399500,
+    "unlock_level": 20,
+    "race_reward_credits": 63000
+  },
+  "dimensions": {
+    "length_m": 4.514,
+    "width_m": 1.998,
+    "wheelbase_m": 2.708
+  },
+  "visual": {
+    "primary_color": "#2C5F8A",
+    "accent_color": "#1B1D21",
+    "livery": "solid",
+    "has_wing": true,
+    "sprite": "sprites/topdown/scorpetti-tramonto.png",
+    "sprite_shadow": "sprites/shadow/scorpetti-tramonto_shadow.png",
+    "thumbnail": "sprites/thumbs/scorpetti-tramonto_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v8_turbo",
+    "loops": {
+      "idle": "audio/engines/v8_turbo/v8_turbo_idle.wav",
+      "low": "audio/engines/v8_turbo/v8_turbo_low.wav",
+      "mid": "audio/engines/v8_turbo/v8_turbo_mid.wav",
+      "high": "audio/engines/v8_turbo/v8_turbo_high.wav",
+      "redline": "audio/engines/v8_turbo/v8_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v8_turbo/v8_turbo_rev.wav",
+    "startup": "audio/engines/v8_turbo/v8_turbo_start.wav",
+    "base_pitch_rpm": 740
+  },
+  "tags": [
+    "drift",
+    "italy",
+    "rwd",
+    "super",
+    "supercar",
+    "turbo"
+  ],
+  "seed": 2375401674
+}

@@ -1,0 +1,97 @@
+{
+  "id": "ishara-kite-rs",
+  "index": 2,
+  "name": "Ishara Kite RS",
+  "manufacturer": "Ishara",
+  "model": "Kite RS",
+  "country": "Japan",
+  "year": 2021,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "hatch",
+  "seats": 5,
+  "blurb": "Stiffer springs, a red badge, and the first hint that Ishara has a sense of humour.",
+  "engine": {
+    "code": "i4",
+    "label": "Inline-4",
+    "cylinders": 4,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 800,
+    "redline_rpm": 6800,
+    "sound_family": "i4"
+  },
+  "performance": {
+    "power_hp": 138,
+    "power_kw": 103,
+    "torque_nm": 175,
+    "weight_kg": 1010,
+    "power_to_weight_hp_per_tonne": 136.6,
+    "drivetrain": "FWD",
+    "top_speed_kmh": 202,
+    "top_speed_mph": 126,
+    "accel_0_100_kmh_s": 8.54,
+    "accel_0_200_kmh_s": 42.14,
+    "braking_100_0_m": 45.5,
+    "lateral_g": 0.91,
+    "handling_rating": 32,
+    "performance_index": 374,
+    "performance_class": "C"
+  },
+  "drivetrain_detail": {
+    "gears": 5,
+    "gear_ratios": [
+      3.542,
+      2.291,
+      1.482,
+      0.959,
+      0.62
+    ],
+    "final_drive": 3.83,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 83000,
+    "unlock_level": 5,
+    "race_reward_credits": 3700
+  },
+  "dimensions": {
+    "length_m": 3.995,
+    "width_m": 1.776,
+    "wheelbase_m": 2.397
+  },
+  "visual": {
+    "primary_color": "#2F6FB2",
+    "accent_color": "#7EC8C0",
+    "livery": "stripe_center",
+    "has_wing": false,
+    "sprite": "sprites/topdown/ishara-kite-rs.png",
+    "sprite_shadow": "sprites/shadow/ishara-kite-rs_shadow.png",
+    "thumbnail": "sprites/thumbs/ishara-kite-rs_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4",
+    "loops": {
+      "idle": "audio/engines/i4/i4_idle.wav",
+      "low": "audio/engines/i4/i4_low.wav",
+      "mid": "audio/engines/i4/i4_mid.wav",
+      "high": "audio/engines/i4/i4_high.wav",
+      "redline": "audio/engines/i4/i4_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4/i4_rev.wav",
+    "startup": "audio/engines/i4/i4_start.wav",
+    "base_pitch_rpm": 800
+  },
+  "tags": [
+    "base",
+    "fwd",
+    "hatch",
+    "japan",
+    "lightweight"
+  ],
+  "seed": 3455002075
+}

@@ -1,0 +1,99 @@
+{
+  "id": "alviero-tempesta",
+  "index": 64,
+  "name": "Alviero Tempesta",
+  "manufacturer": "Alviero",
+  "model": "Tempesta",
+  "country": "Italy",
+  "year": 2024,
+  "tier": "super",
+  "tier_label": "Supercar",
+  "body_type": "gt",
+  "seats": 2,
+  "blurb": "Front-mid V12, no turbos, no apologies. Eight thousand nine hundred revs.",
+  "engine": {
+    "code": "v12",
+    "label": "V12",
+    "cylinders": 12,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 880,
+    "redline_rpm": 8900,
+    "sound_family": "v12"
+  },
+  "performance": {
+    "power_hp": 800,
+    "power_kw": 597,
+    "torque_nm": 718,
+    "weight_kg": 1560,
+    "power_to_weight_hp_per_tonne": 512.8,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 365,
+    "top_speed_mph": 227,
+    "accel_0_100_kmh_s": 2.7,
+    "accel_0_200_kmh_s": 9.11,
+    "braking_100_0_m": 34.5,
+    "lateral_g": 1.18,
+    "handling_rating": 66,
+    "performance_index": 790,
+    "performance_class": "S2"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.267,
+      2.539,
+      1.973,
+      1.534,
+      1.192,
+      0.926,
+      0.72
+    ],
+    "final_drive": 3.48,
+    "tyre_compound": "Semi-Slick"
+  },
+  "nitro": {
+    "capacity_s": 5.0,
+    "power_mult": 1.26,
+    "refill_s": 10.0
+  },
+  "economy": {
+    "price_credits": 1399500,
+    "unlock_level": 20,
+    "race_reward_credits": 63000
+  },
+  "dimensions": {
+    "length_m": 4.706,
+    "width_m": 1.911,
+    "wheelbase_m": 2.824
+  },
+  "visual": {
+    "primary_color": "#C0181C",
+    "accent_color": "#D8B240",
+    "livery": "solid",
+    "has_wing": true,
+    "sprite": "sprites/topdown/alviero-tempesta.png",
+    "sprite_shadow": "sprites/shadow/alviero-tempesta_shadow.png",
+    "thumbnail": "sprites/thumbs/alviero-tempesta_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v12",
+    "loops": {
+      "idle": "audio/engines/v12/v12_idle.wav",
+      "low": "audio/engines/v12/v12_low.wav",
+      "mid": "audio/engines/v12/v12_mid.wav",
+      "high": "audio/engines/v12/v12_high.wav",
+      "redline": "audio/engines/v12/v12_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v12/v12_rev.wav",
+    "startup": "audio/engines/v12/v12_start.wav",
+    "base_pitch_rpm": 880
+  },
+  "tags": [
+    "drift",
+    "gt",
+    "italy",
+    "rwd",
+    "super"
+  ],
+  "seed": 725730167
+}

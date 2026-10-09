@@ -1,0 +1,98 @@
+{
+  "id": "katsuro-sable-stx",
+  "index": 35,
+  "name": "Katsuro Sable STX",
+  "manufacturer": "Katsuro",
+  "model": "Sable STX",
+  "country": "Japan",
+  "year": 2006,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "rally",
+  "seats": 5,
+  "blurb": "Homologation saloon. Gravel-bred, tarmac-capable, permanently sideways.",
+  "engine": {
+    "code": "i4_turbo",
+    "label": "Turbo Inline-4",
+    "cylinders": 4,
+    "aspiration": "turbocharged",
+    "idle_rpm": 820,
+    "redline_rpm": 6900,
+    "sound_family": "i4_turbo"
+  },
+  "performance": {
+    "power_hp": 310,
+    "power_kw": 231,
+    "torque_nm": 430,
+    "weight_kg": 1400,
+    "power_to_weight_hp_per_tonne": 221.4,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 264,
+    "top_speed_mph": 164,
+    "accel_0_100_kmh_s": 4.77,
+    "accel_0_200_kmh_s": 18.55,
+    "braking_100_0_m": 37.9,
+    "lateral_g": 1.07,
+    "handling_rating": 52,
+    "performance_index": 608,
+    "performance_class": "S1"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.471,
+      2.459,
+      1.743,
+      1.235,
+      0.875,
+      0.62
+    ],
+    "final_drive": 3.74,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 532000,
+    "unlock_level": 13,
+    "race_reward_credits": 23900
+  },
+  "dimensions": {
+    "length_m": 4.351,
+    "width_m": 1.869,
+    "wheelbase_m": 2.611
+  },
+  "visual": {
+    "primary_color": "#111418",
+    "accent_color": "#8E2B2B",
+    "livery": "rally",
+    "has_wing": true,
+    "sprite": "sprites/topdown/katsuro-sable-stx.png",
+    "sprite_shadow": "sprites/shadow/katsuro-sable-stx_shadow.png",
+    "thumbnail": "sprites/thumbs/katsuro-sable-stx_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4_turbo",
+    "loops": {
+      "idle": "audio/engines/i4_turbo/i4_turbo_idle.wav",
+      "low": "audio/engines/i4_turbo/i4_turbo_low.wav",
+      "mid": "audio/engines/i4_turbo/i4_turbo_mid.wav",
+      "high": "audio/engines/i4_turbo/i4_turbo_high.wav",
+      "redline": "audio/engines/i4_turbo/i4_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4_turbo/i4_turbo_rev.wav",
+    "startup": "audio/engines/i4_turbo/i4_turbo_start.wav",
+    "base_pitch_rpm": 820
+  },
+  "tags": [
+    "awd",
+    "japan",
+    "rally",
+    "tuned",
+    "turbo"
+  ],
+  "seed": 2911839680
+}

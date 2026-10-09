@@ -1,0 +1,93 @@
+{
+  "id": "tenjin-ion-dual",
+  "index": 29,
+  "name": "Tenjin Ion Dual",
+  "manufacturer": "Tenjin",
+  "model": "Ion Dual",
+  "country": "Japan",
+  "year": 2024,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "hatch",
+  "seats": 5,
+  "blurb": "Two motors, one pedal, and traction in places you didn't expect.",
+  "engine": {
+    "code": "electric",
+    "label": "Electric",
+    "cylinders": 0,
+    "aspiration": "electric",
+    "idle_rpm": 0,
+    "redline_rpm": 18000,
+    "sound_family": "electric"
+  },
+  "performance": {
+    "power_hp": 245,
+    "power_kw": 183,
+    "torque_nm": 420,
+    "weight_kg": 1590,
+    "power_to_weight_hp_per_tonne": 154.1,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 250,
+    "top_speed_mph": 155,
+    "accel_0_100_kmh_s": 5.83,
+    "accel_0_200_kmh_s": 23.97,
+    "braking_100_0_m": 46.0,
+    "lateral_g": 0.9,
+    "handling_rating": 31,
+    "performance_index": 481,
+    "performance_class": "B"
+  },
+  "drivetrain_detail": {
+    "gears": 1,
+    "gear_ratios": [
+      8.6
+    ],
+    "final_drive": 3.77,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 218500,
+    "unlock_level": 8,
+    "race_reward_credits": 9800
+  },
+  "dimensions": {
+    "length_m": 4.048,
+    "width_m": 1.797,
+    "wheelbase_m": 2.429
+  },
+  "visual": {
+    "primary_color": "#3AA0D8",
+    "accent_color": "#26C6A8",
+    "livery": "stripe_center",
+    "has_wing": false,
+    "sprite": "sprites/topdown/tenjin-ion-dual.png",
+    "sprite_shadow": "sprites/shadow/tenjin-ion-dual_shadow.png",
+    "thumbnail": "sprites/thumbs/tenjin-ion-dual_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/electric",
+    "loops": {
+      "idle": "audio/engines/electric/electric_idle.wav",
+      "low": "audio/engines/electric/electric_low.wav",
+      "mid": "audio/engines/electric/electric_mid.wav",
+      "high": "audio/engines/electric/electric_high.wav",
+      "redline": "audio/engines/electric/electric_redline.wav"
+    },
+    "rev_sweep": "audio/engines/electric/electric_rev.wav",
+    "startup": "audio/engines/electric/electric_start.wav",
+    "base_pitch_rpm": 1200
+  },
+  "tags": [
+    "awd",
+    "base",
+    "electric",
+    "hatch",
+    "japan"
+  ],
+  "seed": 750682483
+}

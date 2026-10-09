@@ -1,0 +1,99 @@
+{
+  "id": "ryuzaki-kaze-rx",
+  "index": 15,
+  "name": "Ryuzaki Kaze RX",
+  "manufacturer": "Ryuzaki",
+  "model": "Kaze RX",
+  "country": "Japan",
+  "year": 1993,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "coupe",
+  "seats": 4,
+  "blurb": "Two spinning triangles, nine thousand revs, and a thirst you learn to fund.",
+  "engine": {
+    "code": "rotary2",
+    "label": "Twin-Rotor",
+    "cylinders": 4,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 950,
+    "redline_rpm": 9000,
+    "sound_family": "rotary2"
+  },
+  "performance": {
+    "power_hp": 190,
+    "power_kw": 142,
+    "torque_nm": 196,
+    "weight_kg": 1180,
+    "power_to_weight_hp_per_tonne": 161.0,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 234,
+    "top_speed_mph": 145,
+    "accel_0_100_kmh_s": 7.07,
+    "accel_0_200_kmh_s": 31.24,
+    "braking_100_0_m": 44.0,
+    "lateral_g": 0.93,
+    "handling_rating": 35,
+    "performance_index": 452,
+    "performance_class": "B"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.521,
+      2.488,
+      1.758,
+      1.242,
+      0.877,
+      0.62
+    ],
+    "final_drive": 3.8,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 215000,
+    "unlock_level": 7,
+    "race_reward_credits": 9700
+  },
+  "dimensions": {
+    "length_m": 4.438,
+    "width_m": 1.844,
+    "wheelbase_m": 2.663
+  },
+  "visual": {
+    "primary_color": "#E6E8EA",
+    "accent_color": "#20242A",
+    "livery": "stripe_center",
+    "has_wing": false,
+    "sprite": "sprites/topdown/ryuzaki-kaze-rx.png",
+    "sprite_shadow": "sprites/shadow/ryuzaki-kaze-rx_shadow.png",
+    "thumbnail": "sprites/thumbs/ryuzaki-kaze-rx_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/rotary2",
+    "loops": {
+      "idle": "audio/engines/rotary2/rotary2_idle.wav",
+      "low": "audio/engines/rotary2/rotary2_low.wav",
+      "mid": "audio/engines/rotary2/rotary2_mid.wav",
+      "high": "audio/engines/rotary2/rotary2_high.wav",
+      "redline": "audio/engines/rotary2/rotary2_redline.wav"
+    },
+    "rev_sweep": "audio/engines/rotary2/rotary2_rev.wav",
+    "startup": "audio/engines/rotary2/rotary2_start.wav",
+    "base_pitch_rpm": 950
+  },
+  "tags": [
+    "base",
+    "classic",
+    "coupe",
+    "japan",
+    "rotary",
+    "rwd"
+  ],
+  "seed": 2413362087
+}

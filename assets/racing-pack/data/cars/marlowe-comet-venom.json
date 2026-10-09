@@ -1,0 +1,99 @@
+{
+  "id": "marlowe-comet-venom",
+  "index": 55,
+  "name": "Marlowe Comet Venom",
+  "manufacturer": "Marlowe",
+  "model": "Comet Venom",
+  "country": "USA",
+  "year": 2024,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "pony",
+  "seats": 4,
+  "blurb": "Supercharged, widebodied, and quietly terrifying in the wet.",
+  "engine": {
+    "code": "v8_sc",
+    "label": "Supercharged V8",
+    "cylinders": 8,
+    "aspiration": "supercharged",
+    "idle_rpm": 720,
+    "redline_rpm": 6800,
+    "sound_family": "v8_sc"
+  },
+  "performance": {
+    "power_hp": 615,
+    "power_kw": 459,
+    "torque_nm": 780,
+    "weight_kg": 1730,
+    "power_to_weight_hp_per_tonne": 355.5,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 330,
+    "top_speed_mph": 205,
+    "accel_0_100_kmh_s": 3.73,
+    "accel_0_200_kmh_s": 12.95,
+    "braking_100_0_m": 42.7,
+    "lateral_g": 0.98,
+    "handling_rating": 41,
+    "performance_index": 639,
+    "performance_class": "S1"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.344,
+      2.525,
+      1.907,
+      1.44,
+      1.087,
+      0.821,
+      0.62
+    ],
+    "final_drive": 3.58,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 641000,
+    "unlock_level": 14,
+    "race_reward_credits": 28800
+  },
+  "dimensions": {
+    "length_m": 4.847,
+    "width_m": 1.895,
+    "wheelbase_m": 2.908
+  },
+  "visual": {
+    "primary_color": "#E8EAEC",
+    "accent_color": "#C9A227",
+    "livery": "racing_split",
+    "has_wing": true,
+    "sprite": "sprites/topdown/marlowe-comet-venom.png",
+    "sprite_shadow": "sprites/shadow/marlowe-comet-venom_shadow.png",
+    "thumbnail": "sprites/thumbs/marlowe-comet-venom_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v8_sc",
+    "loops": {
+      "idle": "audio/engines/v8_sc/v8_sc_idle.wav",
+      "low": "audio/engines/v8_sc/v8_sc_low.wav",
+      "mid": "audio/engines/v8_sc/v8_sc_mid.wav",
+      "high": "audio/engines/v8_sc/v8_sc_high.wav",
+      "redline": "audio/engines/v8_sc/v8_sc_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v8_sc/v8_sc_rev.wav",
+    "startup": "audio/engines/v8_sc/v8_sc_start.wav",
+    "base_pitch_rpm": 720
+  },
+  "tags": [
+    "drift",
+    "pony",
+    "rwd",
+    "tuned",
+    "usa"
+  ],
+  "seed": 47212254
+}

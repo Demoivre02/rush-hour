@@ -1,0 +1,98 @@
+{
+  "id": "wexler-coyote-gt",
+  "index": 51,
+  "name": "Wexler Coyote GT",
+  "manufacturer": "Wexler",
+  "model": "Coyote GT",
+  "country": "USA",
+  "year": 2024,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "pony",
+  "seats": 4,
+  "blurb": "Five litres, a manual gearbox, and a soundtrack that sets off car alarms.",
+  "engine": {
+    "code": "v8",
+    "label": "V8",
+    "cylinders": 8,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 700,
+    "redline_rpm": 7200,
+    "sound_family": "v8"
+  },
+  "performance": {
+    "power_hp": 460,
+    "power_kw": 343,
+    "torque_nm": 570,
+    "weight_kg": 1650,
+    "power_to_weight_hp_per_tonne": 278.8,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 307,
+    "top_speed_mph": 191,
+    "accel_0_100_kmh_s": 4.5,
+    "accel_0_200_kmh_s": 16.27,
+    "braking_100_0_m": 43.6,
+    "lateral_g": 0.96,
+    "handling_rating": 38,
+    "performance_index": 590,
+    "performance_class": "A"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.408,
+      2.566,
+      1.931,
+      1.454,
+      1.094,
+      0.824,
+      0.62
+    ],
+    "final_drive": 3.66,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 475000,
+    "unlock_level": 12,
+    "race_reward_credits": 21400
+  },
+  "dimensions": {
+    "length_m": 4.8,
+    "width_m": 1.941,
+    "wheelbase_m": 2.88
+  },
+  "visual": {
+    "primary_color": "#161A1E",
+    "accent_color": "#C42B24",
+    "livery": "stripe_dual",
+    "has_wing": true,
+    "sprite": "sprites/topdown/wexler-coyote-gt.png",
+    "sprite_shadow": "sprites/shadow/wexler-coyote-gt_shadow.png",
+    "thumbnail": "sprites/thumbs/wexler-coyote-gt_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v8",
+    "loops": {
+      "idle": "audio/engines/v8/v8_idle.wav",
+      "low": "audio/engines/v8/v8_low.wav",
+      "mid": "audio/engines/v8/v8_mid.wav",
+      "high": "audio/engines/v8/v8_high.wav",
+      "redline": "audio/engines/v8/v8_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v8/v8_rev.wav",
+    "startup": "audio/engines/v8/v8_start.wav",
+    "base_pitch_rpm": 700
+  },
+  "tags": [
+    "pony",
+    "rwd",
+    "tuned",
+    "usa"
+  ],
+  "seed": 70115613
+}

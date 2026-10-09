@@ -1,0 +1,100 @@
+{
+  "id": "thornbury-wren-cup",
+  "index": 57,
+  "name": "Thornbury Wren Cup",
+  "manufacturer": "Thornbury",
+  "model": "Wren Cup",
+  "country": "UK",
+  "year": 2022,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "trackcar",
+  "seats": 2,
+  "blurb": "Three hundred and fifty horsepower per tonne with a supercharger whine and no roof.",
+  "engine": {
+    "code": "i4_sc",
+    "label": "Supercharged Inline-4",
+    "cylinders": 4,
+    "aspiration": "supercharged",
+    "idle_rpm": 850,
+    "redline_rpm": 7600,
+    "sound_family": "i4_sc"
+  },
+  "performance": {
+    "power_hp": 260,
+    "power_kw": 194,
+    "torque_nm": 250,
+    "weight_kg": 740,
+    "power_to_weight_hp_per_tonne": 351.4,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 239,
+    "top_speed_mph": 149,
+    "accel_0_100_kmh_s": 3.76,
+    "accel_0_200_kmh_s": 15.23,
+    "braking_100_0_m": 32.0,
+    "lateral_g": 1.21,
+    "handling_rating": 69,
+    "performance_index": 686,
+    "performance_class": "S1"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.492,
+      2.471,
+      1.749,
+      1.238,
+      0.876,
+      0.62
+    ],
+    "final_drive": 3.76,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 834000,
+    "unlock_level": 16,
+    "race_reward_credits": 37500
+  },
+  "dimensions": {
+    "length_m": 4.213,
+    "width_m": 1.93,
+    "wheelbase_m": 2.528
+  },
+  "visual": {
+    "primary_color": "#F2C230",
+    "accent_color": "#1D6E4E",
+    "livery": "racing_split",
+    "has_wing": true,
+    "sprite": "sprites/topdown/thornbury-wren-cup.png",
+    "sprite_shadow": "sprites/shadow/thornbury-wren-cup_shadow.png",
+    "thumbnail": "sprites/thumbs/thornbury-wren-cup_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4_sc",
+    "loops": {
+      "idle": "audio/engines/i4_sc/i4_sc_idle.wav",
+      "low": "audio/engines/i4_sc/i4_sc_low.wav",
+      "mid": "audio/engines/i4_sc/i4_sc_mid.wav",
+      "high": "audio/engines/i4_sc/i4_sc_high.wav",
+      "redline": "audio/engines/i4_sc/i4_sc_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4_sc/i4_sc_rev.wav",
+    "startup": "audio/engines/i4_sc/i4_sc_start.wav",
+    "base_pitch_rpm": 850
+  },
+  "tags": [
+    "drift",
+    "lightweight",
+    "rwd",
+    "track",
+    "trackcar",
+    "tuned",
+    "uk"
+  ],
+  "seed": 4217889856
+}

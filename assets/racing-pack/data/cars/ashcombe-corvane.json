@@ -1,0 +1,99 @@
+{
+  "id": "ashcombe-corvane",
+  "index": 72,
+  "name": "Ashcombe Corvane",
+  "manufacturer": "Ashcombe",
+  "model": "Corvane",
+  "country": "UK",
+  "year": 2023,
+  "tier": "super",
+  "tier_label": "Supercar",
+  "body_type": "gt",
+  "seats": 2,
+  "blurb": "Twelve cylinders wrapped in leather. Brutal, but politely.",
+  "engine": {
+    "code": "v12",
+    "label": "V12",
+    "cylinders": 12,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 880,
+    "redline_rpm": 8900,
+    "sound_family": "v12"
+  },
+  "performance": {
+    "power_hp": 720,
+    "power_kw": 537,
+    "torque_nm": 700,
+    "weight_kg": 1780,
+    "power_to_weight_hp_per_tonne": 404.5,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 360,
+    "top_speed_mph": 224,
+    "accel_0_100_kmh_s": 3.24,
+    "accel_0_200_kmh_s": 11.05,
+    "braking_100_0_m": 34.8,
+    "lateral_g": 1.17,
+    "handling_rating": 64,
+    "performance_index": 767,
+    "performance_class": "S2"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.3,
+      2.56,
+      1.987,
+      1.541,
+      1.196,
+      0.928,
+      0.72
+    ],
+    "final_drive": 3.52,
+    "tyre_compound": "Semi-Slick"
+  },
+  "nitro": {
+    "capacity_s": 5.0,
+    "power_mult": 1.26,
+    "refill_s": 10.0
+  },
+  "economy": {
+    "price_credits": 1256500,
+    "unlock_level": 19,
+    "race_reward_credits": 56500
+  },
+  "dimensions": {
+    "length_m": 4.682,
+    "width_m": 1.96,
+    "wheelbase_m": 2.809
+  },
+  "visual": {
+    "primary_color": "#151719",
+    "accent_color": "#0F3B33",
+    "livery": "solid",
+    "has_wing": true,
+    "sprite": "sprites/topdown/ashcombe-corvane.png",
+    "sprite_shadow": "sprites/shadow/ashcombe-corvane_shadow.png",
+    "thumbnail": "sprites/thumbs/ashcombe-corvane_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v12",
+    "loops": {
+      "idle": "audio/engines/v12/v12_idle.wav",
+      "low": "audio/engines/v12/v12_low.wav",
+      "mid": "audio/engines/v12/v12_mid.wav",
+      "high": "audio/engines/v12/v12_high.wav",
+      "redline": "audio/engines/v12/v12_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v12/v12_rev.wav",
+    "startup": "audio/engines/v12/v12_start.wav",
+    "base_pitch_rpm": 880
+  },
+  "tags": [
+    "drift",
+    "gt",
+    "rwd",
+    "super",
+    "uk"
+  ],
+  "seed": 3519498949
+}

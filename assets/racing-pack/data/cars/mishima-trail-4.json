@@ -1,0 +1,98 @@
+{
+  "id": "mishima-trail-4",
+  "index": 16,
+  "name": "Mishima Trail 4",
+  "manufacturer": "Mishima",
+  "model": "Trail 4",
+  "country": "Japan",
+  "year": 2021,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "pickup",
+  "seats": 5,
+  "blurb": "Mishima's workhorse. Torque like a tugboat, corners like a wardrobe.",
+  "engine": {
+    "code": "diesel_i4",
+    "label": "Turbo-Diesel Inline-4",
+    "cylinders": 4,
+    "aspiration": "turbocharged",
+    "idle_rpm": 700,
+    "redline_rpm": 4600,
+    "sound_family": "diesel_i4"
+  },
+  "performance": {
+    "power_hp": 210,
+    "power_kw": 157,
+    "torque_nm": 500,
+    "weight_kg": 1980,
+    "power_to_weight_hp_per_tonne": 106.1,
+    "drivetrain": "4WD",
+    "top_speed_kmh": 204,
+    "top_speed_mph": 127,
+    "accel_0_100_kmh_s": 9.28,
+    "accel_0_200_kmh_s": 39.79,
+    "braking_100_0_m": 66.2,
+    "lateral_g": 0.71,
+    "handling_rating": 7,
+    "performance_index": 240,
+    "performance_class": "D"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.513,
+      2.483,
+      1.755,
+      1.241,
+      0.877,
+      0.62
+    ],
+    "final_drive": 3.79,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 19000,
+    "unlock_level": 2,
+    "race_reward_credits": 900
+  },
+  "dimensions": {
+    "length_m": 5.669,
+    "width_m": 1.993,
+    "wheelbase_m": 3.401
+  },
+  "visual": {
+    "primary_color": "#6E1F22",
+    "accent_color": "#2B3138",
+    "livery": "solid",
+    "has_wing": false,
+    "sprite": "sprites/topdown/mishima-trail-4.png",
+    "sprite_shadow": "sprites/shadow/mishima-trail-4_shadow.png",
+    "thumbnail": "sprites/thumbs/mishima-trail-4_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/diesel_i4",
+    "loops": {
+      "idle": "audio/engines/diesel_i4/diesel_i4_idle.wav",
+      "low": "audio/engines/diesel_i4/diesel_i4_low.wav",
+      "mid": "audio/engines/diesel_i4/diesel_i4_mid.wav",
+      "high": "audio/engines/diesel_i4/diesel_i4_high.wav",
+      "redline": "audio/engines/diesel_i4/diesel_i4_redline.wav"
+    },
+    "rev_sweep": "audio/engines/diesel_i4/diesel_i4_rev.wav",
+    "startup": "audio/engines/diesel_i4/diesel_i4_start.wav",
+    "base_pitch_rpm": 700
+  },
+  "tags": [
+    "4wd",
+    "base",
+    "heavy",
+    "japan",
+    "pickup"
+  ],
+  "seed": 2140657503
+}

@@ -1,0 +1,98 @@
+{
+  "id": "marlowe-dart-rally",
+  "index": 56,
+  "name": "Marlowe Dart Rally",
+  "manufacturer": "Marlowe",
+  "model": "Dart Rally",
+  "country": "USA",
+  "year": 2024,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "rally",
+  "seats": 5,
+  "blurb": "Marlowe's answer to the gravel crowd. Underdog energy.",
+  "engine": {
+    "code": "i4_turbo",
+    "label": "Turbo Inline-4",
+    "cylinders": 4,
+    "aspiration": "turbocharged",
+    "idle_rpm": 820,
+    "redline_rpm": 6900,
+    "sound_family": "i4_turbo"
+  },
+  "performance": {
+    "power_hp": 350,
+    "power_kw": 261,
+    "torque_nm": 450,
+    "weight_kg": 1490,
+    "power_to_weight_hp_per_tonne": 234.9,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 275,
+    "top_speed_mph": 171,
+    "accel_0_100_kmh_s": 4.56,
+    "accel_0_200_kmh_s": 17.3,
+    "braking_100_0_m": 37.9,
+    "lateral_g": 1.07,
+    "handling_rating": 52,
+    "performance_index": 622,
+    "performance_class": "S1"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.454,
+      2.45,
+      1.738,
+      1.232,
+      0.874,
+      0.62
+    ],
+    "final_drive": 3.72,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 579500,
+    "unlock_level": 13,
+    "race_reward_credits": 26100
+  },
+  "dimensions": {
+    "length_m": 4.342,
+    "width_m": 1.84,
+    "wheelbase_m": 2.605
+  },
+  "visual": {
+    "primary_color": "#D93A2B",
+    "accent_color": "#E8EAEC",
+    "livery": "rally",
+    "has_wing": true,
+    "sprite": "sprites/topdown/marlowe-dart-rally.png",
+    "sprite_shadow": "sprites/shadow/marlowe-dart-rally_shadow.png",
+    "thumbnail": "sprites/thumbs/marlowe-dart-rally_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4_turbo",
+    "loops": {
+      "idle": "audio/engines/i4_turbo/i4_turbo_idle.wav",
+      "low": "audio/engines/i4_turbo/i4_turbo_low.wav",
+      "mid": "audio/engines/i4_turbo/i4_turbo_mid.wav",
+      "high": "audio/engines/i4_turbo/i4_turbo_high.wav",
+      "redline": "audio/engines/i4_turbo/i4_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4_turbo/i4_turbo_rev.wav",
+    "startup": "audio/engines/i4_turbo/i4_turbo_start.wav",
+    "base_pitch_rpm": 820
+  },
+  "tags": [
+    "awd",
+    "rally",
+    "tuned",
+    "turbo",
+    "usa"
+  ],
+  "seed": 1710286366
+}

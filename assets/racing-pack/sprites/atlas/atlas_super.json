@@ -1,0 +1,157 @@
+{
+  "image": "atlas_super.png",
+  "frame_w": 200,
+  "frame_h": 384,
+  "frames": {
+    "scorpetti-fiora": {
+      "x": 0,
+      "y": 0,
+      "w": 200,
+      "h": 384
+    },
+    "scorpetti-fiora-corsa": {
+      "x": 200,
+      "y": 0,
+      "w": 200,
+      "h": 384
+    },
+    "scorpetti-tramonto": {
+      "x": 400,
+      "y": 0,
+      "w": 200,
+      "h": 384
+    },
+    "alviero-tempesta": {
+      "x": 600,
+      "y": 0,
+      "w": 200,
+      "h": 384
+    },
+    "alviero-aquilone": {
+      "x": 800,
+      "y": 0,
+      "w": 200,
+      "h": 384
+    },
+    "alviero-nembo-gts": {
+      "x": 1000,
+      "y": 0,
+      "w": 200,
+      "h": 384
+    },
+    "valdoro-aventine": {
+      "x": 0,
+      "y": 384,
+      "w": 200,
+      "h": 384
+    },
+    "valdoro-aventine-sv": {
+      "x": 200,
+      "y": 384,
+      "w": 200,
+      "h": 384
+    },
+    "valdoro-falco": {
+      "x": 400,
+      "y": 384,
+      "w": 200,
+      "h": 384
+    },
+    "vorst-kessel-rsr": {
+      "x": 600,
+      "y": 384,
+      "w": 200,
+      "h": 384
+    },
+    "vorst-kessel-turbo-gt": {
+      "x": 800,
+      "y": 384,
+      "w": 200,
+      "h": 384
+    },
+    "ashcombe-corvane": {
+      "x": 1000,
+      "y": 384,
+      "w": 200,
+      "h": 384
+    },
+    "ashcombe-thistle-s": {
+      "x": 0,
+      "y": 768,
+      "w": 200,
+      "h": 384
+    },
+    "eisenbach-nordwand-gt": {
+      "x": 200,
+      "y": 768,
+      "w": 200,
+      "h": 384
+    },
+    "grauwolf-sturm-8-csl": {
+      "x": 400,
+      "y": 768,
+      "w": 200,
+      "h": 384
+    },
+    "katsuro-tessen-kaiju": {
+      "x": 600,
+      "y": 768,
+      "w": 200,
+      "h": 384
+    },
+    "mishima-raiden-v10": {
+      "x": 800,
+      "y": 768,
+      "w": 200,
+      "h": 384
+    },
+    "marlowe-comet-zx": {
+      "x": 1000,
+      "y": 768,
+      "w": 200,
+      "h": 384
+    },
+    "wexler-sidewinder-v10": {
+      "x": 0,
+      "y": 1152,
+      "w": 200,
+      "h": 384
+    },
+    "thornbury-harrier-gt1": {
+      "x": 200,
+      "y": 1152,
+      "w": 200,
+      "h": 384
+    },
+    "thornbury-lancet": {
+      "x": 400,
+      "y": 1152,
+      "w": 200,
+      "h": 384
+    },
+    "ryuzaki-shinkai-type-r": {
+      "x": 600,
+      "y": 1152,
+      "w": 200,
+      "h": 384
+    },
+    "norsken-torden": {
+      "x": 800,
+      "y": 1152,
+      "w": 200,
+      "h": 384
+    },
+    "tenjin-kaminari": {
+      "x": 1000,
+      "y": 1152,
+      "w": 200,
+      "h": 384
+    },
+    "apex-dynamics-surge": {
+      "x": 0,
+      "y": 1536,
+      "w": 200,
+      "h": 384
+    }
+  }
+}

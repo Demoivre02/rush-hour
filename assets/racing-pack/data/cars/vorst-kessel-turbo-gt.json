@@ -1,0 +1,99 @@
+{
+  "id": "vorst-kessel-turbo-gt",
+  "index": 71,
+  "name": "Vorst Kessel Turbo GT",
+  "manufacturer": "Vorst",
+  "model": "Kessel Turbo GT",
+  "country": "Germany",
+  "year": 2025,
+  "tier": "super",
+  "tier_label": "Supercar",
+  "body_type": "supercar",
+  "seats": 2,
+  "blurb": "The fastest thing Vorst will sell you with a number plate.",
+  "engine": {
+    "code": "flat6_turbo",
+    "label": "Twin-Turbo Flat-6",
+    "cylinders": 6,
+    "aspiration": "turbocharged",
+    "idle_rpm": 800,
+    "redline_rpm": 7400,
+    "sound_family": "flat6_turbo"
+  },
+  "performance": {
+    "power_hp": 700,
+    "power_kw": 522,
+    "torque_nm": 800,
+    "weight_kg": 1590,
+    "power_to_weight_hp_per_tonne": 440.3,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 359,
+    "top_speed_mph": 223,
+    "accel_0_100_kmh_s": 2.69,
+    "accel_0_200_kmh_s": 9.2,
+    "braking_100_0_m": 32.5,
+    "lateral_g": 1.23,
+    "handling_rating": 72,
+    "performance_index": 810,
+    "performance_class": "X"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.308,
+      2.566,
+      1.99,
+      1.543,
+      1.197,
+      0.928,
+      0.72
+    ],
+    "final_drive": 3.53,
+    "tyre_compound": "Semi-Slick"
+  },
+  "nitro": {
+    "capacity_s": 5.0,
+    "power_mult": 1.26,
+    "refill_s": 10.0
+  },
+  "economy": {
+    "price_credits": 1532500,
+    "unlock_level": 21,
+    "race_reward_credits": 69000
+  },
+  "dimensions": {
+    "length_m": 4.673,
+    "width_m": 1.994,
+    "wheelbase_m": 2.804
+  },
+  "visual": {
+    "primary_color": "#15181C",
+    "accent_color": "#D9DDE1",
+    "livery": "solid",
+    "has_wing": true,
+    "sprite": "sprites/topdown/vorst-kessel-turbo-gt.png",
+    "sprite_shadow": "sprites/shadow/vorst-kessel-turbo-gt_shadow.png",
+    "thumbnail": "sprites/thumbs/vorst-kessel-turbo-gt_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/flat6_turbo",
+    "loops": {
+      "idle": "audio/engines/flat6_turbo/flat6_turbo_idle.wav",
+      "low": "audio/engines/flat6_turbo/flat6_turbo_low.wav",
+      "mid": "audio/engines/flat6_turbo/flat6_turbo_mid.wav",
+      "high": "audio/engines/flat6_turbo/flat6_turbo_high.wav",
+      "redline": "audio/engines/flat6_turbo/flat6_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/flat6_turbo/flat6_turbo_rev.wav",
+    "startup": "audio/engines/flat6_turbo/flat6_turbo_start.wav",
+    "base_pitch_rpm": 800
+  },
+  "tags": [
+    "awd",
+    "germany",
+    "super",
+    "supercar",
+    "turbo"
+  ],
+  "seed": 656634144
+}

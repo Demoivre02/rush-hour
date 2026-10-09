@@ -1,0 +1,187 @@
+{
+  "image": "atlas_tuned.png",
+  "frame_w": 200,
+  "frame_h": 384,
+  "frames": {
+    "katsuro-kaido-turbo": {
+      "x": 0,
+      "y": 0,
+      "w": 200,
+      "h": 384
+    },
+    "katsuro-ronin-rs": {
+      "x": 200,
+      "y": 0,
+      "w": 200,
+      "h": 384
+    },
+    "katsuro-tessen-gt": {
+      "x": 400,
+      "y": 0,
+      "w": 200,
+      "h": 384
+    },
+    "katsuro-tessen-v-spec": {
+      "x": 600,
+      "y": 0,
+      "w": 200,
+      "h": 384
+    },
+    "katsuro-sable-stx": {
+      "x": 800,
+      "y": 0,
+      "w": 200,
+      "h": 384
+    },
+    "ryuzaki-kaze-rx-turbo": {
+      "x": 1000,
+      "y": 0,
+      "w": 200,
+      "h": 384
+    },
+    "ryuzaki-shinkai-fd": {
+      "x": 0,
+      "y": 384,
+      "w": 200,
+      "h": 384
+    },
+    "ryuzaki-aki-s2": {
+      "x": 200,
+      "y": 384,
+      "w": 200,
+      "h": 384
+    },
+    "ryuzaki-genbu-widebody": {
+      "x": 400,
+      "y": 384,
+      "w": 200,
+      "h": 384
+    },
+    "ishara-kite-rs-cup": {
+      "x": 600,
+      "y": 384,
+      "w": 200,
+      "h": 384
+    },
+    "hanyu-meridian-n": {
+      "x": 800,
+      "y": 384,
+      "w": 200,
+      "h": 384
+    },
+    "aveline-cirrus-rallye": {
+      "x": 1000,
+      "y": 384,
+      "w": 200,
+      "h": 384
+    },
+    "vorst-ceres-gts": {
+      "x": 0,
+      "y": 768,
+      "w": 200,
+      "h": 384
+    },
+    "vorst-kessel-s": {
+      "x": 200,
+      "y": 768,
+      "w": 200,
+      "h": 384
+    },
+    "vorst-kessel-turbo-s": {
+      "x": 400,
+      "y": 768,
+      "w": 200,
+      "h": 384
+    },
+    "grauwolf-kern-40-cs": {
+      "x": 600,
+      "y": 768,
+      "w": 200,
+      "h": 384
+    },
+    "grauwolf-sturm-8": {
+      "x": 800,
+      "y": 768,
+      "w": 200,
+      "h": 384
+    },
+    "eisenbach-klasse-63": {
+      "x": 1000,
+      "y": 768,
+      "w": 200,
+      "h": 384
+    },
+    "eisenbach-halde-rs": {
+      "x": 0,
+      "y": 1152,
+      "w": 200,
+      "h": 384
+    },
+    "eisenbach-kreuz-gt": {
+      "x": 200,
+      "y": 1152,
+      "w": 200,
+      "h": 384
+    },
+    "wexler-coyote-gt": {
+      "x": 400,
+      "y": 1152,
+      "w": 200,
+      "h": 384
+    },
+    "wexler-coyote-mach": {
+      "x": 600,
+      "y": 1152,
+      "w": 200,
+      "h": 384
+    },
+    "wexler-ironhide-440": {
+      "x": 800,
+      "y": 1152,
+      "w": 200,
+      "h": 384
+    },
+    "marlowe-comet-ss": {
+      "x": 1000,
+      "y": 1152,
+      "w": 200,
+      "h": 384
+    },
+    "marlowe-comet-venom": {
+      "x": 0,
+      "y": 1536,
+      "w": 200,
+      "h": 384
+    },
+    "marlowe-dart-rally": {
+      "x": 200,
+      "y": 1536,
+      "w": 200,
+      "h": 384
+    },
+    "thornbury-wren-cup": {
+      "x": 400,
+      "y": 1536,
+      "w": 200,
+      "h": 384
+    },
+    "thornbury-harrier-r": {
+      "x": 600,
+      "y": 1536,
+      "w": 200,
+      "h": 384
+    },
+    "norsken-frost-r": {
+      "x": 800,
+      "y": 1536,
+      "w": 200,
+      "h": 384
+    },
+    "tenjin-ion-gt": {
+      "x": 1000,
+      "y": 1536,
+      "w": 200,
+      "h": 384
+    }
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "id": "wexler-coyote-mach",
+  "index": 52,
+  "name": "Wexler Coyote Mach",
+  "manufacturer": "Wexler",
+  "model": "Coyote Mach",
+  "country": "USA",
+  "year": 2024,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "pony",
+  "seats": 4,
+  "blurb": "Supercharged, splitter'd, and wearing a wing you can see from orbit.",
+  "engine": {
+    "code": "v8_sc",
+    "label": "Supercharged V8",
+    "cylinders": 8,
+    "aspiration": "supercharged",
+    "idle_rpm": 720,
+    "redline_rpm": 6800,
+    "sound_family": "v8_sc"
+  },
+  "performance": {
+    "power_hp": 560,
+    "power_kw": 418,
+    "torque_nm": 700,
+    "weight_kg": 1700,
+    "power_to_weight_hp_per_tonne": 329.4,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 323,
+    "top_speed_mph": 201,
+    "accel_0_100_kmh_s": 3.96,
+    "accel_0_200_kmh_s": 13.92,
+    "braking_100_0_m": 42.7,
+    "lateral_g": 0.98,
+    "handling_rating": 41,
+    "performance_index": 627,
+    "performance_class": "S1"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.367,
+      2.539,
+      1.915,
+      1.445,
+      1.09,
+      0.822,
+      0.62
+    ],
+    "final_drive": 3.61,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 597000,
+    "unlock_level": 13,
+    "race_reward_credits": 26900
+  },
+  "dimensions": {
+    "length_m": 4.9,
+    "width_m": 1.92,
+    "wheelbase_m": 2.94
+  },
+  "visual": {
+    "primary_color": "#C42B24",
+    "accent_color": "#161A1E",
+    "livery": "racing_split",
+    "has_wing": true,
+    "sprite": "sprites/topdown/wexler-coyote-mach.png",
+    "sprite_shadow": "sprites/shadow/wexler-coyote-mach_shadow.png",
+    "thumbnail": "sprites/thumbs/wexler-coyote-mach_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v8_sc",
+    "loops": {
+      "idle": "audio/engines/v8_sc/v8_sc_idle.wav",
+      "low": "audio/engines/v8_sc/v8_sc_low.wav",
+      "mid": "audio/engines/v8_sc/v8_sc_mid.wav",
+      "high": "audio/engines/v8_sc/v8_sc_high.wav",
+      "redline": "audio/engines/v8_sc/v8_sc_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v8_sc/v8_sc_rev.wav",
+    "startup": "audio/engines/v8_sc/v8_sc_start.wav",
+    "base_pitch_rpm": 720
+  },
+  "tags": [
+    "drift",
+    "pony",
+    "rwd",
+    "tuned",
+    "usa"
+  ],
+  "seed": 2058865700
+}

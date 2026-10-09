@@ -1,0 +1,97 @@
+{
+  "id": "katsuro-kaido",
+  "index": 12,
+  "name": "Katsuro Kaido",
+  "manufacturer": "Katsuro",
+  "model": "Kaido",
+  "country": "Japan",
+  "year": 1998,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "coupe",
+  "seats": 4,
+  "blurb": "Rear drive, skinny tyres, and a chassis that made a generation of mountain-pass legends.",
+  "engine": {
+    "code": "i4",
+    "label": "Inline-4",
+    "cylinders": 4,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 800,
+    "redline_rpm": 6800,
+    "sound_family": "i4"
+  },
+  "performance": {
+    "power_hp": 168,
+    "power_kw": 125,
+    "torque_nm": 205,
+    "weight_kg": 1120,
+    "power_to_weight_hp_per_tonne": 150.0,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 225,
+    "top_speed_mph": 140,
+    "accel_0_100_kmh_s": 7.48,
+    "accel_0_200_kmh_s": 34.39,
+    "braking_100_0_m": 43.6,
+    "lateral_g": 0.94,
+    "handling_rating": 36,
+    "performance_index": 439,
+    "performance_class": "B"
+  },
+  "drivetrain_detail": {
+    "gears": 5,
+    "gear_ratios": [
+      3.53,
+      2.285,
+      1.479,
+      0.958,
+      0.62
+    ],
+    "final_drive": 3.81,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 191500,
+    "unlock_level": 7,
+    "race_reward_credits": 8600
+  },
+  "dimensions": {
+    "length_m": 4.505,
+    "width_m": 1.837,
+    "wheelbase_m": 2.703
+  },
+  "visual": {
+    "primary_color": "#D8B12A",
+    "accent_color": "#1B4F9C",
+    "livery": "two_tone",
+    "has_wing": false,
+    "sprite": "sprites/topdown/katsuro-kaido.png",
+    "sprite_shadow": "sprites/shadow/katsuro-kaido_shadow.png",
+    "thumbnail": "sprites/thumbs/katsuro-kaido_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4",
+    "loops": {
+      "idle": "audio/engines/i4/i4_idle.wav",
+      "low": "audio/engines/i4/i4_low.wav",
+      "mid": "audio/engines/i4/i4_mid.wav",
+      "high": "audio/engines/i4/i4_high.wav",
+      "redline": "audio/engines/i4/i4_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4/i4_rev.wav",
+    "startup": "audio/engines/i4/i4_start.wav",
+    "base_pitch_rpm": 800
+  },
+  "tags": [
+    "base",
+    "classic",
+    "coupe",
+    "japan",
+    "rwd"
+  ],
+  "seed": 3432030082
+}

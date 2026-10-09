@@ -1,0 +1,97 @@
+{
+  "id": "ishara-kite",
+  "index": 1,
+  "name": "Ishara Kite",
+  "manufacturer": "Ishara",
+  "model": "Kite",
+  "country": "Japan",
+  "year": 2019,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "city",
+  "seats": 4,
+  "blurb": "The cheapest key in the garage. Nine hundred and fifty kilos of pure momentum management.",
+  "engine": {
+    "code": "i3",
+    "label": "Inline-3",
+    "cylinders": 3,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 780,
+    "redline_rpm": 6200,
+    "sound_family": "i3"
+  },
+  "performance": {
+    "power_hp": 92,
+    "power_kw": 69,
+    "torque_nm": 142,
+    "weight_kg": 950,
+    "power_to_weight_hp_per_tonne": 96.8,
+    "drivetrain": "FWD",
+    "top_speed_kmh": 176,
+    "top_speed_mph": 109,
+    "accel_0_100_kmh_s": 11.17,
+    "accel_0_200_kmh_s": 65.64,
+    "braking_100_0_m": 48.2,
+    "lateral_g": 0.88,
+    "handling_rating": 28,
+    "performance_index": 260,
+    "performance_class": "D"
+  },
+  "drivetrain_detail": {
+    "gears": 5,
+    "gear_ratios": [
+      3.562,
+      2.301,
+      1.486,
+      0.96,
+      0.62
+    ],
+    "final_drive": 3.85,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 23500,
+    "unlock_level": 2,
+    "race_reward_credits": 1100
+  },
+  "dimensions": {
+    "length_m": 3.667,
+    "width_m": 1.68,
+    "wheelbase_m": 2.2
+  },
+  "visual": {
+    "primary_color": "#2F6FB2",
+    "accent_color": "#1D2024",
+    "livery": "solid",
+    "has_wing": false,
+    "sprite": "sprites/topdown/ishara-kite.png",
+    "sprite_shadow": "sprites/shadow/ishara-kite_shadow.png",
+    "thumbnail": "sprites/thumbs/ishara-kite_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i3",
+    "loops": {
+      "idle": "audio/engines/i3/i3_idle.wav",
+      "low": "audio/engines/i3/i3_low.wav",
+      "mid": "audio/engines/i3/i3_mid.wav",
+      "high": "audio/engines/i3/i3_high.wav",
+      "redline": "audio/engines/i3/i3_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i3/i3_rev.wav",
+    "startup": "audio/engines/i3/i3_start.wav",
+    "base_pitch_rpm": 780
+  },
+  "tags": [
+    "base",
+    "city",
+    "fwd",
+    "japan",
+    "lightweight"
+  ],
+  "seed": 1065248104
+}

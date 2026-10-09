@@ -1,0 +1,100 @@
+{
+  "id": "alviero-divina",
+  "index": 86,
+  "name": "Alviero Divina",
+  "manufacturer": "Alviero",
+  "model": "Divina",
+  "country": "Italy",
+  "year": 2025,
+  "tier": "hyper",
+  "tier_label": "Hypercar",
+  "body_type": "hypercar",
+  "seats": 2,
+  "blurb": "Hybrid-assisted V12. Alviero's flagship, and the last naturally aspirated twelve they'll build.",
+  "engine": {
+    "code": "v12",
+    "label": "V12",
+    "cylinders": 12,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 880,
+    "redline_rpm": 8900,
+    "sound_family": "v12"
+  },
+  "performance": {
+    "power_hp": 1000,
+    "power_kw": 746,
+    "torque_nm": 900,
+    "weight_kg": 1590,
+    "power_to_weight_hp_per_tonne": 628.9,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 406,
+    "top_speed_mph": 252,
+    "accel_0_100_kmh_s": 2.22,
+    "accel_0_200_kmh_s": 7.35,
+    "braking_100_0_m": 28.5,
+    "lateral_g": 1.39,
+    "handling_rating": 92,
+    "performance_index": 914,
+    "performance_class": "X"
+  },
+  "drivetrain_detail": {
+    "gears": 8,
+    "gear_ratios": [
+      3.183,
+      2.574,
+      2.082,
+      1.684,
+      1.361,
+      1.101,
+      0.89,
+      0.72
+    ],
+    "final_drive": 3.37,
+    "tyre_compound": "Track Cup 2"
+  },
+  "nitro": {
+    "capacity_s": 6.0,
+    "power_mult": 1.32,
+    "refill_s": 9.0
+  },
+  "economy": {
+    "price_credits": 2367500,
+    "unlock_level": 26,
+    "race_reward_credits": 106500
+  },
+  "dimensions": {
+    "length_m": 4.553,
+    "width_m": 2.058,
+    "wheelbase_m": 2.732
+  },
+  "visual": {
+    "primary_color": "#F0E6D2",
+    "accent_color": "#D8B240",
+    "livery": "solid",
+    "has_wing": true,
+    "sprite": "sprites/topdown/alviero-divina.png",
+    "sprite_shadow": "sprites/shadow/alviero-divina_shadow.png",
+    "thumbnail": "sprites/thumbs/alviero-divina_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v12",
+    "loops": {
+      "idle": "audio/engines/v12/v12_idle.wav",
+      "low": "audio/engines/v12/v12_low.wav",
+      "mid": "audio/engines/v12/v12_mid.wav",
+      "high": "audio/engines/v12/v12_high.wav",
+      "redline": "audio/engines/v12/v12_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v12/v12_rev.wav",
+    "startup": "audio/engines/v12/v12_start.wav",
+    "base_pitch_rpm": 880
+  },
+  "tags": [
+    "drift",
+    "hyper",
+    "hypercar",
+    "italy",
+    "rwd"
+  ],
+  "seed": 2241125986
+}

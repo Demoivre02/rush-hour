@@ -1,0 +1,94 @@
+{
+  "id": "tenjin-kaminari",
+  "index": 84,
+  "name": "Tenjin Kaminari",
+  "manufacturer": "Tenjin",
+  "model": "Kaminari",
+  "country": "Japan",
+  "year": 2025,
+  "tier": "super",
+  "tier_label": "Supercar",
+  "body_type": "supercar",
+  "seats": 2,
+  "blurb": "Three motors, torque vectoring, and total silence at two hundred.",
+  "engine": {
+    "code": "electric",
+    "label": "Electric",
+    "cylinders": 0,
+    "aspiration": "electric",
+    "idle_rpm": 0,
+    "redline_rpm": 18000,
+    "sound_family": "electric"
+  },
+  "performance": {
+    "power_hp": 780,
+    "power_kw": 582,
+    "torque_nm": 1000,
+    "weight_kg": 1980,
+    "power_to_weight_hp_per_tonne": 393.9,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 346,
+    "top_speed_mph": 215,
+    "accel_0_100_kmh_s": 2.64,
+    "accel_0_200_kmh_s": 8.93,
+    "braking_100_0_m": 33.1,
+    "lateral_g": 1.21,
+    "handling_rating": 69,
+    "performance_index": 793,
+    "performance_class": "S2"
+  },
+  "drivetrain_detail": {
+    "gears": 1,
+    "gear_ratios": [
+      8.6
+    ],
+    "final_drive": 3.49,
+    "tyre_compound": "Semi-Slick"
+  },
+  "nitro": {
+    "capacity_s": 5.0,
+    "power_mult": 1.26,
+    "refill_s": 10.0
+  },
+  "economy": {
+    "price_credits": 1419000,
+    "unlock_level": 20,
+    "race_reward_credits": 63900
+  },
+  "dimensions": {
+    "length_m": 4.518,
+    "width_m": 1.96,
+    "wheelbase_m": 2.711
+  },
+  "visual": {
+    "primary_color": "#F1F3F5",
+    "accent_color": "#171B20",
+    "livery": "solid",
+    "has_wing": true,
+    "sprite": "sprites/topdown/tenjin-kaminari.png",
+    "sprite_shadow": "sprites/shadow/tenjin-kaminari_shadow.png",
+    "thumbnail": "sprites/thumbs/tenjin-kaminari_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/electric",
+    "loops": {
+      "idle": "audio/engines/electric/electric_idle.wav",
+      "low": "audio/engines/electric/electric_low.wav",
+      "mid": "audio/engines/electric/electric_mid.wav",
+      "high": "audio/engines/electric/electric_high.wav",
+      "redline": "audio/engines/electric/electric_redline.wav"
+    },
+    "rev_sweep": "audio/engines/electric/electric_rev.wav",
+    "startup": "audio/engines/electric/electric_start.wav",
+    "base_pitch_rpm": 1200
+  },
+  "tags": [
+    "awd",
+    "electric",
+    "heavy",
+    "japan",
+    "super",
+    "supercar"
+  ],
+  "seed": 3488082026
+}

@@ -1,0 +1,101 @@
+{
+  "id": "thornbury-vespera",
+  "index": 99,
+  "name": "Thornbury Vespera",
+  "manufacturer": "Thornbury",
+  "model": "Vespera",
+  "country": "UK",
+  "year": 2026,
+  "tier": "hyper",
+  "tier_label": "Hypercar",
+  "body_type": "hypercar",
+  "seats": 2,
+  "blurb": "Thornbury's hypercar. They added lightness until there was almost nothing left.",
+  "engine": {
+    "code": "v8_turbo",
+    "label": "Twin-Turbo V8",
+    "cylinders": 8,
+    "aspiration": "turbocharged",
+    "idle_rpm": 740,
+    "redline_rpm": 7600,
+    "sound_family": "v8_turbo"
+  },
+  "performance": {
+    "power_hp": 1150,
+    "power_kw": 858,
+    "torque_nm": 1000,
+    "weight_kg": 1180,
+    "power_to_weight_hp_per_tonne": 974.6,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 420,
+    "top_speed_mph": 261,
+    "accel_0_100_kmh_s": 1.62,
+    "accel_0_200_kmh_s": 5.31,
+    "braking_100_0_m": 27.5,
+    "lateral_g": 1.44,
+    "handling_rating": 98,
+    "performance_index": 949,
+    "performance_class": "X"
+  },
+  "drivetrain_detail": {
+    "gears": 8,
+    "gear_ratios": [
+      3.121,
+      2.531,
+      2.053,
+      1.665,
+      1.35,
+      1.095,
+      0.888,
+      0.72
+    ],
+    "final_drive": 3.29,
+    "tyre_compound": "Track Cup 2"
+  },
+  "nitro": {
+    "capacity_s": 6.0,
+    "power_mult": 1.32,
+    "refill_s": 9.0
+  },
+  "economy": {
+    "price_credits": 2707500,
+    "unlock_level": 28,
+    "race_reward_credits": 121800
+  },
+  "dimensions": {
+    "length_m": 4.604,
+    "width_m": 2.116,
+    "wheelbase_m": 2.762
+  },
+  "visual": {
+    "primary_color": "#0F1215",
+    "accent_color": "#B02A2A",
+    "livery": "racing_split",
+    "has_wing": true,
+    "sprite": "sprites/topdown/thornbury-vespera.png",
+    "sprite_shadow": "sprites/shadow/thornbury-vespera_shadow.png",
+    "thumbnail": "sprites/thumbs/thornbury-vespera_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v8_turbo",
+    "loops": {
+      "idle": "audio/engines/v8_turbo/v8_turbo_idle.wav",
+      "low": "audio/engines/v8_turbo/v8_turbo_low.wav",
+      "mid": "audio/engines/v8_turbo/v8_turbo_mid.wav",
+      "high": "audio/engines/v8_turbo/v8_turbo_high.wav",
+      "redline": "audio/engines/v8_turbo/v8_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v8_turbo/v8_turbo_rev.wav",
+    "startup": "audio/engines/v8_turbo/v8_turbo_start.wav",
+    "base_pitch_rpm": 740
+  },
+  "tags": [
+    "drift",
+    "hyper",
+    "hypercar",
+    "rwd",
+    "turbo",
+    "uk"
+  ],
+  "seed": 2898939483
+}

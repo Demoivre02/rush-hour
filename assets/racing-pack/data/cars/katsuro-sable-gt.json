@@ -1,0 +1,98 @@
+{
+  "id": "katsuro-sable-gt",
+  "index": 11,
+  "name": "Katsuro Sable GT",
+  "manufacturer": "Katsuro",
+  "model": "Sable GT",
+  "country": "Japan",
+  "year": 2022,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "sedan",
+  "seats": 5,
+  "blurb": "A factory-warm Sable with a small turbo and a big attitude.",
+  "engine": {
+    "code": "i4_turbo",
+    "label": "Turbo Inline-4",
+    "cylinders": 4,
+    "aspiration": "turbocharged",
+    "idle_rpm": 820,
+    "redline_rpm": 6900,
+    "sound_family": "i4_turbo"
+  },
+  "performance": {
+    "power_hp": 205,
+    "power_kw": 153,
+    "torque_nm": 300,
+    "weight_kg": 1290,
+    "power_to_weight_hp_per_tonne": 158.9,
+    "drivetrain": "FWD",
+    "top_speed_kmh": 237,
+    "top_speed_mph": 147,
+    "accel_0_100_kmh_s": 7.59,
+    "accel_0_200_kmh_s": 32.78,
+    "braking_100_0_m": 46.0,
+    "lateral_g": 0.9,
+    "handling_rating": 31,
+    "performance_index": 422,
+    "performance_class": "B"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.515,
+      2.484,
+      1.756,
+      1.241,
+      0.877,
+      0.62
+    ],
+    "final_drive": 3.79,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 132000,
+    "unlock_level": 6,
+    "race_reward_credits": 5900
+  },
+  "dimensions": {
+    "length_m": 4.665,
+    "width_m": 1.863,
+    "wheelbase_m": 2.799
+  },
+  "visual": {
+    "primary_color": "#C8CDD3",
+    "accent_color": "#8E2B2B",
+    "livery": "stripe_dual",
+    "has_wing": false,
+    "sprite": "sprites/topdown/katsuro-sable-gt.png",
+    "sprite_shadow": "sprites/shadow/katsuro-sable-gt_shadow.png",
+    "thumbnail": "sprites/thumbs/katsuro-sable-gt_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4_turbo",
+    "loops": {
+      "idle": "audio/engines/i4_turbo/i4_turbo_idle.wav",
+      "low": "audio/engines/i4_turbo/i4_turbo_low.wav",
+      "mid": "audio/engines/i4_turbo/i4_turbo_mid.wav",
+      "high": "audio/engines/i4_turbo/i4_turbo_high.wav",
+      "redline": "audio/engines/i4_turbo/i4_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4_turbo/i4_turbo_rev.wav",
+    "startup": "audio/engines/i4_turbo/i4_turbo_start.wav",
+    "base_pitch_rpm": 820
+  },
+  "tags": [
+    "base",
+    "fwd",
+    "japan",
+    "sedan",
+    "turbo"
+  ],
+  "seed": 1901770595
+}

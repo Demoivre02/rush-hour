@@ -1,0 +1,102 @@
+{
+  "id": "thornbury-lancet",
+  "index": 81,
+  "name": "Thornbury Lancet",
+  "manufacturer": "Thornbury",
+  "model": "Lancet",
+  "country": "UK",
+  "year": 2024,
+  "tier": "super",
+  "tier_label": "Supercar",
+  "body_type": "trackcar",
+  "seats": 2,
+  "blurb": "Hybrid-assisted, ground-effect, and legal on public roads by the narrowest margin.",
+  "engine": {
+    "code": "v6_turbo",
+    "label": "Twin-Turbo V6",
+    "cylinders": 6,
+    "aspiration": "turbocharged",
+    "idle_rpm": 780,
+    "redline_rpm": 7600,
+    "sound_family": "v6_turbo"
+  },
+  "performance": {
+    "power_hp": 650,
+    "power_kw": 485,
+    "torque_nm": 600,
+    "weight_kg": 1050,
+    "power_to_weight_hp_per_tonne": 619.0,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 322,
+    "top_speed_mph": 200,
+    "accel_0_100_kmh_s": 2.33,
+    "accel_0_200_kmh_s": 8.04,
+    "braking_100_0_m": 29.5,
+    "lateral_g": 1.32,
+    "handling_rating": 83,
+    "performance_index": 827,
+    "performance_class": "X"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.329,
+      2.516,
+      1.901,
+      1.437,
+      1.086,
+      0.82,
+      0.62
+    ],
+    "final_drive": 3.56,
+    "tyre_compound": "Semi-Slick"
+  },
+  "nitro": {
+    "capacity_s": 5.0,
+    "power_mult": 1.26,
+    "refill_s": 10.0
+  },
+  "economy": {
+    "price_credits": 1652000,
+    "unlock_level": 22,
+    "race_reward_credits": 74300
+  },
+  "dimensions": {
+    "length_m": 4.063,
+    "width_m": 1.923,
+    "wheelbase_m": 2.438
+  },
+  "visual": {
+    "primary_color": "#1D6E4E",
+    "accent_color": "#F2C230",
+    "livery": "solid",
+    "has_wing": true,
+    "sprite": "sprites/topdown/thornbury-lancet.png",
+    "sprite_shadow": "sprites/shadow/thornbury-lancet_shadow.png",
+    "thumbnail": "sprites/thumbs/thornbury-lancet_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v6_turbo",
+    "loops": {
+      "idle": "audio/engines/v6_turbo/v6_turbo_idle.wav",
+      "low": "audio/engines/v6_turbo/v6_turbo_low.wav",
+      "mid": "audio/engines/v6_turbo/v6_turbo_mid.wav",
+      "high": "audio/engines/v6_turbo/v6_turbo_high.wav",
+      "redline": "audio/engines/v6_turbo/v6_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v6_turbo/v6_turbo_rev.wav",
+    "startup": "audio/engines/v6_turbo/v6_turbo_start.wav",
+    "base_pitch_rpm": 780
+  },
+  "tags": [
+    "drift",
+    "lightweight",
+    "rwd",
+    "super",
+    "track",
+    "trackcar",
+    "turbo",
+    "uk"
+  ],
+  "seed": 2486912733
+}

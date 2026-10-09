@@ -1,0 +1,100 @@
+{
+  "id": "grauwolf-sturm-8-csl",
+  "index": 75,
+  "name": "Grauwolf Sturm 8 CSL",
+  "manufacturer": "Grauwolf",
+  "model": "Sturm 8 CSL",
+  "country": "Germany",
+  "year": 2025,
+  "tier": "super",
+  "tier_label": "Supercar",
+  "body_type": "gt",
+  "seats": 2,
+  "blurb": "Rear drive, no rear seats, and a N\u00fcrburgring time they won't stop mentioning.",
+  "engine": {
+    "code": "v8_turbo",
+    "label": "Twin-Turbo V8",
+    "cylinders": 8,
+    "aspiration": "turbocharged",
+    "idle_rpm": 740,
+    "redline_rpm": 7600,
+    "sound_family": "v8_turbo"
+  },
+  "performance": {
+    "power_hp": 700,
+    "power_kw": 522,
+    "torque_nm": 750,
+    "weight_kg": 1700,
+    "power_to_weight_hp_per_tonne": 411.8,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 357,
+    "top_speed_mph": 222,
+    "accel_0_100_kmh_s": 3.2,
+    "accel_0_200_kmh_s": 10.95,
+    "braking_100_0_m": 34.8,
+    "lateral_g": 1.17,
+    "handling_rating": 64,
+    "performance_index": 766,
+    "performance_class": "S2"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.308,
+      2.566,
+      1.99,
+      1.543,
+      1.197,
+      0.928,
+      0.72
+    ],
+    "final_drive": 3.53,
+    "tyre_compound": "Semi-Slick"
+  },
+  "nitro": {
+    "capacity_s": 5.0,
+    "power_mult": 1.26,
+    "refill_s": 10.0
+  },
+  "economy": {
+    "price_credits": 1251000,
+    "unlock_level": 19,
+    "race_reward_credits": 56300
+  },
+  "dimensions": {
+    "length_m": 4.611,
+    "width_m": 1.964,
+    "wheelbase_m": 2.767
+  },
+  "visual": {
+    "primary_color": "#D6DAE0",
+    "accent_color": "#8C1F27",
+    "livery": "stripe_dual",
+    "has_wing": true,
+    "sprite": "sprites/topdown/grauwolf-sturm-8-csl.png",
+    "sprite_shadow": "sprites/shadow/grauwolf-sturm-8-csl_shadow.png",
+    "thumbnail": "sprites/thumbs/grauwolf-sturm-8-csl_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v8_turbo",
+    "loops": {
+      "idle": "audio/engines/v8_turbo/v8_turbo_idle.wav",
+      "low": "audio/engines/v8_turbo/v8_turbo_low.wav",
+      "mid": "audio/engines/v8_turbo/v8_turbo_mid.wav",
+      "high": "audio/engines/v8_turbo/v8_turbo_high.wav",
+      "redline": "audio/engines/v8_turbo/v8_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v8_turbo/v8_turbo_rev.wav",
+    "startup": "audio/engines/v8_turbo/v8_turbo_start.wav",
+    "base_pitch_rpm": 740
+  },
+  "tags": [
+    "drift",
+    "germany",
+    "gt",
+    "rwd",
+    "super",
+    "turbo"
+  ],
+  "seed": 703749350
+}

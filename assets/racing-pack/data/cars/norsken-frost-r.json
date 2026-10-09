@@ -1,0 +1,98 @@
+{
+  "id": "norsken-frost-r",
+  "index": 59,
+  "name": "Norsken Frost R",
+  "manufacturer": "Norsken",
+  "model": "Frost R",
+  "country": "Sweden",
+  "year": 2024,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "wagon",
+  "seats": 5,
+  "blurb": "Electrified rear axle, snow tyres optional, dignity intact.",
+  "engine": {
+    "code": "i4_turbo",
+    "label": "Turbo Inline-4",
+    "cylinders": 4,
+    "aspiration": "turbocharged",
+    "idle_rpm": 820,
+    "redline_rpm": 6900,
+    "sound_family": "i4_turbo"
+  },
+  "performance": {
+    "power_hp": 360,
+    "power_kw": 268,
+    "torque_nm": 500,
+    "weight_kg": 1620,
+    "power_to_weight_hp_per_tonne": 222.2,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 280,
+    "top_speed_mph": 174,
+    "accel_0_100_kmh_s": 4.76,
+    "accel_0_200_kmh_s": 17.96,
+    "braking_100_0_m": 42.7,
+    "lateral_g": 0.98,
+    "handling_rating": 41,
+    "performance_index": 572,
+    "performance_class": "A"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.45,
+      2.448,
+      1.736,
+      1.232,
+      0.874,
+      0.62
+    ],
+    "final_drive": 3.71,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 423000,
+    "unlock_level": 11,
+    "race_reward_credits": 19000
+  },
+  "dimensions": {
+    "length_m": 4.708,
+    "width_m": 1.853,
+    "wheelbase_m": 2.825
+  },
+  "visual": {
+    "primary_color": "#2E7D6B",
+    "accent_color": "#DCE0E4",
+    "livery": "solid",
+    "has_wing": false,
+    "sprite": "sprites/topdown/norsken-frost-r.png",
+    "sprite_shadow": "sprites/shadow/norsken-frost-r_shadow.png",
+    "thumbnail": "sprites/thumbs/norsken-frost-r_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4_turbo",
+    "loops": {
+      "idle": "audio/engines/i4_turbo/i4_turbo_idle.wav",
+      "low": "audio/engines/i4_turbo/i4_turbo_low.wav",
+      "mid": "audio/engines/i4_turbo/i4_turbo_mid.wav",
+      "high": "audio/engines/i4_turbo/i4_turbo_high.wav",
+      "redline": "audio/engines/i4_turbo/i4_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4_turbo/i4_turbo_rev.wav",
+    "startup": "audio/engines/i4_turbo/i4_turbo_start.wav",
+    "base_pitch_rpm": 820
+  },
+  "tags": [
+    "awd",
+    "sweden",
+    "tuned",
+    "turbo",
+    "wagon"
+  ],
+  "seed": 3891562085
+}

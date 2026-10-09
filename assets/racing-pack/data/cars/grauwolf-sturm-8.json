@@ -1,0 +1,99 @@
+{
+  "id": "grauwolf-sturm-8",
+  "index": 47,
+  "name": "Grauwolf Sturm 8",
+  "manufacturer": "Grauwolf",
+  "model": "Sturm 8",
+  "country": "Germany",
+  "year": 2024,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "sedan",
+  "seats": 5,
+  "blurb": "A four-door with a twin-turbo V8 and absolutely no respect for its own tyres.",
+  "engine": {
+    "code": "v8_turbo",
+    "label": "Twin-Turbo V8",
+    "cylinders": 8,
+    "aspiration": "turbocharged",
+    "idle_rpm": 740,
+    "redline_rpm": 7600,
+    "sound_family": "v8_turbo"
+  },
+  "performance": {
+    "power_hp": 600,
+    "power_kw": 447,
+    "torque_nm": 750,
+    "weight_kg": 1830,
+    "power_to_weight_hp_per_tonne": 327.9,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 330,
+    "top_speed_mph": 205,
+    "accel_0_100_kmh_s": 3.51,
+    "accel_0_200_kmh_s": 12.23,
+    "braking_100_0_m": 41.8,
+    "lateral_g": 0.99,
+    "handling_rating": 42,
+    "performance_index": 652,
+    "performance_class": "S1"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.35,
+      2.529,
+      1.909,
+      1.441,
+      1.088,
+      0.821,
+      0.62
+    ],
+    "final_drive": 3.58,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 691000,
+    "unlock_level": 14,
+    "race_reward_credits": 31100
+  },
+  "dimensions": {
+    "length_m": 4.66,
+    "width_m": 1.863,
+    "wheelbase_m": 2.796
+  },
+  "visual": {
+    "primary_color": "#8C1F27",
+    "accent_color": "#1E2A47",
+    "livery": "solid",
+    "has_wing": false,
+    "sprite": "sprites/topdown/grauwolf-sturm-8.png",
+    "sprite_shadow": "sprites/shadow/grauwolf-sturm-8_shadow.png",
+    "thumbnail": "sprites/thumbs/grauwolf-sturm-8_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v8_turbo",
+    "loops": {
+      "idle": "audio/engines/v8_turbo/v8_turbo_idle.wav",
+      "low": "audio/engines/v8_turbo/v8_turbo_low.wav",
+      "mid": "audio/engines/v8_turbo/v8_turbo_mid.wav",
+      "high": "audio/engines/v8_turbo/v8_turbo_high.wav",
+      "redline": "audio/engines/v8_turbo/v8_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v8_turbo/v8_turbo_rev.wav",
+    "startup": "audio/engines/v8_turbo/v8_turbo_start.wav",
+    "base_pitch_rpm": 740
+  },
+  "tags": [
+    "awd",
+    "germany",
+    "sedan",
+    "tuned",
+    "turbo"
+  ],
+  "seed": 855816000
+}

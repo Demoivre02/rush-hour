@@ -1,0 +1,98 @@
+{
+  "id": "aveline-cirrus-rallye",
+  "index": 42,
+  "name": "Aveline Cirrus Rallye",
+  "manufacturer": "Aveline",
+  "model": "Cirrus Rallye",
+  "country": "France",
+  "year": 2023,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "rally",
+  "seats": 5,
+  "blurb": "Aveline's rally homologation. Long-travel suspension and a co-driver seat.",
+  "engine": {
+    "code": "i4_turbo",
+    "label": "Turbo Inline-4",
+    "cylinders": 4,
+    "aspiration": "turbocharged",
+    "idle_rpm": 820,
+    "redline_rpm": 6900,
+    "sound_family": "i4_turbo"
+  },
+  "performance": {
+    "power_hp": 305,
+    "power_kw": 227,
+    "torque_nm": 420,
+    "weight_kg": 1230,
+    "power_to_weight_hp_per_tonne": 248.0,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 262,
+    "top_speed_mph": 163,
+    "accel_0_100_kmh_s": 4.37,
+    "accel_0_200_kmh_s": 17.05,
+    "braking_100_0_m": 37.6,
+    "lateral_g": 1.08,
+    "handling_rating": 53,
+    "performance_index": 622,
+    "performance_class": "S1"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.473,
+      2.461,
+      1.743,
+      1.235,
+      0.875,
+      0.62
+    ],
+    "final_drive": 3.74,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 579500,
+    "unlock_level": 13,
+    "race_reward_credits": 26100
+  },
+  "dimensions": {
+    "length_m": 4.547,
+    "width_m": 1.805,
+    "wheelbase_m": 2.728
+  },
+  "visual": {
+    "primary_color": "#EDEFF1",
+    "accent_color": "#1A1D21",
+    "livery": "rally",
+    "has_wing": true,
+    "sprite": "sprites/topdown/aveline-cirrus-rallye.png",
+    "sprite_shadow": "sprites/shadow/aveline-cirrus-rallye_shadow.png",
+    "thumbnail": "sprites/thumbs/aveline-cirrus-rallye_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4_turbo",
+    "loops": {
+      "idle": "audio/engines/i4_turbo/i4_turbo_idle.wav",
+      "low": "audio/engines/i4_turbo/i4_turbo_low.wav",
+      "mid": "audio/engines/i4_turbo/i4_turbo_mid.wav",
+      "high": "audio/engines/i4_turbo/i4_turbo_high.wav",
+      "redline": "audio/engines/i4_turbo/i4_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4_turbo/i4_turbo_rev.wav",
+    "startup": "audio/engines/i4_turbo/i4_turbo_start.wav",
+    "base_pitch_rpm": 820
+  },
+  "tags": [
+    "awd",
+    "france",
+    "rally",
+    "tuned",
+    "turbo"
+  ],
+  "seed": 1105267030
+}

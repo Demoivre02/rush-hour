@@ -1,0 +1,98 @@
+{
+  "id": "ironvale-sentinel",
+  "index": 24,
+  "name": "Ironvale Sentinel",
+  "manufacturer": "Ironvale",
+  "model": "Sentinel",
+  "country": "USA",
+  "year": 2022,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "suv",
+  "seats": 7,
+  "blurb": "Body-on-frame, three tonnes of intent, physics be damned.",
+  "engine": {
+    "code": "v6",
+    "label": "V6",
+    "cylinders": 6,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 740,
+    "redline_rpm": 6800,
+    "sound_family": "v6"
+  },
+  "performance": {
+    "power_hp": 265,
+    "power_kw": 198,
+    "torque_nm": 390,
+    "weight_kg": 2280,
+    "power_to_weight_hp_per_tonne": 116.2,
+    "drivetrain": "4WD",
+    "top_speed_kmh": 210,
+    "top_speed_mph": 130,
+    "accel_0_100_kmh_s": 8.64,
+    "accel_0_200_kmh_s": 34.83,
+    "braking_100_0_m": 62.1,
+    "lateral_g": 0.73,
+    "handling_rating": 10,
+    "performance_index": 268,
+    "performance_class": "D"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.49,
+      2.47,
+      1.748,
+      1.237,
+      0.876,
+      0.62
+    ],
+    "final_drive": 3.76,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 26000,
+    "unlock_level": 3,
+    "race_reward_credits": 1200
+  },
+  "dimensions": {
+    "length_m": 5.074,
+    "width_m": 1.962,
+    "wheelbase_m": 3.044
+  },
+  "visual": {
+    "primary_color": "#8B8378",
+    "accent_color": "#9C3B26",
+    "livery": "solid",
+    "has_wing": false,
+    "sprite": "sprites/topdown/ironvale-sentinel.png",
+    "sprite_shadow": "sprites/shadow/ironvale-sentinel_shadow.png",
+    "thumbnail": "sprites/thumbs/ironvale-sentinel_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v6",
+    "loops": {
+      "idle": "audio/engines/v6/v6_idle.wav",
+      "low": "audio/engines/v6/v6_low.wav",
+      "mid": "audio/engines/v6/v6_mid.wav",
+      "high": "audio/engines/v6/v6_high.wav",
+      "redline": "audio/engines/v6/v6_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v6/v6_rev.wav",
+    "startup": "audio/engines/v6/v6_start.wav",
+    "base_pitch_rpm": 740
+  },
+  "tags": [
+    "4wd",
+    "base",
+    "heavy",
+    "suv",
+    "usa"
+  ],
+  "seed": 3132583484
+}

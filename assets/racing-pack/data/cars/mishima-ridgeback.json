@@ -1,0 +1,98 @@
+{
+  "id": "mishima-ridgeback",
+  "index": 17,
+  "name": "Mishima Ridgeback",
+  "manufacturer": "Mishima",
+  "model": "Ridgeback",
+  "country": "Japan",
+  "year": 2022,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "suv",
+  "seats": 7,
+  "blurb": "Seven seats, a locking diff, and no idea it's in a racing game.",
+  "engine": {
+    "code": "v6",
+    "label": "V6",
+    "cylinders": 6,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 740,
+    "redline_rpm": 6800,
+    "sound_family": "v6"
+  },
+  "performance": {
+    "power_hp": 250,
+    "power_kw": 186,
+    "torque_nm": 350,
+    "weight_kg": 2050,
+    "power_to_weight_hp_per_tonne": 122.0,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 210,
+    "top_speed_mph": 130,
+    "accel_0_100_kmh_s": 7.78,
+    "accel_0_200_kmh_s": 31.82,
+    "braking_100_0_m": 61.2,
+    "lateral_g": 0.74,
+    "handling_rating": 11,
+    "performance_index": 295,
+    "performance_class": "D"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.496,
+      2.474,
+      1.75,
+      1.238,
+      0.876,
+      0.62
+    ],
+    "final_drive": 3.77,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 35000,
+    "unlock_level": 3,
+    "race_reward_credits": 1600
+  },
+  "dimensions": {
+    "length_m": 4.95,
+    "width_m": 1.985,
+    "wheelbase_m": 2.97
+  },
+  "visual": {
+    "primary_color": "#6E1F22",
+    "accent_color": "#2B3138",
+    "livery": "two_tone",
+    "has_wing": false,
+    "sprite": "sprites/topdown/mishima-ridgeback.png",
+    "sprite_shadow": "sprites/shadow/mishima-ridgeback_shadow.png",
+    "thumbnail": "sprites/thumbs/mishima-ridgeback_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v6",
+    "loops": {
+      "idle": "audio/engines/v6/v6_idle.wav",
+      "low": "audio/engines/v6/v6_low.wav",
+      "mid": "audio/engines/v6/v6_mid.wav",
+      "high": "audio/engines/v6/v6_high.wav",
+      "redline": "audio/engines/v6/v6_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v6/v6_rev.wav",
+    "startup": "audio/engines/v6/v6_start.wav",
+    "base_pitch_rpm": 740
+  },
+  "tags": [
+    "awd",
+    "base",
+    "heavy",
+    "japan",
+    "suv"
+  ],
+  "seed": 537053727
+}

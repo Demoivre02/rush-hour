@@ -1,0 +1,98 @@
+{
+  "id": "ironvale-mule-150",
+  "index": 25,
+  "name": "Ironvale Mule 150",
+  "manufacturer": "Ironvale",
+  "model": "Mule 150",
+  "country": "USA",
+  "year": 2023,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "pickup",
+  "seats": 5,
+  "blurb": "A pickup in a racing game is a statement. Make it.",
+  "engine": {
+    "code": "v6",
+    "label": "V6",
+    "cylinders": 6,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 740,
+    "redline_rpm": 6800,
+    "sound_family": "v6"
+  },
+  "performance": {
+    "power_hp": 250,
+    "power_kw": 186,
+    "torque_nm": 400,
+    "weight_kg": 2150,
+    "power_to_weight_hp_per_tonne": 116.3,
+    "drivetrain": "4WD",
+    "top_speed_kmh": 210,
+    "top_speed_mph": 130,
+    "accel_0_100_kmh_s": 8.63,
+    "accel_0_200_kmh_s": 35.3,
+    "braking_100_0_m": 67.2,
+    "lateral_g": 0.7,
+    "handling_rating": 6,
+    "performance_index": 259,
+    "performance_class": "D"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.496,
+      2.474,
+      1.75,
+      1.238,
+      0.876,
+      0.62
+    ],
+    "final_drive": 3.77,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 23500,
+    "unlock_level": 2,
+    "race_reward_credits": 1100
+  },
+  "dimensions": {
+    "length_m": 5.569,
+    "width_m": 2.062,
+    "wheelbase_m": 3.341
+  },
+  "visual": {
+    "primary_color": "#1C1F23",
+    "accent_color": "#C6C9CC",
+    "livery": "two_tone",
+    "has_wing": false,
+    "sprite": "sprites/topdown/ironvale-mule-150.png",
+    "sprite_shadow": "sprites/shadow/ironvale-mule-150_shadow.png",
+    "thumbnail": "sprites/thumbs/ironvale-mule-150_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v6",
+    "loops": {
+      "idle": "audio/engines/v6/v6_idle.wav",
+      "low": "audio/engines/v6/v6_low.wav",
+      "mid": "audio/engines/v6/v6_mid.wav",
+      "high": "audio/engines/v6/v6_high.wav",
+      "redline": "audio/engines/v6/v6_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v6/v6_rev.wav",
+    "startup": "audio/engines/v6/v6_start.wav",
+    "base_pitch_rpm": 740
+  },
+  "tags": [
+    "4wd",
+    "base",
+    "heavy",
+    "pickup",
+    "usa"
+  ],
+  "seed": 387391640
+}

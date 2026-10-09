@@ -1,0 +1,99 @@
+{
+  "id": "marlowe-comet-ss",
+  "index": 54,
+  "name": "Marlowe Comet SS",
+  "manufacturer": "Marlowe",
+  "model": "Comet SS",
+  "country": "USA",
+  "year": 2023,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "pony",
+  "seats": 4,
+  "blurb": "The Comet with the proper engine. Balance sold separately.",
+  "engine": {
+    "code": "v8",
+    "label": "V8",
+    "cylinders": 8,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 700,
+    "redline_rpm": 7200,
+    "sound_family": "v8"
+  },
+  "performance": {
+    "power_hp": 490,
+    "power_kw": 365,
+    "torque_nm": 630,
+    "weight_kg": 1690,
+    "power_to_weight_hp_per_tonne": 289.9,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 313,
+    "top_speed_mph": 194,
+    "accel_0_100_kmh_s": 4.37,
+    "accel_0_200_kmh_s": 15.65,
+    "braking_100_0_m": 44.1,
+    "lateral_g": 0.95,
+    "handling_rating": 37,
+    "performance_index": 593,
+    "performance_class": "A"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.396,
+      2.558,
+      1.926,
+      1.451,
+      1.093,
+      0.823,
+      0.62
+    ],
+    "final_drive": 3.64,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 484500,
+    "unlock_level": 12,
+    "race_reward_credits": 21800
+  },
+  "dimensions": {
+    "length_m": 4.809,
+    "width_m": 1.942,
+    "wheelbase_m": 2.885
+  },
+  "visual": {
+    "primary_color": "#E8EAEC",
+    "accent_color": "#D93A2B",
+    "livery": "stripe_center",
+    "has_wing": true,
+    "sprite": "sprites/topdown/marlowe-comet-ss.png",
+    "sprite_shadow": "sprites/shadow/marlowe-comet-ss_shadow.png",
+    "thumbnail": "sprites/thumbs/marlowe-comet-ss_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v8",
+    "loops": {
+      "idle": "audio/engines/v8/v8_idle.wav",
+      "low": "audio/engines/v8/v8_low.wav",
+      "mid": "audio/engines/v8/v8_mid.wav",
+      "high": "audio/engines/v8/v8_high.wav",
+      "redline": "audio/engines/v8/v8_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v8/v8_rev.wav",
+    "startup": "audio/engines/v8/v8_start.wav",
+    "base_pitch_rpm": 700
+  },
+  "tags": [
+    "drift",
+    "pony",
+    "rwd",
+    "tuned",
+    "usa"
+  ],
+  "seed": 1167681739
+}

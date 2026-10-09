@@ -1,0 +1,98 @@
+{
+  "id": "eisenbach-kreuz-gt",
+  "index": 50,
+  "name": "Eisenbach Kreuz GT",
+  "manufacturer": "Eisenbach",
+  "model": "Kreuz GT",
+  "country": "Germany",
+  "year": 2022,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "gt",
+  "seats": 2,
+  "blurb": "Naturally aspirated V10 in an aluminium spaceframe. The last of its kind.",
+  "engine": {
+    "code": "v10",
+    "label": "V10",
+    "cylinders": 10,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 900,
+    "redline_rpm": 8700,
+    "sound_family": "v10"
+  },
+  "performance": {
+    "power_hp": 620,
+    "power_kw": 462,
+    "torque_nm": 560,
+    "weight_kg": 1650,
+    "power_to_weight_hp_per_tonne": 375.8,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 330,
+    "top_speed_mph": 205,
+    "accel_0_100_kmh_s": 3.16,
+    "accel_0_200_kmh_s": 10.96,
+    "braking_100_0_m": 37.9,
+    "lateral_g": 1.07,
+    "handling_rating": 52,
+    "performance_index": 703,
+    "performance_class": "S2"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.342,
+      2.524,
+      1.906,
+      1.439,
+      1.087,
+      0.821,
+      0.62
+    ],
+    "final_drive": 3.57,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 913000,
+    "unlock_level": 16,
+    "race_reward_credits": 41100
+  },
+  "dimensions": {
+    "length_m": 4.843,
+    "width_m": 1.971,
+    "wheelbase_m": 2.906
+  },
+  "visual": {
+    "primary_color": "#2A2E33",
+    "accent_color": "#1A4E86",
+    "livery": "racing_split",
+    "has_wing": true,
+    "sprite": "sprites/topdown/eisenbach-kreuz-gt.png",
+    "sprite_shadow": "sprites/shadow/eisenbach-kreuz-gt_shadow.png",
+    "thumbnail": "sprites/thumbs/eisenbach-kreuz-gt_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v10",
+    "loops": {
+      "idle": "audio/engines/v10/v10_idle.wav",
+      "low": "audio/engines/v10/v10_low.wav",
+      "mid": "audio/engines/v10/v10_mid.wav",
+      "high": "audio/engines/v10/v10_high.wav",
+      "redline": "audio/engines/v10/v10_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v10/v10_rev.wav",
+    "startup": "audio/engines/v10/v10_start.wav",
+    "base_pitch_rpm": 900
+  },
+  "tags": [
+    "awd",
+    "germany",
+    "gt",
+    "tuned"
+  ],
+  "seed": 810416519
+}

@@ -1,0 +1,100 @@
+{
+  "id": "katsuro-kaido-turbo",
+  "index": 31,
+  "name": "Katsuro Kaido Turbo",
+  "manufacturer": "Katsuro",
+  "model": "Kaido Turbo",
+  "country": "Japan",
+  "year": 2001,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "coupe",
+  "seats": 4,
+  "blurb": "A big single turbo bolted to a legend. Laggy, violent, adored.",
+  "engine": {
+    "code": "i4_turbo",
+    "label": "Turbo Inline-4",
+    "cylinders": 4,
+    "aspiration": "turbocharged",
+    "idle_rpm": 820,
+    "redline_rpm": 6900,
+    "sound_family": "i4_turbo"
+  },
+  "performance": {
+    "power_hp": 340,
+    "power_kw": 254,
+    "torque_nm": 440,
+    "weight_kg": 1180,
+    "power_to_weight_hp_per_tonne": 288.1,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 284,
+    "top_speed_mph": 176,
+    "accel_0_100_kmh_s": 4.39,
+    "accel_0_200_kmh_s": 16.75,
+    "braking_100_0_m": 39.8,
+    "lateral_g": 1.03,
+    "handling_rating": 47,
+    "performance_index": 613,
+    "performance_class": "S1"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.458,
+      2.452,
+      1.739,
+      1.233,
+      0.874,
+      0.62
+    ],
+    "final_drive": 3.72,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 685500,
+    "unlock_level": 13,
+    "race_reward_credits": 30800
+  },
+  "dimensions": {
+    "length_m": 4.531,
+    "width_m": 1.824,
+    "wheelbase_m": 2.719
+  },
+  "visual": {
+    "primary_color": "#8E2B2B",
+    "accent_color": "#111418",
+    "livery": "stripe_dual",
+    "has_wing": true,
+    "sprite": "sprites/topdown/katsuro-kaido-turbo.png",
+    "sprite_shadow": "sprites/shadow/katsuro-kaido-turbo_shadow.png",
+    "thumbnail": "sprites/thumbs/katsuro-kaido-turbo_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4_turbo",
+    "loops": {
+      "idle": "audio/engines/i4_turbo/i4_turbo_idle.wav",
+      "low": "audio/engines/i4_turbo/i4_turbo_low.wav",
+      "mid": "audio/engines/i4_turbo/i4_turbo_mid.wav",
+      "high": "audio/engines/i4_turbo/i4_turbo_high.wav",
+      "redline": "audio/engines/i4_turbo/i4_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4_turbo/i4_turbo_rev.wav",
+    "startup": "audio/engines/i4_turbo/i4_turbo_start.wav",
+    "base_pitch_rpm": 820
+  },
+  "tags": [
+    "classic",
+    "coupe",
+    "drift",
+    "japan",
+    "rwd",
+    "tuned",
+    "turbo"
+  ],
+  "seed": 4028391879
+}

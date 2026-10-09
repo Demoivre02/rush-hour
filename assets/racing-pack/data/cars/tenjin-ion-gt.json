@@ -1,0 +1,93 @@
+{
+  "id": "tenjin-ion-gt",
+  "index": 60,
+  "name": "Tenjin Ion GT",
+  "manufacturer": "Tenjin",
+  "model": "Ion GT",
+  "country": "Japan",
+  "year": 2025,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "sedan",
+  "seats": 5,
+  "blurb": "Four hundred and eighty silent horsepower. The strangest thing you'll ever overtake with.",
+  "engine": {
+    "code": "electric",
+    "label": "Electric",
+    "cylinders": 0,
+    "aspiration": "electric",
+    "idle_rpm": 0,
+    "redline_rpm": 18000,
+    "sound_family": "electric"
+  },
+  "performance": {
+    "power_hp": 480,
+    "power_kw": 358,
+    "torque_nm": 700,
+    "weight_kg": 1720,
+    "power_to_weight_hp_per_tonne": 279.1,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 321,
+    "top_speed_mph": 199,
+    "accel_0_100_kmh_s": 3.59,
+    "accel_0_200_kmh_s": 12.89,
+    "braking_100_0_m": 41.8,
+    "lateral_g": 0.99,
+    "handling_rating": 42,
+    "performance_index": 643,
+    "performance_class": "S1"
+  },
+  "drivetrain_detail": {
+    "gears": 1,
+    "gear_ratios": [
+      8.6
+    ],
+    "final_drive": 3.65,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 656000,
+    "unlock_level": 14,
+    "race_reward_credits": 29500
+  },
+  "dimensions": {
+    "length_m": 4.763,
+    "width_m": 1.817,
+    "wheelbase_m": 2.858
+  },
+  "visual": {
+    "primary_color": "#26C6A8",
+    "accent_color": "#171B20",
+    "livery": "stripe_center",
+    "has_wing": false,
+    "sprite": "sprites/topdown/tenjin-ion-gt.png",
+    "sprite_shadow": "sprites/shadow/tenjin-ion-gt_shadow.png",
+    "thumbnail": "sprites/thumbs/tenjin-ion-gt_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/electric",
+    "loops": {
+      "idle": "audio/engines/electric/electric_idle.wav",
+      "low": "audio/engines/electric/electric_low.wav",
+      "mid": "audio/engines/electric/electric_mid.wav",
+      "high": "audio/engines/electric/electric_high.wav",
+      "redline": "audio/engines/electric/electric_redline.wav"
+    },
+    "rev_sweep": "audio/engines/electric/electric_rev.wav",
+    "startup": "audio/engines/electric/electric_start.wav",
+    "base_pitch_rpm": 1200
+  },
+  "tags": [
+    "awd",
+    "electric",
+    "japan",
+    "sedan",
+    "tuned"
+  ],
+  "seed": 2499161993
+}

@@ -1,0 +1,97 @@
+{
+  "id": "vorst-ceres",
+  "index": 20,
+  "name": "Vorst Ceres",
+  "manufacturer": "Vorst",
+  "model": "Ceres",
+  "country": "Germany",
+  "year": 2021,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "coupe",
+  "seats": 4,
+  "blurb": "Mid-engined, flat-four, and the purest steering rack under six figures.",
+  "engine": {
+    "code": "flat4",
+    "label": "Flat-4",
+    "cylinders": 4,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 820,
+    "redline_rpm": 7400,
+    "sound_family": "flat4"
+  },
+  "performance": {
+    "power_hp": 200,
+    "power_kw": 149,
+    "torque_nm": 320,
+    "weight_kg": 1220,
+    "power_to_weight_hp_per_tonne": 163.9,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 238,
+    "top_speed_mph": 148,
+    "accel_0_100_kmh_s": 6.98,
+    "accel_0_200_kmh_s": 30.36,
+    "braking_100_0_m": 44.0,
+    "lateral_g": 0.93,
+    "handling_rating": 35,
+    "performance_index": 458,
+    "performance_class": "B"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.517,
+      2.485,
+      1.756,
+      1.241,
+      0.877,
+      0.62
+    ],
+    "final_drive": 3.79,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 181000,
+    "unlock_level": 7,
+    "race_reward_credits": 8100
+  },
+  "dimensions": {
+    "length_m": 4.473,
+    "width_m": 1.788,
+    "wheelbase_m": 2.684
+  },
+  "visual": {
+    "primary_color": "#C0342C",
+    "accent_color": "#D9A93B",
+    "livery": "solid",
+    "has_wing": false,
+    "sprite": "sprites/topdown/vorst-ceres.png",
+    "sprite_shadow": "sprites/shadow/vorst-ceres_shadow.png",
+    "thumbnail": "sprites/thumbs/vorst-ceres_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/flat4",
+    "loops": {
+      "idle": "audio/engines/flat4/flat4_idle.wav",
+      "low": "audio/engines/flat4/flat4_low.wav",
+      "mid": "audio/engines/flat4/flat4_mid.wav",
+      "high": "audio/engines/flat4/flat4_high.wav",
+      "redline": "audio/engines/flat4/flat4_redline.wav"
+    },
+    "rev_sweep": "audio/engines/flat4/flat4_rev.wav",
+    "startup": "audio/engines/flat4/flat4_start.wav",
+    "base_pitch_rpm": 820
+  },
+  "tags": [
+    "base",
+    "coupe",
+    "germany",
+    "rwd"
+  ],
+  "seed": 1536018346
+}

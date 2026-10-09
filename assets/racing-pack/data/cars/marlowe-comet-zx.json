@@ -1,0 +1,100 @@
+{
+  "id": "marlowe-comet-zx",
+  "index": 78,
+  "name": "Marlowe Comet ZX",
+  "manufacturer": "Marlowe",
+  "model": "Comet ZX",
+  "country": "USA",
+  "year": 2025,
+  "tier": "super",
+  "tier_label": "Supercar",
+  "body_type": "supercar",
+  "seats": 2,
+  "blurb": "Marlowe finally put the engine behind the driver. It changed everything.",
+  "engine": {
+    "code": "v8_turbo",
+    "label": "Twin-Turbo V8",
+    "cylinders": 8,
+    "aspiration": "turbocharged",
+    "idle_rpm": 740,
+    "redline_rpm": 7600,
+    "sound_family": "v8_turbo"
+  },
+  "performance": {
+    "power_hp": 680,
+    "power_kw": 507,
+    "torque_nm": 780,
+    "weight_kg": 1580,
+    "power_to_weight_hp_per_tonne": 430.4,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 355,
+    "top_speed_mph": 221,
+    "accel_0_100_kmh_s": 3.09,
+    "accel_0_200_kmh_s": 10.61,
+    "braking_100_0_m": 33.1,
+    "lateral_g": 1.21,
+    "handling_rating": 69,
+    "performance_index": 787,
+    "performance_class": "S2"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.317,
+      2.571,
+      1.993,
+      1.545,
+      1.198,
+      0.929,
+      0.72
+    ],
+    "final_drive": 3.54,
+    "tyre_compound": "Semi-Slick"
+  },
+  "nitro": {
+    "capacity_s": 5.0,
+    "power_mult": 1.26,
+    "refill_s": 10.0
+  },
+  "economy": {
+    "price_credits": 1380500,
+    "unlock_level": 20,
+    "race_reward_credits": 62100
+  },
+  "dimensions": {
+    "length_m": 4.482,
+    "width_m": 2.008,
+    "wheelbase_m": 2.689
+  },
+  "visual": {
+    "primary_color": "#D93A2B",
+    "accent_color": "#2E5FA3",
+    "livery": "stripe_center",
+    "has_wing": true,
+    "sprite": "sprites/topdown/marlowe-comet-zx.png",
+    "sprite_shadow": "sprites/shadow/marlowe-comet-zx_shadow.png",
+    "thumbnail": "sprites/thumbs/marlowe-comet-zx_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v8_turbo",
+    "loops": {
+      "idle": "audio/engines/v8_turbo/v8_turbo_idle.wav",
+      "low": "audio/engines/v8_turbo/v8_turbo_low.wav",
+      "mid": "audio/engines/v8_turbo/v8_turbo_mid.wav",
+      "high": "audio/engines/v8_turbo/v8_turbo_high.wav",
+      "redline": "audio/engines/v8_turbo/v8_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v8_turbo/v8_turbo_rev.wav",
+    "startup": "audio/engines/v8_turbo/v8_turbo_start.wav",
+    "base_pitch_rpm": 740
+  },
+  "tags": [
+    "drift",
+    "rwd",
+    "super",
+    "supercar",
+    "turbo",
+    "usa"
+  ],
+  "seed": 3151359867
+}

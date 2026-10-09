@@ -1,0 +1,99 @@
+{
+  "id": "eisenbach-nordwand-gt",
+  "index": 74,
+  "name": "Eisenbach Nordwand GT",
+  "manufacturer": "Eisenbach",
+  "model": "Nordwand GT",
+  "country": "Germany",
+  "year": 2024,
+  "tier": "super",
+  "tier_label": "Supercar",
+  "body_type": "supercar",
+  "seats": 2,
+  "blurb": "All-wheel drive, all-weather, all the time. The point-and-shoot supercar.",
+  "engine": {
+    "code": "v8_turbo",
+    "label": "Twin-Turbo V8",
+    "cylinders": 8,
+    "aspiration": "turbocharged",
+    "idle_rpm": 740,
+    "redline_rpm": 7600,
+    "sound_family": "v8_turbo"
+  },
+  "performance": {
+    "power_hp": 720,
+    "power_kw": 537,
+    "torque_nm": 800,
+    "weight_kg": 1620,
+    "power_to_weight_hp_per_tonne": 444.4,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 362,
+    "top_speed_mph": 225,
+    "accel_0_100_kmh_s": 2.67,
+    "accel_0_200_kmh_s": 9.11,
+    "braking_100_0_m": 32.5,
+    "lateral_g": 1.23,
+    "handling_rating": 72,
+    "performance_index": 813,
+    "performance_class": "X"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.3,
+      2.56,
+      1.987,
+      1.541,
+      1.196,
+      0.928,
+      0.72
+    ],
+    "final_drive": 3.52,
+    "tyre_compound": "Semi-Slick"
+  },
+  "nitro": {
+    "capacity_s": 5.0,
+    "power_mult": 1.26,
+    "refill_s": 10.0
+  },
+  "economy": {
+    "price_credits": 1553000,
+    "unlock_level": 21,
+    "race_reward_credits": 69900
+  },
+  "dimensions": {
+    "length_m": 4.532,
+    "width_m": 1.974,
+    "wheelbase_m": 2.719
+  },
+  "visual": {
+    "primary_color": "#B9BEC4",
+    "accent_color": "#1A4E86",
+    "livery": "solid",
+    "has_wing": true,
+    "sprite": "sprites/topdown/eisenbach-nordwand-gt.png",
+    "sprite_shadow": "sprites/shadow/eisenbach-nordwand-gt_shadow.png",
+    "thumbnail": "sprites/thumbs/eisenbach-nordwand-gt_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v8_turbo",
+    "loops": {
+      "idle": "audio/engines/v8_turbo/v8_turbo_idle.wav",
+      "low": "audio/engines/v8_turbo/v8_turbo_low.wav",
+      "mid": "audio/engines/v8_turbo/v8_turbo_mid.wav",
+      "high": "audio/engines/v8_turbo/v8_turbo_high.wav",
+      "redline": "audio/engines/v8_turbo/v8_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v8_turbo/v8_turbo_rev.wav",
+    "startup": "audio/engines/v8_turbo/v8_turbo_start.wav",
+    "base_pitch_rpm": 740
+  },
+  "tags": [
+    "awd",
+    "germany",
+    "super",
+    "supercar",
+    "turbo"
+  ],
+  "seed": 2157961794
+}

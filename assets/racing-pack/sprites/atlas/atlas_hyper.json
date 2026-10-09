@@ -1,0 +1,97 @@
+{
+  "image": "atlas_hyper.png",
+  "frame_w": 200,
+  "frame_h": 384,
+  "frames": {
+    "alviero-divina": {
+      "x": 0,
+      "y": 0,
+      "w": 200,
+      "h": 384
+    },
+    "scorpetti-aeterna": {
+      "x": 200,
+      "y": 0,
+      "w": 200,
+      "h": 384
+    },
+    "valdoro-corvino": {
+      "x": 400,
+      "y": 0,
+      "w": 200,
+      "h": 384
+    },
+    "vorst-kaskade": {
+      "x": 600,
+      "y": 0,
+      "w": 200,
+      "h": 384
+    },
+    "grauwolf-projekt-r": {
+      "x": 800,
+      "y": 0,
+      "w": 200,
+      "h": 384
+    },
+    "krallmann-zorn-900": {
+      "x": 1000,
+      "y": 0,
+      "w": 200,
+      "h": 384
+    },
+    "krallmann-nachtfalter": {
+      "x": 0,
+      "y": 384,
+      "w": 200,
+      "h": 384
+    },
+    "norsken-ragnar": {
+      "x": 200,
+      "y": 384,
+      "w": 200,
+      "h": 384
+    },
+    "norsken-ragnar-absolut": {
+      "x": 400,
+      "y": 384,
+      "w": 200,
+      "h": 384
+    },
+    "ashcombe-solstice-am": {
+      "x": 600,
+      "y": 384,
+      "w": 200,
+      "h": 384
+    },
+    "apex-dynamics-tempest-ev": {
+      "x": 800,
+      "y": 384,
+      "w": 200,
+      "h": 384
+    },
+    "apex-dynamics-halo-x": {
+      "x": 1000,
+      "y": 384,
+      "w": 200,
+      "h": 384
+    },
+    "mishima-raiden-omega": {
+      "x": 0,
+      "y": 768,
+      "w": 200,
+      "h": 384
+    },
+    "thornbury-vespera": {
+      "x": 200,
+      "y": 768,
+      "w": 200,
+      "h": 384
+    },
+    "wexler-thunderhead": {
+      "x": 400,
+      "y": 768,
+      "w": 200,
+      "h": 384
+    }
+  }
+}

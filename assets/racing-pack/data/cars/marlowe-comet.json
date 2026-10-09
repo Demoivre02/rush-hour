@@ -1,0 +1,97 @@
+{
+  "id": "marlowe-comet",
+  "index": 22,
+  "name": "Marlowe Comet",
+  "manufacturer": "Marlowe",
+  "model": "Comet",
+  "country": "USA",
+  "year": 2022,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "pony",
+  "seats": 4,
+  "blurb": "Marlowe's entry pony car \u2014 all the shape, two thirds of the noise.",
+  "engine": {
+    "code": "v6",
+    "label": "V6",
+    "cylinders": 6,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 740,
+    "redline_rpm": 6800,
+    "sound_family": "v6"
+  },
+  "performance": {
+    "power_hp": 258,
+    "power_kw": 192,
+    "torque_nm": 390,
+    "weight_kg": 1600,
+    "power_to_weight_hp_per_tonne": 161.2,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 253,
+    "top_speed_mph": 157,
+    "accel_0_100_kmh_s": 7.07,
+    "accel_0_200_kmh_s": 28.69,
+    "braking_100_0_m": 48.7,
+    "lateral_g": 0.86,
+    "handling_rating": 26,
+    "performance_index": 425,
+    "performance_class": "B"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.493,
+      2.472,
+      1.749,
+      1.238,
+      0.876,
+      0.62
+    ],
+    "final_drive": 3.76,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 135500,
+    "unlock_level": 6,
+    "race_reward_credits": 6100
+  },
+  "dimensions": {
+    "length_m": 4.78,
+    "width_m": 1.885,
+    "wheelbase_m": 2.868
+  },
+  "visual": {
+    "primary_color": "#1B1E23",
+    "accent_color": "#2E5FA3",
+    "livery": "stripe_center",
+    "has_wing": false,
+    "sprite": "sprites/topdown/marlowe-comet.png",
+    "sprite_shadow": "sprites/shadow/marlowe-comet_shadow.png",
+    "thumbnail": "sprites/thumbs/marlowe-comet_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v6",
+    "loops": {
+      "idle": "audio/engines/v6/v6_idle.wav",
+      "low": "audio/engines/v6/v6_low.wav",
+      "mid": "audio/engines/v6/v6_mid.wav",
+      "high": "audio/engines/v6/v6_high.wav",
+      "redline": "audio/engines/v6/v6_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v6/v6_rev.wav",
+    "startup": "audio/engines/v6/v6_start.wav",
+    "base_pitch_rpm": 740
+  },
+  "tags": [
+    "base",
+    "pony",
+    "rwd",
+    "usa"
+  ],
+  "seed": 531839004
+}

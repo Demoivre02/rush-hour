@@ -1,0 +1,101 @@
+{
+  "id": "wexler-thunderhead",
+  "index": 100,
+  "name": "Wexler Thunderhead",
+  "manufacturer": "Wexler",
+  "model": "Thunderhead",
+  "country": "USA",
+  "year": 2025,
+  "tier": "hyper",
+  "tier_label": "Hypercar",
+  "body_type": "hypercar",
+  "seats": 2,
+  "blurb": "Sixteen cylinders, four turbos, and Detroit's answer to European excess.",
+  "engine": {
+    "code": "v16_turbo",
+    "label": "Quad-Turbo W16",
+    "cylinders": 16,
+    "aspiration": "turbocharged",
+    "idle_rpm": 800,
+    "redline_rpm": 7000,
+    "sound_family": "v16_turbo"
+  },
+  "performance": {
+    "power_hp": 1580,
+    "power_kw": 1178,
+    "torque_nm": 1600,
+    "weight_kg": 1980,
+    "power_to_weight_hp_per_tonne": 798.0,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 473,
+    "top_speed_mph": 294,
+    "accel_0_100_kmh_s": 1.63,
+    "accel_0_200_kmh_s": 5.24,
+    "braking_100_0_m": 28.5,
+    "lateral_g": 1.39,
+    "handling_rating": 92,
+    "performance_index": 956,
+    "performance_class": "X"
+  },
+  "drivetrain_detail": {
+    "gears": 8,
+    "gear_ratios": [
+      2.942,
+      2.406,
+      1.968,
+      1.609,
+      1.316,
+      1.076,
+      0.88,
+      0.72
+    ],
+    "final_drive": 3.07,
+    "tyre_compound": "Track Cup 2"
+  },
+  "nitro": {
+    "capacity_s": 6.0,
+    "power_mult": 1.32,
+    "refill_s": 9.0
+  },
+  "economy": {
+    "price_credits": 2779000,
+    "unlock_level": 28,
+    "race_reward_credits": 125100
+  },
+  "dimensions": {
+    "length_m": 4.674,
+    "width_m": 2.025,
+    "wheelbase_m": 2.804
+  },
+  "visual": {
+    "primary_color": "#EFEFEF",
+    "accent_color": "#E39A1D",
+    "livery": "solid",
+    "has_wing": true,
+    "sprite": "sprites/topdown/wexler-thunderhead.png",
+    "sprite_shadow": "sprites/shadow/wexler-thunderhead_shadow.png",
+    "thumbnail": "sprites/thumbs/wexler-thunderhead_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v16_turbo",
+    "loops": {
+      "idle": "audio/engines/v16_turbo/v16_turbo_idle.wav",
+      "low": "audio/engines/v16_turbo/v16_turbo_low.wav",
+      "mid": "audio/engines/v16_turbo/v16_turbo_mid.wav",
+      "high": "audio/engines/v16_turbo/v16_turbo_high.wav",
+      "redline": "audio/engines/v16_turbo/v16_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v16_turbo/v16_turbo_rev.wav",
+    "startup": "audio/engines/v16_turbo/v16_turbo_start.wav",
+    "base_pitch_rpm": 800
+  },
+  "tags": [
+    "awd",
+    "heavy",
+    "hyper",
+    "hypercar",
+    "turbo",
+    "usa"
+  ],
+  "seed": 1443601082
+}

@@ -1,0 +1,98 @@
+{
+  "id": "hanyu-meridian-n",
+  "index": 41,
+  "name": "Hanyu Meridian N",
+  "manufacturer": "Hanyu",
+  "model": "Meridian N",
+  "country": "Korea",
+  "year": 2024,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "sedan",
+  "seats": 5,
+  "blurb": "Hanyu's skunkworks saloon. Pops, bangs, and a warranty that covers track days.",
+  "engine": {
+    "code": "i4_turbo",
+    "label": "Turbo Inline-4",
+    "cylinders": 4,
+    "aspiration": "turbocharged",
+    "idle_rpm": 820,
+    "redline_rpm": 6900,
+    "sound_family": "i4_turbo"
+  },
+  "performance": {
+    "power_hp": 290,
+    "power_kw": 216,
+    "torque_nm": 400,
+    "weight_kg": 1420,
+    "power_to_weight_hp_per_tonne": 204.2,
+    "drivetrain": "FWD",
+    "top_speed_kmh": 266,
+    "top_speed_mph": 165,
+    "accel_0_100_kmh_s": 6.1,
+    "accel_0_200_kmh_s": 24.07,
+    "braking_100_0_m": 41.8,
+    "lateral_g": 0.99,
+    "handling_rating": 42,
+    "performance_index": 531,
+    "performance_class": "A"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.479,
+      2.464,
+      1.745,
+      1.236,
+      0.875,
+      0.62
+    ],
+    "final_drive": 3.75,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 319000,
+    "unlock_level": 10,
+    "race_reward_credits": 14400
+  },
+  "dimensions": {
+    "length_m": 4.683,
+    "width_m": 1.835,
+    "wheelbase_m": 2.81
+  },
+  "visual": {
+    "primary_color": "#20242A",
+    "accent_color": "#C9CED4",
+    "livery": "stripe_dual",
+    "has_wing": false,
+    "sprite": "sprites/topdown/hanyu-meridian-n.png",
+    "sprite_shadow": "sprites/shadow/hanyu-meridian-n_shadow.png",
+    "thumbnail": "sprites/thumbs/hanyu-meridian-n_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4_turbo",
+    "loops": {
+      "idle": "audio/engines/i4_turbo/i4_turbo_idle.wav",
+      "low": "audio/engines/i4_turbo/i4_turbo_low.wav",
+      "mid": "audio/engines/i4_turbo/i4_turbo_mid.wav",
+      "high": "audio/engines/i4_turbo/i4_turbo_high.wav",
+      "redline": "audio/engines/i4_turbo/i4_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4_turbo/i4_turbo_rev.wav",
+    "startup": "audio/engines/i4_turbo/i4_turbo_start.wav",
+    "base_pitch_rpm": 820
+  },
+  "tags": [
+    "fwd",
+    "korea",
+    "sedan",
+    "tuned",
+    "turbo"
+  ],
+  "seed": 207633770
+}

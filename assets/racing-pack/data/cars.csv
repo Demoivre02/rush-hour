@@ -1,0 +1,101 @@
+index,id,name,manufacturer,model,year,tier,body_type,country,engine,drivetrain,power_hp,torque_nm,weight_kg,hp_per_tonne,top_speed_kmh,0-100_s,0-200_s,braking_100-0_m,lateral_g,handling,PI,class,price_credits,unlock_level,sound_family
+1,ishara-kite,Ishara Kite,Ishara,Kite,2019,base,city,Japan,Inline-3,FWD,92,142,950,96.8,176,11.17,65.64,48.2,0.88,28,260,D,23500,2,i3
+2,ishara-kite-rs,Ishara Kite RS,Ishara,Kite RS,2021,base,hatch,Japan,Inline-4,FWD,138,175,1010,136.6,202,8.54,42.14,45.5,0.91,32,374,C,83000,5,i4
+3,ishara-vela,Ishara Vela,Ishara,Vela,2018,base,sedan,Japan,Inline-4,FWD,128,168,1180,108.5,202,10.22,51.93,46.0,0.9,31,322,C,47500,4,i4
+4,hanyu-pulse,Hanyu Pulse,Hanyu,Pulse,2020,base,hatch,Korea,Inline-4,FWD,110,150,1090,100.9,188,10.82,58.58,45.5,0.91,32,300,C,37000,3,i4
+5,hanyu-meridian,Hanyu Meridian,Hanyu,Meridian,2022,base,sedan,Korea,Inline-4,FWD,178,265,1350,131.9,226,8.78,39.6,46.5,0.89,30,375,C,84000,5,i4
+6,hanyu-torro,Hanyu Torro,Hanyu,Torro,2023,base,suv,Korea,Turbo Inline-4,AWD,190,320,1480,128.4,206,7.47,33.01,57.7,0.78,16,315,C,44000,4,i4_turbo
+7,aveline-bonbon,Aveline Bonbon,Aveline,Bonbon,2017,base,city,France,Inline-3,FWD,84,128,880,95.5,171,11.3,69.44,47.6,0.89,30,259,D,23500,2,i3
+8,aveline-cirrus,Aveline Cirrus,Aveline,Cirrus,2021,base,hatch,France,Inline-4,FWD,132,190,1120,117.9,199,9.58,48.09,45.5,0.91,32,343,C,60000,4,i4
+9,aveline-marais,Aveline Marais,Aveline,Marais,2020,base,wagon,France,Turbo Inline-4,FWD,165,270,1310,126.0,216,9.1,42.09,48.2,0.87,27,345,C,61500,4,i4_turbo
+10,katsuro-sable,Katsuro Sable,Katsuro,Sable,2019,base,sedan,Japan,Inline-4,FWD,145,190,1230,117.9,211,9.58,46.4,46.0,0.9,31,347,C,62500,4,i4
+11,katsuro-sable-gt,Katsuro Sable GT,Katsuro,Sable GT,2022,base,sedan,Japan,Turbo Inline-4,FWD,205,300,1290,158.9,237,7.59,32.78,46.0,0.9,31,422,B,132000,6,i4_turbo
+12,katsuro-kaido,Katsuro Kaido,Katsuro,Kaido,1998,base,coupe,Japan,Inline-4,RWD,168,205,1120,150.0,225,7.48,34.39,43.6,0.94,36,439,B,191500,7,i4
+13,katsuro-ronin-2-0,Katsuro Ronin 2.0,Katsuro,Ronin 2.0,2023,base,coupe,Japan,Inline-4,RWD,200,215,1240,161.3,238,7.06,30.71,44.0,0.93,35,455,B,176500,7,i4
+14,ryuzaki-aki,Ryuzaki Aki,Ryuzaki,Aki,2016,base,roadster,Japan,Inline-4,RWD,130,160,960,135.4,205,8.1,40.9,42.6,0.95,37,414,B,122500,6,i4
+15,ryuzaki-kaze-rx,Ryuzaki Kaze RX,Ryuzaki,Kaze RX,1993,base,coupe,Japan,Twin-Rotor,RWD,190,196,1180,161.0,234,7.07,31.24,44.0,0.93,35,452,B,215000,7,rotary2
+16,mishima-trail-4,Mishima Trail 4,Mishima,Trail 4,2021,base,pickup,Japan,Turbo-Diesel Inline-4,4WD,210,500,1980,106.1,204,9.28,39.79,66.2,0.71,7,240,D,19000,2,diesel_i4
+17,mishima-ridgeback,Mishima Ridgeback,Mishima,Ridgeback,2022,base,suv,Japan,V6,AWD,250,350,2050,122.0,210,7.78,31.82,61.2,0.74,11,295,D,35000,3,v6
+18,grauwolf-kern-20,Grauwolf Kern 20,Grauwolf,Kern 20,2022,base,sedan,Germany,Turbo Inline-4,RWD,194,300,1470,132.0,232,8.26,36.26,46.5,0.89,30,394,C,101500,6,i4_turbo
+19,grauwolf-kern-25-touring,Grauwolf Kern 25 Touring,Grauwolf,Kern 25 Touring,2023,base,wagon,Germany,Turbo Inline-4,AWD,228,350,1560,146.2,240,6.75,28.28,47.6,0.88,28,435,B,148500,7,i4_turbo
+20,vorst-ceres,Vorst Ceres,Vorst,Ceres,2021,base,coupe,Germany,Flat-4,RWD,200,320,1220,163.9,238,6.98,30.36,44.0,0.93,35,458,B,181000,7,flat4
+21,wexler-coyote,Wexler Coyote,Wexler,Coyote,2023,base,pony,USA,V6,RWD,245,380,1560,157.1,249,7.21,29.64,48.7,0.86,26,418,B,127000,6,v6
+22,marlowe-comet,Marlowe Comet,Marlowe,Comet,2022,base,pony,USA,V6,RWD,258,390,1600,161.2,253,7.07,28.69,48.7,0.86,26,425,B,135500,6,v6
+23,marlowe-dart-2-3t,Marlowe Dart 2.3T,Marlowe,Dart 2.3T,2021,base,coupe,USA,Turbo Inline-4,RWD,235,390,1520,154.6,251,7.3,30.34,45.0,0.91,32,448,B,166000,7,i4_turbo
+24,ironvale-sentinel,Ironvale Sentinel,Ironvale,Sentinel,2022,base,suv,USA,V6,4WD,265,390,2280,116.2,210,8.64,34.83,62.1,0.73,10,268,D,26000,3,v6
+25,ironvale-mule-150,Ironvale Mule 150,Ironvale,Mule 150,2023,base,pickup,USA,V6,4WD,250,400,2150,116.3,210,8.63,35.3,67.2,0.7,6,259,D,23500,2,v6
+26,thornbury-wren,Thornbury Wren,Thornbury,Wren,2019,base,roadster,UK,Inline-4,RWD,145,165,720,201.4,213,5.94,28.77,41.8,0.97,39,490,B,234500,8,i4
+27,norsken-frost-2-0t,Norsken Frost 2.0T,Norsken,Frost 2.0T,2021,base,wagon,Sweden,Turbo Inline-4,AWD,197,300,1520,129.6,229,7.42,32.42,47.6,0.88,28,408,B,116000,6,i4_turbo
+28,tenjin-ion,Tenjin Ion,Tenjin,Ion,2024,base,hatch,Japan,Electric,FWD,170,290,1450,117.2,222,8.66,39.66,46.5,0.89,30,376,C,84500,5,electric
+29,tenjin-ion-dual,Tenjin Ion Dual,Tenjin,Ion Dual,2024,base,hatch,Japan,Electric,AWD,245,420,1590,154.1,250,5.83,23.97,46.0,0.9,31,481,B,218500,8,electric
+30,ashcombe-lyre,Ashcombe Lyre,Ashcombe,Lyre,2023,base,coupe,UK,Turbo Inline-4,RWD,232,350,1440,161.1,250,7.07,29.49,44.5,0.92,33,459,B,182500,7,i4_turbo
+31,katsuro-kaido-turbo,Katsuro Kaido Turbo,Katsuro,Kaido Turbo,2001,tuned,coupe,Japan,Turbo Inline-4,RWD,340,440,1180,288.1,284,4.39,16.75,39.8,1.03,47,613,S1,685500,13,i4_turbo
+32,katsuro-ronin-rs,Katsuro Ronin RS,Katsuro,Ronin RS,2024,tuned,coupe,Japan,Turbo Inline-4,AWD,380,470,1290,294.6,291,3.82,14.26,38.0,1.08,53,658,S1,714500,14,i4_turbo
+33,katsuro-tessen-gt,Katsuro Tessen GT,Katsuro,Tessen GT,2002,tuned,coupe,Japan,Twin-Turbo Inline-6,AWD,480,600,1560,307.7,319,3.69,13.25,39.8,1.03,47,659,S1,898000,15,i6_turbo
+34,katsuro-tessen-v-spec,Katsuro Tessen V-Spec,Katsuro,Tessen V-Spec,2004,tuned,coupe,Japan,Twin-Turbo Inline-6,AWD,560,660,1580,354.4,330,3.31,11.63,39.8,1.03,47,678,S1,998000,15,i6_turbo
+35,katsuro-sable-stx,Katsuro Sable STX,Katsuro,Sable STX,2006,tuned,rally,Japan,Turbo Inline-4,AWD,310,430,1400,221.4,264,4.77,18.55,37.9,1.07,52,608,S1,532000,13,i4_turbo
+36,ryuzaki-kaze-rx-turbo,Ryuzaki Kaze RX Turbo,Ryuzaki,Kaze RX Turbo,1996,tuned,coupe,Japan,Turbo Twin-Rotor,RWD,320,390,1250,256.0,279,4.81,18.58,39.8,1.03,47,598,A,625000,12,rotary2_turbo
+37,ryuzaki-shinkai-fd,Ryuzaki Shinkai FD,Ryuzaki,Shinkai FD,1999,tuned,coupe,Japan,Turbo Twin-Rotor,RWD,395,450,1290,306.2,299,4.19,15.54,39.8,1.03,47,630,S1,760000,13,rotary2_turbo
+38,ryuzaki-aki-s2,Ryuzaki Aki S2,Ryuzaki,Aki S2,2020,tuned,roadster,Japan,High-Rev Inline-4,RWD,260,240,1010,257.4,259,4.79,19.4,38.7,1.05,49,594,A,487500,12,i4_vtec
+39,ryuzaki-genbu-widebody,Ryuzaki Genbu Widebody,Ryuzaki,Genbu Widebody,2018,tuned,coupe,Japan,Turbo Twin-Rotor,RWD,500,520,1210,413.2,319,3.31,11.82,38.7,1.06,51,684,S1,825000,16,rotary2_turbo
+40,ishara-kite-rs-cup,Ishara Kite RS Cup,Ishara,Kite RS Cup,2024,tuned,hatch,Japan,Turbo Inline-4,FWD,300,400,1080,277.8,259,4.8,18.8,39.8,1.04,48,586,A,463000,12,i4_turbo
+41,hanyu-meridian-n,Hanyu Meridian N,Hanyu,Meridian N,2024,tuned,sedan,Korea,Turbo Inline-4,FWD,290,400,1420,204.2,266,6.1,24.07,41.8,0.99,42,531,A,319000,10,i4_turbo
+42,aveline-cirrus-rallye,Aveline Cirrus Rallye,Aveline,Cirrus Rallye,2023,tuned,rally,France,Turbo Inline-4,AWD,305,420,1230,248.0,262,4.37,17.05,37.6,1.08,53,622,S1,579500,13,i4_turbo
+43,vorst-ceres-gts,Vorst Ceres GTS,Vorst,Ceres GTS,2024,tuned,coupe,Germany,Flat-6,RWD,400,420,1370,292.0,300,4.35,16.09,40.2,1.02,46,622,S1,579500,13,flat6
+44,vorst-kessel-s,Vorst Kessel S,Vorst,Kessel S,2023,tuned,coupe,Germany,Twin-Turbo Flat-6,RWD,450,530,1500,300.0,312,4.25,15.42,40.6,1.01,44,629,S1,604000,13,flat6_turbo
+45,vorst-kessel-turbo-s,Vorst Kessel Turbo S,Vorst,Kessel Turbo S,2024,tuned,coupe,Germany,Twin-Turbo Flat-6,AWD,580,750,1640,353.7,330,3.31,11.58,39.8,1.03,47,678,S1,798500,15,flat6_turbo
+46,grauwolf-kern-40-cs,Grauwolf Kern 40 CS,Grauwolf,Kern 40 CS,2024,tuned,coupe,Germany,Twin-Turbo Inline-6,RWD,510,600,1690,301.8,326,4.23,15.06,41.0,1.0,43,635,S1,626000,14,i6_turbo
+47,grauwolf-sturm-8,Grauwolf Sturm 8,Grauwolf,Sturm 8,2024,tuned,sedan,Germany,Twin-Turbo V8,AWD,600,750,1830,327.9,330,3.51,12.23,41.8,0.99,42,652,S1,691000,14,v8_turbo
+48,eisenbach-klasse-63,Eisenbach Klasse 63,Eisenbach,Klasse 63,2023,tuned,sedan,Germany,Twin-Turbo V8,AWD,585,850,1870,312.8,330,3.64,12.72,42.2,0.98,41,643,S1,656000,14,v8_turbo
+49,eisenbach-halde-rs,Eisenbach Halde RS,Eisenbach,Halde RS,2024,tuned,wagon,Germany,Twin-Turbo V6,AWD,450,600,1720,261.6,301,4.19,15.2,43.1,0.97,39,599,A,503000,12,v6_turbo
+50,eisenbach-kreuz-gt,Eisenbach Kreuz GT,Eisenbach,Kreuz GT,2022,tuned,gt,Germany,V10,AWD,620,560,1650,375.8,330,3.16,10.96,37.9,1.07,52,703,S2,913000,16,v10
+51,wexler-coyote-gt,Wexler Coyote GT,Wexler,Coyote GT,2024,tuned,pony,USA,V8,RWD,460,570,1650,278.8,307,4.5,16.27,43.6,0.96,38,590,A,475000,12,v8
+52,wexler-coyote-mach,Wexler Coyote Mach,Wexler,Coyote Mach,2024,tuned,pony,USA,Supercharged V8,RWD,560,700,1700,329.4,323,3.96,13.92,42.7,0.98,41,627,S1,597000,13,v8_sc
+53,wexler-ironhide-440,Wexler Ironhide 440,Wexler,Ironhide 440,1970,tuned,muscle,USA,V8,RWD,440,610,1720,255.8,296,4.82,17.55,45.5,0.93,35,555,A,471000,11,v8
+54,marlowe-comet-ss,Marlowe Comet SS,Marlowe,Comet SS,2023,tuned,pony,USA,V8,RWD,490,630,1690,289.9,313,4.37,15.65,44.1,0.95,37,593,A,484500,12,v8
+55,marlowe-comet-venom,Marlowe Comet Venom,Marlowe,Comet Venom,2024,tuned,pony,USA,Supercharged V8,RWD,615,780,1730,355.5,330,3.73,12.95,42.7,0.98,41,639,S1,641000,14,v8_sc
+56,marlowe-dart-rally,Marlowe Dart Rally,Marlowe,Dart Rally,2024,tuned,rally,USA,Turbo Inline-4,AWD,350,450,1490,234.9,275,4.56,17.3,37.9,1.07,52,622,S1,579500,13,i4_turbo
+57,thornbury-wren-cup,Thornbury Wren Cup,Thornbury,Wren Cup,2022,tuned,trackcar,UK,Supercharged Inline-4,RWD,260,250,740,351.4,239,3.76,15.23,32.0,1.21,69,686,S1,834000,16,i4_sc
+58,thornbury-harrier-r,Thornbury Harrier R,Thornbury,Harrier R,2023,tuned,trackcar,UK,Twin-Turbo V6,RWD,430,440,1010,425.7,286,3.24,11.84,33.3,1.16,63,715,S2,971500,17,v6_turbo
+59,norsken-frost-r,Norsken Frost R,Norsken,Frost R,2024,tuned,wagon,Sweden,Turbo Inline-4,AWD,360,500,1620,222.2,280,4.76,17.96,42.7,0.98,41,572,A,423000,11,i4_turbo
+60,tenjin-ion-gt,Tenjin Ion GT,Tenjin,Ion GT,2025,tuned,sedan,Japan,Electric,AWD,480,700,1720,279.1,321,3.59,12.89,41.8,0.99,42,643,S1,656000,14,electric
+61,scorpetti-fiora,Scorpetti Fiora,Scorpetti,Fiora,2023,super,supercar,Italy,Twin-Turbo V8,RWD,660,760,1470,449.0,352,2.99,10.3,32.8,1.22,70,792,S2,1412500,20,v8_turbo
+62,scorpetti-fiora-corsa,Scorpetti Fiora Corsa,Scorpetti,Fiora Corsa,2024,super,supercar,Italy,Twin-Turbo V8,RWD,710,770,1390,510.8,356,2.7,9.22,32.0,1.25,74,816,X,1574000,21,v8_turbo
+63,scorpetti-tramonto,Scorpetti Tramonto,Scorpetti,Tramonto,2024,super,supercar,Italy,Twin-Turbo V8,RWD,680,760,1520,447.4,355,3.0,10.3,33.1,1.21,69,790,S2,1399500,20,v8_turbo
+64,alviero-tempesta,Alviero Tempesta,Alviero,Tempesta,2024,super,gt,Italy,V12,RWD,800,718,1560,512.8,365,2.7,9.11,34.5,1.18,66,790,S2,1399500,20,v12
+65,alviero-aquilone,Alviero Aquilone,Alviero,Aquilone,2023,super,gt,Italy,V12,RWD,740,690,1630,454.0,363,2.96,10.07,34.5,1.18,66,782,S2,1348500,20,v12
+66,alviero-nembo-gts,Alviero Nembo GTS,Alviero,Nembo GTS,2024,super,supercar,Italy,Twin-Turbo V8,RWD,700,760,1490,469.8,359,2.89,9.89,32.8,1.22,70,800,X,1465000,21,v8_turbo
+67,valdoro-aventine,Valdoro Aventine,Valdoro,Aventine,2022,super,supercar,Italy,V10,AWD,640,600,1520,421.1,348,2.78,9.61,32.5,1.23,72,799,S2,1458500,21,v10
+68,valdoro-aventine-sv,Valdoro Aventine SV,Valdoro,Aventine SV,2024,super,supercar,Italy,V10,AWD,780,690,1450,537.9,365,2.3,7.78,31.6,1.27,77,842,X,1763000,23,v10
+69,valdoro-falco,Valdoro Falco,Valdoro,Falco,2024,super,trackcar,Italy,V10,RWD,700,620,1380,507.2,326,2.72,9.31,29.3,1.33,84,822,X,1616500,22,v10
+70,vorst-kessel-rsr,Vorst Kessel RSR,Vorst,Kessel RSR,2024,super,trackcar,Germany,Flat-6,RWD,640,470,1420,450.7,317,2.98,10.3,29.3,1.33,84,808,X,1519000,21,flat6
+71,vorst-kessel-turbo-gt,Vorst Kessel Turbo GT,Vorst,Kessel Turbo GT,2025,super,supercar,Germany,Twin-Turbo Flat-6,AWD,700,800,1590,440.3,359,2.69,9.2,32.5,1.23,72,810,X,1532500,21,flat6_turbo
+72,ashcombe-corvane,Ashcombe Corvane,Ashcombe,Corvane,2023,super,gt,UK,V12,RWD,720,700,1780,404.5,360,3.24,11.05,34.8,1.17,64,767,S2,1256500,19,v12
+73,ashcombe-thistle-s,Ashcombe Thistle S,Ashcombe,Thistle S,2024,super,gt,UK,Twin-Turbo V8,RWD,665,800,1700,391.2,351,3.33,11.46,34.8,1.17,64,758,S2,1203500,19,v8_turbo
+74,eisenbach-nordwand-gt,Eisenbach Nordwand GT,Eisenbach,Nordwand GT,2024,super,supercar,Germany,Twin-Turbo V8,AWD,720,800,1620,444.4,362,2.67,9.11,32.5,1.23,72,813,X,1553000,21,v8_turbo
+75,grauwolf-sturm-8-csl,Grauwolf Sturm 8 CSL,Grauwolf,Sturm 8 CSL,2025,super,gt,Germany,Twin-Turbo V8,RWD,700,750,1700,411.8,357,3.2,10.95,34.8,1.17,64,766,S2,1251000,19,v8_turbo
+76,katsuro-tessen-kaiju,Katsuro Tessen Kaiju,Katsuro,Tessen Kaiju,2025,super,supercar,Japan,Twin-Turbo V6,AWD,710,780,1620,438.3,356,2.7,9.22,31.8,1.26,75,820,X,1602000,21,v6_turbo
+77,mishima-raiden-v10,Mishima Raiden V10,Mishima,Raiden V10,2011,super,supercar,Japan,V10,RWD,690,540,1480,466.2,357,2.9,9.94,32.8,1.22,70,798,S2,1451500,20,v10
+78,marlowe-comet-zx,Marlowe Comet ZX,Marlowe,Comet ZX,2025,super,supercar,USA,Twin-Turbo V8,RWD,680,780,1580,430.4,355,3.09,10.61,33.1,1.21,69,787,S2,1380500,20,v8_turbo
+79,wexler-sidewinder-v10,Wexler Sidewinder V10,Wexler,Sidewinder V10,2017,super,supercar,USA,V10,RWD,725,780,1560,464.7,363,2.91,9.92,33.1,1.21,69,798,S2,1451500,20,v10
+80,thornbury-harrier-gt1,Thornbury Harrier GT1,Thornbury,Harrier GT1,2025,super,trackcar,UK,Twin-Turbo V8,RWD,700,700,1130,619.5,326,2.33,7.97,29.1,1.34,85,836,X,1718000,22,v8_turbo
+81,thornbury-lancet,Thornbury Lancet,Thornbury,Lancet,2024,super,trackcar,UK,Twin-Turbo V6,RWD,650,600,1050,619.0,322,2.33,8.04,29.5,1.32,83,827,X,1652000,22,v6_turbo
+82,ryuzaki-shinkai-type-r,Ryuzaki Shinkai Type-R,Ryuzaki,Shinkai Type-R,2025,super,supercar,Japan,Quad-Rotor,RWD,700,560,1290,542.6,359,2.58,8.83,32.5,1.23,72,813,X,1553000,21,rotary4
+83,norsken-torden,Norsken Torden,Norsken,Torden,2024,super,supercar,Sweden,Twin-Turbo V8,RWD,800,900,1450,551.7,365,2.55,8.61,32.8,1.22,70,814,X,1560000,21,v8_turbo
+84,tenjin-kaminari,Tenjin Kaminari,Tenjin,Kaminari,2025,super,supercar,Japan,Electric,AWD,780,1000,1980,393.9,346,2.64,8.93,33.1,1.21,69,793,S2,1419000,20,electric
+85,apex-dynamics-surge,Apex Dynamics Surge,Apex Dynamics,Surge,2025,super,gt,USA,Electric,AWD,760,980,1890,402.1,346,2.6,8.82,34.5,1.18,66,779,S2,1330000,20,electric
+86,alviero-divina,Alviero Divina,Alviero,Divina,2025,hyper,hypercar,Italy,V12,RWD,1000,900,1590,628.9,406,2.22,7.35,28.5,1.39,92,914,X,2367500,26,v12
+87,scorpetti-aeterna,Scorpetti Aeterna,Scorpetti,Aeterna,2025,hyper,hypercar,Italy,Twin-Turbo V8,AWD,1050,1000,1470,714.3,407,1.78,5.87,27.4,1.45,99,942,X,2637000,27,v8_turbo
+88,valdoro-corvino,Valdoro Corvino,Valdoro,Corvino,2025,hyper,hypercar,Italy,V12,AWD,1015,890,1560,650.6,403,1.91,6.31,27.5,1.44,98,936,X,2577500,27,v12
+89,vorst-kaskade,Vorst Kaskade,Vorst,Kaskade,2024,hyper,hypercar,Germany,Twin-Turbo V8,AWD,950,1000,1680,565.5,399,2.14,7.11,28.3,1.4,93,914,X,2367500,26,v8_turbo
+90,grauwolf-projekt-r,Grauwolf Projekt R,Grauwolf,Projekt R,2025,hyper,hypercar,Germany,Twin-Turbo V6,AWD,1050,900,1620,648.1,413,1.92,6.33,28.1,1.41,94,934,X,2558000,27,v6_turbo
+91,krallmann-zorn-900,Krallmann Zorn 900,Krallmann,Zorn 900,2024,hyper,hypercar,Germany,Twin-Turbo V12,AWD,950,1200,1780,533.7,399,2.23,7.41,28.3,1.4,93,912,X,2349000,26,v12_turbo
+92,krallmann-nachtfalter,Krallmann Nachtfalter,Krallmann,Nachtfalter,2025,hyper,hypercar,Germany,Twin-Turbo V8,RWD,1200,1300,1650,727.3,432,1.98,6.47,28.5,1.39,92,940,X,2617000,27,v8_turbo
+93,norsken-ragnar,Norsken Ragnar,Norsken,Ragnar,2025,hyper,hypercar,Sweden,Twin-Turbo V8,RWD,1600,1500,1370,1167.9,475,1.62,5.2,28.3,1.4,93,959,X,2810500,28,v8_turbo
+94,norsken-ragnar-absolut,Norsken Ragnar Absolut,Norsken,Ragnar Absolut,2026,hyper,hypercar,Sweden,Twin-Turbo V8,RWD,1750,1600,1400,1250.0,489,1.62,5.18,28.3,1.4,93,959,X,2810500,28,v8_turbo
+95,ashcombe-solstice-am,Ashcombe Solstice AM,Ashcombe,Solstice AM,2025,hyper,hypercar,UK,V12,RWD,1140,900,1030,1106.8,419,1.62,5.31,27.4,1.45,99,951,X,2727500,28,v12
+96,apex-dynamics-tempest-ev,Apex Dynamics Tempest EV,Apex Dynamics,Tempest EV,2025,hyper,hypercar,USA,Electric,AWD,1900,2360,2150,883.7,346,1.62,5.16,28.7,1.38,90,875,X,2025000,24,electric
+97,apex-dynamics-halo-x,Apex Dynamics Halo X,Apex Dynamics,Halo X,2026,hyper,hypercar,USA,Electric,AWD,1500,1800,1950,769.2,346,1.62,5.22,27.9,1.42,95,887,X,2126500,25,electric
+98,mishima-raiden-omega,Mishima Raiden Omega,Mishima,Raiden Omega,2026,hyper,hypercar,Japan,V10,AWD,1080,850,1520,710.5,411,1.79,5.89,27.5,1.44,98,942,X,2637000,27,v10
+99,thornbury-vespera,Thornbury Vespera,Thornbury,Vespera,2026,hyper,hypercar,UK,Twin-Turbo V8,RWD,1150,1000,1180,974.6,420,1.62,5.31,27.5,1.44,98,949,X,2707500,28,v8_turbo
+100,wexler-thunderhead,Wexler Thunderhead,Wexler,Thunderhead,2025,hyper,hypercar,USA,Quad-Turbo W16,AWD,1580,1600,1980,798.0,473,1.63,5.24,28.5,1.39,92,956,X,2779000,28,v16_turbo

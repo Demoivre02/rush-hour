@@ -1,0 +1,93 @@
+{
+  "id": "tenjin-ion",
+  "index": 28,
+  "name": "Tenjin Ion",
+  "manufacturer": "Tenjin",
+  "model": "Ion",
+  "country": "Japan",
+  "year": 2024,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "hatch",
+  "seats": 5,
+  "blurb": "Silent, instant off the line, and completely uninterested in gears.",
+  "engine": {
+    "code": "electric",
+    "label": "Electric",
+    "cylinders": 0,
+    "aspiration": "electric",
+    "idle_rpm": 0,
+    "redline_rpm": 18000,
+    "sound_family": "electric"
+  },
+  "performance": {
+    "power_hp": 170,
+    "power_kw": 127,
+    "torque_nm": 290,
+    "weight_kg": 1450,
+    "power_to_weight_hp_per_tonne": 117.2,
+    "drivetrain": "FWD",
+    "top_speed_kmh": 222,
+    "top_speed_mph": 138,
+    "accel_0_100_kmh_s": 8.66,
+    "accel_0_200_kmh_s": 39.66,
+    "braking_100_0_m": 46.5,
+    "lateral_g": 0.89,
+    "handling_rating": 30,
+    "performance_index": 376,
+    "performance_class": "C"
+  },
+  "drivetrain_detail": {
+    "gears": 1,
+    "gear_ratios": [
+      8.6
+    ],
+    "final_drive": 3.81,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 84500,
+    "unlock_level": 5,
+    "race_reward_credits": 3800
+  },
+  "dimensions": {
+    "length_m": 3.987,
+    "width_m": 1.761,
+    "wheelbase_m": 2.392
+  },
+  "visual": {
+    "primary_color": "#F1F3F5",
+    "accent_color": "#171B20",
+    "livery": "solid",
+    "has_wing": false,
+    "sprite": "sprites/topdown/tenjin-ion.png",
+    "sprite_shadow": "sprites/shadow/tenjin-ion_shadow.png",
+    "thumbnail": "sprites/thumbs/tenjin-ion_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/electric",
+    "loops": {
+      "idle": "audio/engines/electric/electric_idle.wav",
+      "low": "audio/engines/electric/electric_low.wav",
+      "mid": "audio/engines/electric/electric_mid.wav",
+      "high": "audio/engines/electric/electric_high.wav",
+      "redline": "audio/engines/electric/electric_redline.wav"
+    },
+    "rev_sweep": "audio/engines/electric/electric_rev.wav",
+    "startup": "audio/engines/electric/electric_start.wav",
+    "base_pitch_rpm": 1200
+  },
+  "tags": [
+    "base",
+    "electric",
+    "fwd",
+    "hatch",
+    "japan"
+  ],
+  "seed": 2842879108
+}

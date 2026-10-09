@@ -1,0 +1,99 @@
+{
+  "id": "katsuro-tessen-kaiju",
+  "index": 76,
+  "name": "Katsuro Tessen Kaiju",
+  "manufacturer": "Katsuro",
+  "model": "Tessen Kaiju",
+  "country": "Japan",
+  "year": 2025,
+  "tier": "super",
+  "tier_label": "Supercar",
+  "body_type": "supercar",
+  "seats": 2,
+  "blurb": "The Tessen reborn: hybrid-assisted V6, four driven wheels, zero nostalgia.",
+  "engine": {
+    "code": "v6_turbo",
+    "label": "Twin-Turbo V6",
+    "cylinders": 6,
+    "aspiration": "turbocharged",
+    "idle_rpm": 780,
+    "redline_rpm": 7600,
+    "sound_family": "v6_turbo"
+  },
+  "performance": {
+    "power_hp": 710,
+    "power_kw": 529,
+    "torque_nm": 780,
+    "weight_kg": 1620,
+    "power_to_weight_hp_per_tonne": 438.3,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 356,
+    "top_speed_mph": 221,
+    "accel_0_100_kmh_s": 2.7,
+    "accel_0_200_kmh_s": 9.22,
+    "braking_100_0_m": 31.8,
+    "lateral_g": 1.26,
+    "handling_rating": 75,
+    "performance_index": 820,
+    "performance_class": "X"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.304,
+      2.563,
+      1.988,
+      1.542,
+      1.196,
+      0.928,
+      0.72
+    ],
+    "final_drive": 3.53,
+    "tyre_compound": "Semi-Slick"
+  },
+  "nitro": {
+    "capacity_s": 5.0,
+    "power_mult": 1.26,
+    "refill_s": 10.0
+  },
+  "economy": {
+    "price_credits": 1602000,
+    "unlock_level": 21,
+    "race_reward_credits": 72100
+  },
+  "dimensions": {
+    "length_m": 4.577,
+    "width_m": 2.05,
+    "wheelbase_m": 2.746
+  },
+  "visual": {
+    "primary_color": "#1B4F9C",
+    "accent_color": "#D8B12A",
+    "livery": "racing_split",
+    "has_wing": true,
+    "sprite": "sprites/topdown/katsuro-tessen-kaiju.png",
+    "sprite_shadow": "sprites/shadow/katsuro-tessen-kaiju_shadow.png",
+    "thumbnail": "sprites/thumbs/katsuro-tessen-kaiju_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v6_turbo",
+    "loops": {
+      "idle": "audio/engines/v6_turbo/v6_turbo_idle.wav",
+      "low": "audio/engines/v6_turbo/v6_turbo_low.wav",
+      "mid": "audio/engines/v6_turbo/v6_turbo_mid.wav",
+      "high": "audio/engines/v6_turbo/v6_turbo_high.wav",
+      "redline": "audio/engines/v6_turbo/v6_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v6_turbo/v6_turbo_rev.wav",
+    "startup": "audio/engines/v6_turbo/v6_turbo_start.wav",
+    "base_pitch_rpm": 780
+  },
+  "tags": [
+    "awd",
+    "japan",
+    "super",
+    "supercar",
+    "turbo"
+  ],
+  "seed": 2178623237
+}

@@ -1,0 +1,62 @@
+{
+  "name": "rush-hour",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Arcade street racing in the browser.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Demoivre02/rush-hour.git"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "devDependencies": {
+    "@gltf-transform/core": "^4.5.1",
+    "@gltf-transform/extensions": "^4.5.1",
+    "@gltf-transform/functions": "^4.5.1",
+    "@playwright/test": "^1.62.0",
+    "meshoptimizer": "^1.3.0",
+    "sharp": "^0.35.5",
+    "three": "0.160.0"
+  },
+  "scripts": {
+    "build": "bash tools/make-public-build.sh",
+    "check:opensource": "bash tools/check-open-source-ready.sh",
+    "test:tracks": "node tools/validate-tracks.mjs",
+    "test:geometry": "node tools/validate-geometry.mjs",
+    "test:ground-surface": "node tools/validate-ground-surface.mjs",
+    "test:venue-depth": "node tools/validate-venue-depth.mjs",
+    "test:pacing": "node tools/validate-pacing.mjs",
+    "test:game-pacing": "node tools/validate-game-pacing.mjs",
+    "test:interpolation": "node tools/validate-interpolation.mjs",
+    "test:car-glb": "node tools/blender/check-glb.mjs",
+    "test:car-lod": "node tools/validate-car-lod.mjs",
+    "test:random": "node tools/validate-random.mjs",
+    "test:championship": "node tools/validate-championship.mjs",
+    "test:build-script": "bash tools/validate-build-script.sh",
+    "test:performance-budget": "node tools/validate-performance-budget.mjs",
+    "test:handling": "node tools/validate-handling.mjs",
+    "test:physics": "node tools/physics-envelope.mjs",
+    "test:wet-tyres": "node tools/validate-wet-tyres.mjs",
+    "test:pbr": "node tools/validate-pbr-surfaces.mjs",
+    "test:effects": "node tools/validate-effects.mjs",
+    "test:events": "node tools/validate-events.mjs",
+    "test:browser": "npm run build && playwright test",
+    "test:simulation-contract": "node tools/validate-simulation-upgrade.mjs",
+    "test:simulation-browser": "npm run build && playwright test --config=playwright.simulation.config.mjs",
+    "test:simulation-upgrade": "npm run test:simulation-contract && npm run test:simulation-browser",
+    "test:nametags": "node tools/nametag-sim-check.mjs",
+    "test:features": "node tools/sim-race-features.mjs",
+    "test:race-weekend": "node tools/validate-race-weekend-depth.mjs",
+    "test:race": "node tools/sim-race.mjs",
+    "test": "npm run check:opensource && npm run test:tracks && npm run test:geometry && npm run test:ground-surface && npm run test:venue-depth && npm run test:pacing && npm run test:game-pacing && npm run test:interpolation && npm run test:car-glb && npm run test:car-lod && npm run test:random && npm run test:championship && npm run test:build-script && npm run test:performance-budget && npm run test:vehicle-classes && npm run test:disciplines && npm run test:road-cars && npm run test:vehicle-dynamics && npm run test:handling && npm run test:physics && npm run test:wet-tyres && npm run test:pbr && npm run test:effects && npm run test:nametags && npm run test:features && npm run test:race-weekend && npm run test:race",
+    "test:vehicle-classes": "node tools/validate-vehicle-classes.mjs",
+    "test:disciplines": "node tools/validate-disciplines.mjs",
+    "test:vehicle-dynamics": "node tools/validate-vehicle-dynamics.mjs",
+    "test:road-cars": "node tools/validate-road-cars.mjs",
+    "models:optimize": "node tools/optimize-car-models.mjs",
+    "models:thumbs": "node tools/render-car-thumbs.mjs"
+  }
+}

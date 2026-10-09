@@ -1,0 +1,97 @@
+{
+  "id": "hanyu-pulse",
+  "index": 4,
+  "name": "Hanyu Pulse",
+  "manufacturer": "Hanyu",
+  "model": "Pulse",
+  "country": "Korea",
+  "year": 2020,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "hatch",
+  "seats": 5,
+  "blurb": "Ten-year warranty, zero pretension, surprising cornering manners.",
+  "engine": {
+    "code": "i4",
+    "label": "Inline-4",
+    "cylinders": 4,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 800,
+    "redline_rpm": 6800,
+    "sound_family": "i4"
+  },
+  "performance": {
+    "power_hp": 110,
+    "power_kw": 82,
+    "torque_nm": 150,
+    "weight_kg": 1090,
+    "power_to_weight_hp_per_tonne": 100.9,
+    "drivetrain": "FWD",
+    "top_speed_kmh": 188,
+    "top_speed_mph": 117,
+    "accel_0_100_kmh_s": 10.82,
+    "accel_0_200_kmh_s": 58.58,
+    "braking_100_0_m": 45.5,
+    "lateral_g": 0.91,
+    "handling_rating": 32,
+    "performance_index": 300,
+    "performance_class": "C"
+  },
+  "drivetrain_detail": {
+    "gears": 5,
+    "gear_ratios": [
+      3.554,
+      2.297,
+      1.484,
+      0.959,
+      0.62
+    ],
+    "final_drive": 3.84,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 37000,
+    "unlock_level": 3,
+    "race_reward_credits": 1700
+  },
+  "dimensions": {
+    "length_m": 4.097,
+    "width_m": 1.763,
+    "wheelbase_m": 2.458
+  },
+  "visual": {
+    "primary_color": "#C9CED4",
+    "accent_color": "#20242A",
+    "livery": "solid",
+    "has_wing": false,
+    "sprite": "sprites/topdown/hanyu-pulse.png",
+    "sprite_shadow": "sprites/shadow/hanyu-pulse_shadow.png",
+    "thumbnail": "sprites/thumbs/hanyu-pulse_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4",
+    "loops": {
+      "idle": "audio/engines/i4/i4_idle.wav",
+      "low": "audio/engines/i4/i4_low.wav",
+      "mid": "audio/engines/i4/i4_mid.wav",
+      "high": "audio/engines/i4/i4_high.wav",
+      "redline": "audio/engines/i4/i4_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4/i4_rev.wav",
+    "startup": "audio/engines/i4/i4_start.wav",
+    "base_pitch_rpm": 800
+  },
+  "tags": [
+    "base",
+    "fwd",
+    "hatch",
+    "korea",
+    "lightweight"
+  ],
+  "seed": 982724459
+}

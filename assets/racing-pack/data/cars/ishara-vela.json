@@ -1,0 +1,96 @@
+{
+  "id": "ishara-vela",
+  "index": 3,
+  "name": "Ishara Vela",
+  "manufacturer": "Ishara",
+  "model": "Vela",
+  "country": "Japan",
+  "year": 2018,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "sedan",
+  "seats": 5,
+  "blurb": "A rental-counter special that somehow became a drift-school favourite.",
+  "engine": {
+    "code": "i4",
+    "label": "Inline-4",
+    "cylinders": 4,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 800,
+    "redline_rpm": 6800,
+    "sound_family": "i4"
+  },
+  "performance": {
+    "power_hp": 128,
+    "power_kw": 95,
+    "torque_nm": 168,
+    "weight_kg": 1180,
+    "power_to_weight_hp_per_tonne": 108.5,
+    "drivetrain": "FWD",
+    "top_speed_kmh": 202,
+    "top_speed_mph": 126,
+    "accel_0_100_kmh_s": 10.22,
+    "accel_0_200_kmh_s": 51.93,
+    "braking_100_0_m": 46.0,
+    "lateral_g": 0.9,
+    "handling_rating": 31,
+    "performance_index": 322,
+    "performance_class": "C"
+  },
+  "drivetrain_detail": {
+    "gears": 5,
+    "gear_ratios": [
+      3.547,
+      2.293,
+      1.483,
+      0.959,
+      0.62
+    ],
+    "final_drive": 3.83,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 47500,
+    "unlock_level": 4,
+    "race_reward_credits": 2100
+  },
+  "dimensions": {
+    "length_m": 4.749,
+    "width_m": 1.85,
+    "wheelbase_m": 2.849
+  },
+  "visual": {
+    "primary_color": "#C7382F",
+    "accent_color": "#7EC8C0",
+    "livery": "solid",
+    "has_wing": false,
+    "sprite": "sprites/topdown/ishara-vela.png",
+    "sprite_shadow": "sprites/shadow/ishara-vela_shadow.png",
+    "thumbnail": "sprites/thumbs/ishara-vela_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4",
+    "loops": {
+      "idle": "audio/engines/i4/i4_idle.wav",
+      "low": "audio/engines/i4/i4_low.wav",
+      "mid": "audio/engines/i4/i4_mid.wav",
+      "high": "audio/engines/i4/i4_high.wav",
+      "redline": "audio/engines/i4/i4_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4/i4_rev.wav",
+    "startup": "audio/engines/i4/i4_start.wav",
+    "base_pitch_rpm": 800
+  },
+  "tags": [
+    "base",
+    "fwd",
+    "japan",
+    "sedan"
+  ],
+  "seed": 1126137264
+}

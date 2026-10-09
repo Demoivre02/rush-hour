@@ -1,0 +1,98 @@
+{
+  "id": "grauwolf-kern-20",
+  "index": 18,
+  "name": "Grauwolf Kern 20",
+  "manufacturer": "Grauwolf",
+  "model": "Kern 20",
+  "country": "Germany",
+  "year": 2022,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "sedan",
+  "seats": 5,
+  "blurb": "Rear-drive executive basics. The cheapest way into the Grauwolf chassis.",
+  "engine": {
+    "code": "i4_turbo",
+    "label": "Turbo Inline-4",
+    "cylinders": 4,
+    "aspiration": "turbocharged",
+    "idle_rpm": 820,
+    "redline_rpm": 6900,
+    "sound_family": "i4_turbo"
+  },
+  "performance": {
+    "power_hp": 194,
+    "power_kw": 145,
+    "torque_nm": 300,
+    "weight_kg": 1470,
+    "power_to_weight_hp_per_tonne": 132.0,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 232,
+    "top_speed_mph": 144,
+    "accel_0_100_kmh_s": 8.26,
+    "accel_0_200_kmh_s": 36.26,
+    "braking_100_0_m": 46.5,
+    "lateral_g": 0.89,
+    "handling_rating": 30,
+    "performance_index": 394,
+    "performance_class": "C"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.519,
+      2.487,
+      1.757,
+      1.242,
+      0.877,
+      0.62
+    ],
+    "final_drive": 3.8,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 101500,
+    "unlock_level": 6,
+    "race_reward_credits": 4600
+  },
+  "dimensions": {
+    "length_m": 4.581,
+    "width_m": 1.854,
+    "wheelbase_m": 2.749
+  },
+  "visual": {
+    "primary_color": "#D6DAE0",
+    "accent_color": "#8C1F27",
+    "livery": "solid",
+    "has_wing": false,
+    "sprite": "sprites/topdown/grauwolf-kern-20.png",
+    "sprite_shadow": "sprites/shadow/grauwolf-kern-20_shadow.png",
+    "thumbnail": "sprites/thumbs/grauwolf-kern-20_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4_turbo",
+    "loops": {
+      "idle": "audio/engines/i4_turbo/i4_turbo_idle.wav",
+      "low": "audio/engines/i4_turbo/i4_turbo_low.wav",
+      "mid": "audio/engines/i4_turbo/i4_turbo_mid.wav",
+      "high": "audio/engines/i4_turbo/i4_turbo_high.wav",
+      "redline": "audio/engines/i4_turbo/i4_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4_turbo/i4_turbo_rev.wav",
+    "startup": "audio/engines/i4_turbo/i4_turbo_start.wav",
+    "base_pitch_rpm": 820
+  },
+  "tags": [
+    "base",
+    "germany",
+    "rwd",
+    "sedan",
+    "turbo"
+  ],
+  "seed": 2362038
+}

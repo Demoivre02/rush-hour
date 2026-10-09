@@ -1,0 +1,97 @@
+{
+  "id": "aveline-bonbon",
+  "index": 7,
+  "name": "Aveline Bonbon",
+  "manufacturer": "Aveline",
+  "model": "Bonbon",
+  "country": "France",
+  "year": 2017,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "city",
+  "seats": 4,
+  "blurb": "Three cylinders, four seats, and suspension tuned on cobblestones.",
+  "engine": {
+    "code": "i3",
+    "label": "Inline-3",
+    "cylinders": 3,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 780,
+    "redline_rpm": 6200,
+    "sound_family": "i3"
+  },
+  "performance": {
+    "power_hp": 84,
+    "power_kw": 63,
+    "torque_nm": 128,
+    "weight_kg": 880,
+    "power_to_weight_hp_per_tonne": 95.5,
+    "drivetrain": "FWD",
+    "top_speed_kmh": 171,
+    "top_speed_mph": 106,
+    "accel_0_100_kmh_s": 11.3,
+    "accel_0_200_kmh_s": 69.44,
+    "braking_100_0_m": 47.6,
+    "lateral_g": 0.89,
+    "handling_rating": 30,
+    "performance_index": 259,
+    "performance_class": "D"
+  },
+  "drivetrain_detail": {
+    "gears": 5,
+    "gear_ratios": [
+      3.565,
+      2.302,
+      1.487,
+      0.96,
+      0.62
+    ],
+    "final_drive": 3.86,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 23500,
+    "unlock_level": 2,
+    "race_reward_credits": 1100
+  },
+  "dimensions": {
+    "length_m": 3.569,
+    "width_m": 1.672,
+    "wheelbase_m": 2.141
+  },
+  "visual": {
+    "primary_color": "#EDEFF1",
+    "accent_color": "#1A1D21",
+    "livery": "two_tone",
+    "has_wing": false,
+    "sprite": "sprites/topdown/aveline-bonbon.png",
+    "sprite_shadow": "sprites/shadow/aveline-bonbon_shadow.png",
+    "thumbnail": "sprites/thumbs/aveline-bonbon_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i3",
+    "loops": {
+      "idle": "audio/engines/i3/i3_idle.wav",
+      "low": "audio/engines/i3/i3_low.wav",
+      "mid": "audio/engines/i3/i3_mid.wav",
+      "high": "audio/engines/i3/i3_high.wav",
+      "redline": "audio/engines/i3/i3_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i3/i3_rev.wav",
+    "startup": "audio/engines/i3/i3_start.wav",
+    "base_pitch_rpm": 780
+  },
+  "tags": [
+    "base",
+    "city",
+    "france",
+    "fwd",
+    "lightweight"
+  ],
+  "seed": 1802108698
+}

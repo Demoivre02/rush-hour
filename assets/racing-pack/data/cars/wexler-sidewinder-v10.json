@@ -1,0 +1,99 @@
+{
+  "id": "wexler-sidewinder-v10",
+  "index": 79,
+  "name": "Wexler Sidewinder V10",
+  "manufacturer": "Wexler",
+  "model": "Sidewinder V10",
+  "country": "USA",
+  "year": 2017,
+  "tier": "super",
+  "tier_label": "Supercar",
+  "body_type": "supercar",
+  "seats": 2,
+  "blurb": "Eight point four litres, no traction control worth the name, and a legend of a reputation.",
+  "engine": {
+    "code": "v10",
+    "label": "V10",
+    "cylinders": 10,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 900,
+    "redline_rpm": 8700,
+    "sound_family": "v10"
+  },
+  "performance": {
+    "power_hp": 725,
+    "power_kw": 541,
+    "torque_nm": 780,
+    "weight_kg": 1560,
+    "power_to_weight_hp_per_tonne": 464.7,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 363,
+    "top_speed_mph": 226,
+    "accel_0_100_kmh_s": 2.91,
+    "accel_0_200_kmh_s": 9.92,
+    "braking_100_0_m": 33.1,
+    "lateral_g": 1.21,
+    "handling_rating": 69,
+    "performance_index": 798,
+    "performance_class": "S2"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.298,
+      2.559,
+      1.986,
+      1.541,
+      1.196,
+      0.928,
+      0.72
+    ],
+    "final_drive": 3.52,
+    "tyre_compound": "Semi-Slick"
+  },
+  "nitro": {
+    "capacity_s": 5.0,
+    "power_mult": 1.26,
+    "refill_s": 10.0
+  },
+  "economy": {
+    "price_credits": 1451500,
+    "unlock_level": 20,
+    "race_reward_credits": 65300
+  },
+  "dimensions": {
+    "length_m": 4.632,
+    "width_m": 2.016,
+    "wheelbase_m": 2.779
+  },
+  "visual": {
+    "primary_color": "#C42B24",
+    "accent_color": "#161A1E",
+    "livery": "stripe_dual",
+    "has_wing": true,
+    "sprite": "sprites/topdown/wexler-sidewinder-v10.png",
+    "sprite_shadow": "sprites/shadow/wexler-sidewinder-v10_shadow.png",
+    "thumbnail": "sprites/thumbs/wexler-sidewinder-v10_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v10",
+    "loops": {
+      "idle": "audio/engines/v10/v10_idle.wav",
+      "low": "audio/engines/v10/v10_low.wav",
+      "mid": "audio/engines/v10/v10_mid.wav",
+      "high": "audio/engines/v10/v10_high.wav",
+      "redline": "audio/engines/v10/v10_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v10/v10_rev.wav",
+    "startup": "audio/engines/v10/v10_start.wav",
+    "base_pitch_rpm": 900
+  },
+  "tags": [
+    "drift",
+    "rwd",
+    "super",
+    "supercar",
+    "usa"
+  ],
+  "seed": 3126299156
+}

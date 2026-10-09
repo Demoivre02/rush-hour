@@ -1,0 +1,98 @@
+{
+  "id": "vorst-ceres-gts",
+  "index": 43,
+  "name": "Vorst Ceres GTS",
+  "manufacturer": "Vorst",
+  "model": "Ceres GTS",
+  "country": "Germany",
+  "year": 2024,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "coupe",
+  "seats": 4,
+  "blurb": "They put the big flat six in the small car. Everything you hoped would happen, happened.",
+  "engine": {
+    "code": "flat6",
+    "label": "Flat-6",
+    "cylinders": 6,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 840,
+    "redline_rpm": 8400,
+    "sound_family": "flat6"
+  },
+  "performance": {
+    "power_hp": 400,
+    "power_kw": 298,
+    "torque_nm": 420,
+    "weight_kg": 1370,
+    "power_to_weight_hp_per_tonne": 292.0,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 300,
+    "top_speed_mph": 186,
+    "accel_0_100_kmh_s": 4.35,
+    "accel_0_200_kmh_s": 16.09,
+    "braking_100_0_m": 40.2,
+    "lateral_g": 1.02,
+    "handling_rating": 46,
+    "performance_index": 622,
+    "performance_class": "S1"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.433,
+      2.438,
+      1.731,
+      1.229,
+      0.873,
+      0.62
+    ],
+    "final_drive": 3.69,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 579500,
+    "unlock_level": 13,
+    "race_reward_credits": 26100
+  },
+  "dimensions": {
+    "length_m": 4.558,
+    "width_m": 1.814,
+    "wheelbase_m": 2.735
+  },
+  "visual": {
+    "primary_color": "#C0342C",
+    "accent_color": "#D9A93B",
+    "livery": "solid",
+    "has_wing": true,
+    "sprite": "sprites/topdown/vorst-ceres-gts.png",
+    "sprite_shadow": "sprites/shadow/vorst-ceres-gts_shadow.png",
+    "thumbnail": "sprites/thumbs/vorst-ceres-gts_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/flat6",
+    "loops": {
+      "idle": "audio/engines/flat6/flat6_idle.wav",
+      "low": "audio/engines/flat6/flat6_low.wav",
+      "mid": "audio/engines/flat6/flat6_mid.wav",
+      "high": "audio/engines/flat6/flat6_high.wav",
+      "redline": "audio/engines/flat6/flat6_redline.wav"
+    },
+    "rev_sweep": "audio/engines/flat6/flat6_rev.wav",
+    "startup": "audio/engines/flat6/flat6_start.wav",
+    "base_pitch_rpm": 840
+  },
+  "tags": [
+    "coupe",
+    "drift",
+    "germany",
+    "rwd",
+    "tuned"
+  ],
+  "seed": 905588888
+}

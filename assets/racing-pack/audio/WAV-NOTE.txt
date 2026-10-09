@@ -1,0 +1,7 @@
+Uncompressed WAV audio for the 100-Car Pack — part 2 of 2.
+
+Unzip BOTH parts over your racing-cars-pack folder. The layout is identical to
+the main pack, so every .wav lands next to its .ogg twin and nothing is lost.
+Then use:  new RacingAudio('./audio', { format: 'wav' })
+
+This part contains: rotary2_turbo, rotary4, v10, v12, v12_turbo, v16_turbo, v6, v6_turbo, v8, v8_sc, v8_turbo

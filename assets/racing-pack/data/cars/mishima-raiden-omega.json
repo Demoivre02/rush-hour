@@ -1,0 +1,99 @@
+{
+  "id": "mishima-raiden-omega",
+  "index": 98,
+  "name": "Mishima Raiden Omega",
+  "manufacturer": "Mishima",
+  "model": "Raiden Omega",
+  "country": "Japan",
+  "year": 2026,
+  "tier": "hyper",
+  "tier_label": "Hypercar",
+  "body_type": "hypercar",
+  "seats": 2,
+  "blurb": "The Raiden returns with hybrid assistance and a redline that never moved.",
+  "engine": {
+    "code": "v10",
+    "label": "V10",
+    "cylinders": 10,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 900,
+    "redline_rpm": 8700,
+    "sound_family": "v10"
+  },
+  "performance": {
+    "power_hp": 1080,
+    "power_kw": 805,
+    "torque_nm": 850,
+    "weight_kg": 1520,
+    "power_to_weight_hp_per_tonne": 710.5,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 411,
+    "top_speed_mph": 255,
+    "accel_0_100_kmh_s": 1.79,
+    "accel_0_200_kmh_s": 5.89,
+    "braking_100_0_m": 27.5,
+    "lateral_g": 1.44,
+    "handling_rating": 98,
+    "performance_index": 942,
+    "performance_class": "X"
+  },
+  "drivetrain_detail": {
+    "gears": 8,
+    "gear_ratios": [
+      3.15,
+      2.551,
+      2.066,
+      1.673,
+      1.355,
+      1.098,
+      0.889,
+      0.72
+    ],
+    "final_drive": 3.33,
+    "tyre_compound": "Track Cup 2"
+  },
+  "nitro": {
+    "capacity_s": 6.0,
+    "power_mult": 1.32,
+    "refill_s": 9.0
+  },
+  "economy": {
+    "price_credits": 2637000,
+    "unlock_level": 27,
+    "race_reward_credits": 118700
+  },
+  "dimensions": {
+    "length_m": 4.697,
+    "width_m": 2.134,
+    "wheelbase_m": 2.818
+  },
+  "visual": {
+    "primary_color": "#8A9099",
+    "accent_color": "#C4C9CE",
+    "livery": "racing_split",
+    "has_wing": true,
+    "sprite": "sprites/topdown/mishima-raiden-omega.png",
+    "sprite_shadow": "sprites/shadow/mishima-raiden-omega_shadow.png",
+    "thumbnail": "sprites/thumbs/mishima-raiden-omega_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v10",
+    "loops": {
+      "idle": "audio/engines/v10/v10_idle.wav",
+      "low": "audio/engines/v10/v10_low.wav",
+      "mid": "audio/engines/v10/v10_mid.wav",
+      "high": "audio/engines/v10/v10_high.wav",
+      "redline": "audio/engines/v10/v10_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v10/v10_rev.wav",
+    "startup": "audio/engines/v10/v10_start.wav",
+    "base_pitch_rpm": 900
+  },
+  "tags": [
+    "awd",
+    "hyper",
+    "hypercar",
+    "japan"
+  ],
+  "seed": 3998159302
+}

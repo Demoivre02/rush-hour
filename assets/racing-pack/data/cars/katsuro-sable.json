@@ -1,0 +1,96 @@
+{
+  "id": "katsuro-sable",
+  "index": 10,
+  "name": "Katsuro Sable",
+  "manufacturer": "Katsuro",
+  "model": "Sable",
+  "country": "Japan",
+  "year": 2019,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "sedan",
+  "seats": 5,
+  "blurb": "Katsuro's bread and butter. Ten million sold, one million modified.",
+  "engine": {
+    "code": "i4",
+    "label": "Inline-4",
+    "cylinders": 4,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 800,
+    "redline_rpm": 6800,
+    "sound_family": "i4"
+  },
+  "performance": {
+    "power_hp": 145,
+    "power_kw": 108,
+    "torque_nm": 190,
+    "weight_kg": 1230,
+    "power_to_weight_hp_per_tonne": 117.9,
+    "drivetrain": "FWD",
+    "top_speed_kmh": 211,
+    "top_speed_mph": 131,
+    "accel_0_100_kmh_s": 9.58,
+    "accel_0_200_kmh_s": 46.4,
+    "braking_100_0_m": 46.0,
+    "lateral_g": 0.9,
+    "handling_rating": 31,
+    "performance_index": 347,
+    "performance_class": "C"
+  },
+  "drivetrain_detail": {
+    "gears": 5,
+    "gear_ratios": [
+      3.54,
+      2.29,
+      1.481,
+      0.958,
+      0.62
+    ],
+    "final_drive": 3.82,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 62500,
+    "unlock_level": 4,
+    "race_reward_credits": 2800
+  },
+  "dimensions": {
+    "length_m": 4.674,
+    "width_m": 1.83,
+    "wheelbase_m": 2.804
+  },
+  "visual": {
+    "primary_color": "#D8B12A",
+    "accent_color": "#C8CDD3",
+    "livery": "solid",
+    "has_wing": false,
+    "sprite": "sprites/topdown/katsuro-sable.png",
+    "sprite_shadow": "sprites/shadow/katsuro-sable_shadow.png",
+    "thumbnail": "sprites/thumbs/katsuro-sable_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4",
+    "loops": {
+      "idle": "audio/engines/i4/i4_idle.wav",
+      "low": "audio/engines/i4/i4_low.wav",
+      "mid": "audio/engines/i4/i4_mid.wav",
+      "high": "audio/engines/i4/i4_high.wav",
+      "redline": "audio/engines/i4/i4_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4/i4_rev.wav",
+    "startup": "audio/engines/i4/i4_start.wav",
+    "base_pitch_rpm": 800
+  },
+  "tags": [
+    "base",
+    "fwd",
+    "japan",
+    "sedan"
+  ],
+  "seed": 2414387631
+}

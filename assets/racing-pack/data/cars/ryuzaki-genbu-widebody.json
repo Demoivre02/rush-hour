@@ -1,0 +1,101 @@
+{
+  "id": "ryuzaki-genbu-widebody",
+  "index": 39,
+  "name": "Ryuzaki Genbu Widebody",
+  "manufacturer": "Ryuzaki",
+  "model": "Genbu Widebody",
+  "country": "Japan",
+  "year": 2018,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "coupe",
+  "seats": 4,
+  "blurb": "A drift-spec Shinkai with fenders like shoulder pads and a hydraulic handbrake.",
+  "engine": {
+    "code": "rotary2_turbo",
+    "label": "Turbo Twin-Rotor",
+    "cylinders": 4,
+    "aspiration": "turbocharged",
+    "idle_rpm": 920,
+    "redline_rpm": 8500,
+    "sound_family": "rotary2_turbo"
+  },
+  "performance": {
+    "power_hp": 500,
+    "power_kw": 373,
+    "torque_nm": 520,
+    "weight_kg": 1210,
+    "power_to_weight_hp_per_tonne": 413.2,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 319,
+    "top_speed_mph": 198,
+    "accel_0_100_kmh_s": 3.31,
+    "accel_0_200_kmh_s": 11.82,
+    "braking_100_0_m": 38.7,
+    "lateral_g": 1.06,
+    "handling_rating": 51,
+    "performance_index": 684,
+    "performance_class": "S1"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.392,
+      2.555,
+      1.925,
+      1.45,
+      1.092,
+      0.823,
+      0.62
+    ],
+    "final_drive": 3.64,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 825000,
+    "unlock_level": 16,
+    "race_reward_credits": 37100
+  },
+  "dimensions": {
+    "length_m": 4.348,
+    "width_m": 1.814,
+    "wheelbase_m": 2.609
+  },
+  "visual": {
+    "primary_color": "#2E7D6B",
+    "accent_color": "#F2A03D",
+    "livery": "racing_split",
+    "has_wing": true,
+    "sprite": "sprites/topdown/ryuzaki-genbu-widebody.png",
+    "sprite_shadow": "sprites/shadow/ryuzaki-genbu-widebody_shadow.png",
+    "thumbnail": "sprites/thumbs/ryuzaki-genbu-widebody_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/rotary2_turbo",
+    "loops": {
+      "idle": "audio/engines/rotary2_turbo/rotary2_turbo_idle.wav",
+      "low": "audio/engines/rotary2_turbo/rotary2_turbo_low.wav",
+      "mid": "audio/engines/rotary2_turbo/rotary2_turbo_mid.wav",
+      "high": "audio/engines/rotary2_turbo/rotary2_turbo_high.wav",
+      "redline": "audio/engines/rotary2_turbo/rotary2_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/rotary2_turbo/rotary2_turbo_rev.wav",
+    "startup": "audio/engines/rotary2_turbo/rotary2_turbo_start.wav",
+    "base_pitch_rpm": 920
+  },
+  "tags": [
+    "coupe",
+    "drift",
+    "japan",
+    "rotary",
+    "rwd",
+    "tuned",
+    "turbo"
+  ],
+  "seed": 3097359547
+}

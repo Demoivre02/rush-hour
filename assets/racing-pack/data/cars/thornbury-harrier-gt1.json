@@ -1,0 +1,101 @@
+{
+  "id": "thornbury-harrier-gt1",
+  "index": 80,
+  "name": "Thornbury Harrier GT1",
+  "manufacturer": "Thornbury",
+  "model": "Harrier GT1",
+  "country": "UK",
+  "year": 2025,
+  "tier": "super",
+  "tier_label": "Supercar",
+  "body_type": "trackcar",
+  "seats": 2,
+  "blurb": "Six hundred and twenty horsepower per tonne. Thornbury's idea of restraint.",
+  "engine": {
+    "code": "v8_turbo",
+    "label": "Twin-Turbo V8",
+    "cylinders": 8,
+    "aspiration": "turbocharged",
+    "idle_rpm": 740,
+    "redline_rpm": 7600,
+    "sound_family": "v8_turbo"
+  },
+  "performance": {
+    "power_hp": 700,
+    "power_kw": 522,
+    "torque_nm": 700,
+    "weight_kg": 1130,
+    "power_to_weight_hp_per_tonne": 619.5,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 326,
+    "top_speed_mph": 203,
+    "accel_0_100_kmh_s": 2.33,
+    "accel_0_200_kmh_s": 7.97,
+    "braking_100_0_m": 29.1,
+    "lateral_g": 1.34,
+    "handling_rating": 85,
+    "performance_index": 836,
+    "performance_class": "X"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.308,
+      2.503,
+      1.893,
+      1.432,
+      1.083,
+      0.82,
+      0.62
+    ],
+    "final_drive": 3.53,
+    "tyre_compound": "Semi-Slick"
+  },
+  "nitro": {
+    "capacity_s": 5.0,
+    "power_mult": 1.26,
+    "refill_s": 10.0
+  },
+  "economy": {
+    "price_credits": 1718000,
+    "unlock_level": 22,
+    "race_reward_credits": 77300
+  },
+  "dimensions": {
+    "length_m": 4.28,
+    "width_m": 1.957,
+    "wheelbase_m": 2.568
+  },
+  "visual": {
+    "primary_color": "#0F1215",
+    "accent_color": "#DDE2E6",
+    "livery": "racing_split",
+    "has_wing": true,
+    "sprite": "sprites/topdown/thornbury-harrier-gt1.png",
+    "sprite_shadow": "sprites/shadow/thornbury-harrier-gt1_shadow.png",
+    "thumbnail": "sprites/thumbs/thornbury-harrier-gt1_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v8_turbo",
+    "loops": {
+      "idle": "audio/engines/v8_turbo/v8_turbo_idle.wav",
+      "low": "audio/engines/v8_turbo/v8_turbo_low.wav",
+      "mid": "audio/engines/v8_turbo/v8_turbo_mid.wav",
+      "high": "audio/engines/v8_turbo/v8_turbo_high.wav",
+      "redline": "audio/engines/v8_turbo/v8_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v8_turbo/v8_turbo_rev.wav",
+    "startup": "audio/engines/v8_turbo/v8_turbo_start.wav",
+    "base_pitch_rpm": 740
+  },
+  "tags": [
+    "drift",
+    "rwd",
+    "super",
+    "track",
+    "trackcar",
+    "turbo",
+    "uk"
+  ],
+  "seed": 1404806236
+}

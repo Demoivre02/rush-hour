@@ -1,0 +1,99 @@
+{
+  "id": "mishima-raiden-v10",
+  "index": 77,
+  "name": "Mishima Raiden V10",
+  "manufacturer": "Mishima",
+  "model": "Raiden V10",
+  "country": "Japan",
+  "year": 2011,
+  "tier": "super",
+  "tier_label": "Supercar",
+  "body_type": "supercar",
+  "seats": 2,
+  "blurb": "Mishima's one and only halo car. Carbon tub, ten cylinders, a voice like a violin.",
+  "engine": {
+    "code": "v10",
+    "label": "V10",
+    "cylinders": 10,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 900,
+    "redline_rpm": 8700,
+    "sound_family": "v10"
+  },
+  "performance": {
+    "power_hp": 690,
+    "power_kw": 515,
+    "torque_nm": 540,
+    "weight_kg": 1480,
+    "power_to_weight_hp_per_tonne": 466.2,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 357,
+    "top_speed_mph": 222,
+    "accel_0_100_kmh_s": 2.9,
+    "accel_0_200_kmh_s": 9.94,
+    "braking_100_0_m": 32.8,
+    "lateral_g": 1.22,
+    "handling_rating": 70,
+    "performance_index": 798,
+    "performance_class": "S2"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.312,
+      2.569,
+      1.992,
+      1.544,
+      1.197,
+      0.929,
+      0.72
+    ],
+    "final_drive": 3.54,
+    "tyre_compound": "Semi-Slick"
+  },
+  "nitro": {
+    "capacity_s": 5.0,
+    "power_mult": 1.26,
+    "refill_s": 10.0
+  },
+  "economy": {
+    "price_credits": 1451500,
+    "unlock_level": 20,
+    "race_reward_credits": 65300
+  },
+  "dimensions": {
+    "length_m": 4.677,
+    "width_m": 1.97,
+    "wheelbase_m": 2.806
+  },
+  "visual": {
+    "primary_color": "#2B3138",
+    "accent_color": "#C4C9CE",
+    "livery": "solid",
+    "has_wing": true,
+    "sprite": "sprites/topdown/mishima-raiden-v10.png",
+    "sprite_shadow": "sprites/shadow/mishima-raiden-v10_shadow.png",
+    "thumbnail": "sprites/thumbs/mishima-raiden-v10_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v10",
+    "loops": {
+      "idle": "audio/engines/v10/v10_idle.wav",
+      "low": "audio/engines/v10/v10_low.wav",
+      "mid": "audio/engines/v10/v10_mid.wav",
+      "high": "audio/engines/v10/v10_high.wav",
+      "redline": "audio/engines/v10/v10_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v10/v10_rev.wav",
+    "startup": "audio/engines/v10/v10_start.wav",
+    "base_pitch_rpm": 900
+  },
+  "tags": [
+    "drift",
+    "japan",
+    "rwd",
+    "super",
+    "supercar"
+  ],
+  "seed": 348919633
+}

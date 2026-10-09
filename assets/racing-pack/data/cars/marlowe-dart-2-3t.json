@@ -1,0 +1,98 @@
+{
+  "id": "marlowe-dart-2-3t",
+  "index": 23,
+  "name": "Marlowe Dart 2.3T",
+  "manufacturer": "Marlowe",
+  "model": "Dart 2.3T",
+  "country": "USA",
+  "year": 2021,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "coupe",
+  "seats": 4,
+  "blurb": "A four-cylinder pony car. Purists complained. It out-handled all of them.",
+  "engine": {
+    "code": "i4_turbo",
+    "label": "Turbo Inline-4",
+    "cylinders": 4,
+    "aspiration": "turbocharged",
+    "idle_rpm": 820,
+    "redline_rpm": 6900,
+    "sound_family": "i4_turbo"
+  },
+  "performance": {
+    "power_hp": 235,
+    "power_kw": 175,
+    "torque_nm": 390,
+    "weight_kg": 1520,
+    "power_to_weight_hp_per_tonne": 154.6,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 251,
+    "top_speed_mph": 156,
+    "accel_0_100_kmh_s": 7.3,
+    "accel_0_200_kmh_s": 30.34,
+    "braking_100_0_m": 45.0,
+    "lateral_g": 0.91,
+    "handling_rating": 32,
+    "performance_index": 448,
+    "performance_class": "B"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.502,
+      2.477,
+      1.752,
+      1.239,
+      0.877,
+      0.62
+    ],
+    "final_drive": 3.78,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 166000,
+    "unlock_level": 7,
+    "race_reward_credits": 7500
+  },
+  "dimensions": {
+    "length_m": 4.585,
+    "width_m": 1.826,
+    "wheelbase_m": 2.751
+  },
+  "visual": {
+    "primary_color": "#2E5FA3",
+    "accent_color": "#D93A2B",
+    "livery": "solid",
+    "has_wing": false,
+    "sprite": "sprites/topdown/marlowe-dart-2-3t.png",
+    "sprite_shadow": "sprites/shadow/marlowe-dart-2-3t_shadow.png",
+    "thumbnail": "sprites/thumbs/marlowe-dart-2-3t_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4_turbo",
+    "loops": {
+      "idle": "audio/engines/i4_turbo/i4_turbo_idle.wav",
+      "low": "audio/engines/i4_turbo/i4_turbo_low.wav",
+      "mid": "audio/engines/i4_turbo/i4_turbo_mid.wav",
+      "high": "audio/engines/i4_turbo/i4_turbo_high.wav",
+      "redline": "audio/engines/i4_turbo/i4_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4_turbo/i4_turbo_rev.wav",
+    "startup": "audio/engines/i4_turbo/i4_turbo_start.wav",
+    "base_pitch_rpm": 820
+  },
+  "tags": [
+    "base",
+    "coupe",
+    "rwd",
+    "turbo",
+    "usa"
+  ],
+  "seed": 3956797384
+}

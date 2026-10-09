@@ -1,0 +1,101 @@
+{
+  "id": "ryuzaki-shinkai-fd",
+  "index": 37,
+  "name": "Ryuzaki Shinkai FD",
+  "manufacturer": "Ryuzaki",
+  "model": "Shinkai FD",
+  "country": "Japan",
+  "year": 1999,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "coupe",
+  "seats": 4,
+  "blurb": "Sequential twin turbos, a perfect silhouette, and a maintenance schedule from hell.",
+  "engine": {
+    "code": "rotary2_turbo",
+    "label": "Turbo Twin-Rotor",
+    "cylinders": 4,
+    "aspiration": "turbocharged",
+    "idle_rpm": 920,
+    "redline_rpm": 8500,
+    "sound_family": "rotary2_turbo"
+  },
+  "performance": {
+    "power_hp": 395,
+    "power_kw": 295,
+    "torque_nm": 450,
+    "weight_kg": 1290,
+    "power_to_weight_hp_per_tonne": 306.2,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 299,
+    "top_speed_mph": 186,
+    "accel_0_100_kmh_s": 4.19,
+    "accel_0_200_kmh_s": 15.54,
+    "braking_100_0_m": 39.8,
+    "lateral_g": 1.03,
+    "handling_rating": 47,
+    "performance_index": 630,
+    "performance_class": "S1"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.435,
+      2.439,
+      1.732,
+      1.23,
+      0.873,
+      0.62
+    ],
+    "final_drive": 3.69,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 760000,
+    "unlock_level": 13,
+    "race_reward_credits": 34200
+  },
+  "dimensions": {
+    "length_m": 4.491,
+    "width_m": 1.805,
+    "wheelbase_m": 2.695
+  },
+  "visual": {
+    "primary_color": "#E6E8EA",
+    "accent_color": "#F2A03D",
+    "livery": "solid",
+    "has_wing": true,
+    "sprite": "sprites/topdown/ryuzaki-shinkai-fd.png",
+    "sprite_shadow": "sprites/shadow/ryuzaki-shinkai-fd_shadow.png",
+    "thumbnail": "sprites/thumbs/ryuzaki-shinkai-fd_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/rotary2_turbo",
+    "loops": {
+      "idle": "audio/engines/rotary2_turbo/rotary2_turbo_idle.wav",
+      "low": "audio/engines/rotary2_turbo/rotary2_turbo_low.wav",
+      "mid": "audio/engines/rotary2_turbo/rotary2_turbo_mid.wav",
+      "high": "audio/engines/rotary2_turbo/rotary2_turbo_high.wav",
+      "redline": "audio/engines/rotary2_turbo/rotary2_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/rotary2_turbo/rotary2_turbo_rev.wav",
+    "startup": "audio/engines/rotary2_turbo/rotary2_turbo_start.wav",
+    "base_pitch_rpm": 920
+  },
+  "tags": [
+    "classic",
+    "coupe",
+    "drift",
+    "japan",
+    "rotary",
+    "rwd",
+    "tuned",
+    "turbo"
+  ],
+  "seed": 2262665522
+}

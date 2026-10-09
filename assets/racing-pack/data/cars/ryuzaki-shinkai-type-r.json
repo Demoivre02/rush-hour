@@ -1,0 +1,100 @@
+{
+  "id": "ryuzaki-shinkai-type-r",
+  "index": 82,
+  "name": "Ryuzaki Shinkai Type-R",
+  "manufacturer": "Ryuzaki",
+  "model": "Shinkai Type-R",
+  "country": "Japan",
+  "year": 2025,
+  "tier": "super",
+  "tier_label": "Supercar",
+  "body_type": "supercar",
+  "seats": 2,
+  "blurb": "Four rotors. Nine thousand five hundred revs. A sound nothing else makes.",
+  "engine": {
+    "code": "rotary4",
+    "label": "Quad-Rotor",
+    "cylinders": 8,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 1000,
+    "redline_rpm": 9500,
+    "sound_family": "rotary4"
+  },
+  "performance": {
+    "power_hp": 700,
+    "power_kw": 522,
+    "torque_nm": 560,
+    "weight_kg": 1290,
+    "power_to_weight_hp_per_tonne": 542.6,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 359,
+    "top_speed_mph": 223,
+    "accel_0_100_kmh_s": 2.58,
+    "accel_0_200_kmh_s": 8.83,
+    "braking_100_0_m": 32.5,
+    "lateral_g": 1.23,
+    "handling_rating": 72,
+    "performance_index": 813,
+    "performance_class": "X"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.308,
+      2.566,
+      1.99,
+      1.543,
+      1.197,
+      0.928,
+      0.72
+    ],
+    "final_drive": 3.53,
+    "tyre_compound": "Semi-Slick"
+  },
+  "nitro": {
+    "capacity_s": 5.0,
+    "power_mult": 1.26,
+    "refill_s": 10.0
+  },
+  "economy": {
+    "price_credits": 1553000,
+    "unlock_level": 21,
+    "race_reward_credits": 69900
+  },
+  "dimensions": {
+    "length_m": 4.646,
+    "width_m": 1.972,
+    "wheelbase_m": 2.788
+  },
+  "visual": {
+    "primary_color": "#B4241E",
+    "accent_color": "#20242A",
+    "livery": "stripe_center",
+    "has_wing": true,
+    "sprite": "sprites/topdown/ryuzaki-shinkai-type-r.png",
+    "sprite_shadow": "sprites/shadow/ryuzaki-shinkai-type-r_shadow.png",
+    "thumbnail": "sprites/thumbs/ryuzaki-shinkai-type-r_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/rotary4",
+    "loops": {
+      "idle": "audio/engines/rotary4/rotary4_idle.wav",
+      "low": "audio/engines/rotary4/rotary4_low.wav",
+      "mid": "audio/engines/rotary4/rotary4_mid.wav",
+      "high": "audio/engines/rotary4/rotary4_high.wav",
+      "redline": "audio/engines/rotary4/rotary4_redline.wav"
+    },
+    "rev_sweep": "audio/engines/rotary4/rotary4_rev.wav",
+    "startup": "audio/engines/rotary4/rotary4_start.wav",
+    "base_pitch_rpm": 1000
+  },
+  "tags": [
+    "drift",
+    "japan",
+    "rotary",
+    "rwd",
+    "super",
+    "supercar"
+  ],
+  "seed": 3115768054
+}

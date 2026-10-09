@@ -1,0 +1,97 @@
+{
+  "id": "aveline-marais",
+  "index": 9,
+  "name": "Aveline Marais",
+  "manufacturer": "Aveline",
+  "model": "Marais",
+  "country": "France",
+  "year": 2020,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "wagon",
+  "seats": 5,
+  "blurb": "The estate that hauls a family and, with the seats down, a spare engine.",
+  "engine": {
+    "code": "i4_turbo",
+    "label": "Turbo Inline-4",
+    "cylinders": 4,
+    "aspiration": "turbocharged",
+    "idle_rpm": 820,
+    "redline_rpm": 6900,
+    "sound_family": "i4_turbo"
+  },
+  "performance": {
+    "power_hp": 165,
+    "power_kw": 123,
+    "torque_nm": 270,
+    "weight_kg": 1310,
+    "power_to_weight_hp_per_tonne": 126.0,
+    "drivetrain": "FWD",
+    "top_speed_kmh": 216,
+    "top_speed_mph": 134,
+    "accel_0_100_kmh_s": 9.1,
+    "accel_0_200_kmh_s": 42.09,
+    "braking_100_0_m": 48.2,
+    "lateral_g": 0.87,
+    "handling_rating": 27,
+    "performance_index": 345,
+    "performance_class": "C"
+  },
+  "drivetrain_detail": {
+    "gears": 5,
+    "gear_ratios": [
+      3.531,
+      2.286,
+      1.48,
+      0.958,
+      0.62
+    ],
+    "final_drive": 3.81,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 61500,
+    "unlock_level": 4,
+    "race_reward_credits": 2800
+  },
+  "dimensions": {
+    "length_m": 4.665,
+    "width_m": 1.867,
+    "wheelbase_m": 2.799
+  },
+  "visual": {
+    "primary_color": "#1A1D21",
+    "accent_color": "#EDEFF1",
+    "livery": "solid",
+    "has_wing": false,
+    "sprite": "sprites/topdown/aveline-marais.png",
+    "sprite_shadow": "sprites/shadow/aveline-marais_shadow.png",
+    "thumbnail": "sprites/thumbs/aveline-marais_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4_turbo",
+    "loops": {
+      "idle": "audio/engines/i4_turbo/i4_turbo_idle.wav",
+      "low": "audio/engines/i4_turbo/i4_turbo_low.wav",
+      "mid": "audio/engines/i4_turbo/i4_turbo_mid.wav",
+      "high": "audio/engines/i4_turbo/i4_turbo_high.wav",
+      "redline": "audio/engines/i4_turbo/i4_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4_turbo/i4_turbo_rev.wav",
+    "startup": "audio/engines/i4_turbo/i4_turbo_start.wav",
+    "base_pitch_rpm": 820
+  },
+  "tags": [
+    "base",
+    "france",
+    "fwd",
+    "turbo",
+    "wagon"
+  ],
+  "seed": 1245233489
+}

@@ -1,0 +1,98 @@
+{
+  "id": "hanyu-torro",
+  "index": 6,
+  "name": "Hanyu Torro",
+  "manufacturer": "Hanyu",
+  "model": "Torro",
+  "country": "Korea",
+  "year": 2023,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "suv",
+  "seats": 7,
+  "blurb": "A crossover that thinks it's a hot hatch on stilts.",
+  "engine": {
+    "code": "i4_turbo",
+    "label": "Turbo Inline-4",
+    "cylinders": 4,
+    "aspiration": "turbocharged",
+    "idle_rpm": 820,
+    "redline_rpm": 6900,
+    "sound_family": "i4_turbo"
+  },
+  "performance": {
+    "power_hp": 190,
+    "power_kw": 142,
+    "torque_nm": 320,
+    "weight_kg": 1480,
+    "power_to_weight_hp_per_tonne": 128.4,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 206,
+    "top_speed_mph": 128,
+    "accel_0_100_kmh_s": 7.47,
+    "accel_0_200_kmh_s": 33.01,
+    "braking_100_0_m": 57.7,
+    "lateral_g": 0.78,
+    "handling_rating": 16,
+    "performance_index": 315,
+    "performance_class": "C"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.521,
+      2.488,
+      1.758,
+      1.242,
+      0.877,
+      0.62
+    ],
+    "final_drive": 3.8,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 44000,
+    "unlock_level": 4,
+    "race_reward_credits": 2000
+  },
+  "dimensions": {
+    "length_m": 5.015,
+    "width_m": 1.974,
+    "wheelbase_m": 3.009
+  },
+  "visual": {
+    "primary_color": "#5FA83F",
+    "accent_color": "#B03030",
+    "livery": "solid",
+    "has_wing": false,
+    "sprite": "sprites/topdown/hanyu-torro.png",
+    "sprite_shadow": "sprites/shadow/hanyu-torro_shadow.png",
+    "thumbnail": "sprites/thumbs/hanyu-torro_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4_turbo",
+    "loops": {
+      "idle": "audio/engines/i4_turbo/i4_turbo_idle.wav",
+      "low": "audio/engines/i4_turbo/i4_turbo_low.wav",
+      "mid": "audio/engines/i4_turbo/i4_turbo_mid.wav",
+      "high": "audio/engines/i4_turbo/i4_turbo_high.wav",
+      "redline": "audio/engines/i4_turbo/i4_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4_turbo/i4_turbo_rev.wav",
+    "startup": "audio/engines/i4_turbo/i4_turbo_start.wav",
+    "base_pitch_rpm": 820
+  },
+  "tags": [
+    "awd",
+    "base",
+    "korea",
+    "suv",
+    "turbo"
+  ],
+  "seed": 1982848691
+}

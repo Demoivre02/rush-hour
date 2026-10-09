@@ -1,0 +1,100 @@
+{
+  "id": "scorpetti-aeterna",
+  "index": 87,
+  "name": "Scorpetti Aeterna",
+  "manufacturer": "Scorpetti",
+  "model": "Aeterna",
+  "country": "Italy",
+  "year": 2025,
+  "tier": "hyper",
+  "tier_label": "Hypercar",
+  "body_type": "hypercar",
+  "seats": 2,
+  "blurb": "Twin-turbo hybrid, active aero, and a price with too many digits.",
+  "engine": {
+    "code": "v8_turbo",
+    "label": "Twin-Turbo V8",
+    "cylinders": 8,
+    "aspiration": "turbocharged",
+    "idle_rpm": 740,
+    "redline_rpm": 7600,
+    "sound_family": "v8_turbo"
+  },
+  "performance": {
+    "power_hp": 1050,
+    "power_kw": 783,
+    "torque_nm": 1000,
+    "weight_kg": 1470,
+    "power_to_weight_hp_per_tonne": 714.3,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 407,
+    "top_speed_mph": 253,
+    "accel_0_100_kmh_s": 1.78,
+    "accel_0_200_kmh_s": 5.87,
+    "braking_100_0_m": 27.4,
+    "lateral_g": 1.45,
+    "handling_rating": 99,
+    "performance_index": 942,
+    "performance_class": "X"
+  },
+  "drivetrain_detail": {
+    "gears": 8,
+    "gear_ratios": [
+      3.163,
+      2.56,
+      2.072,
+      1.677,
+      1.358,
+      1.099,
+      0.89,
+      0.72
+    ],
+    "final_drive": 3.35,
+    "tyre_compound": "Track Cup 2"
+  },
+  "nitro": {
+    "capacity_s": 6.0,
+    "power_mult": 1.32,
+    "refill_s": 9.0
+  },
+  "economy": {
+    "price_credits": 2637000,
+    "unlock_level": 27,
+    "race_reward_credits": 118700
+  },
+  "dimensions": {
+    "length_m": 4.669,
+    "width_m": 2.105,
+    "wheelbase_m": 2.801
+  },
+  "visual": {
+    "primary_color": "#DDE1E5",
+    "accent_color": "#F0B429",
+    "livery": "racing_split",
+    "has_wing": true,
+    "sprite": "sprites/topdown/scorpetti-aeterna.png",
+    "sprite_shadow": "sprites/shadow/scorpetti-aeterna_shadow.png",
+    "thumbnail": "sprites/thumbs/scorpetti-aeterna_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v8_turbo",
+    "loops": {
+      "idle": "audio/engines/v8_turbo/v8_turbo_idle.wav",
+      "low": "audio/engines/v8_turbo/v8_turbo_low.wav",
+      "mid": "audio/engines/v8_turbo/v8_turbo_mid.wav",
+      "high": "audio/engines/v8_turbo/v8_turbo_high.wav",
+      "redline": "audio/engines/v8_turbo/v8_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v8_turbo/v8_turbo_rev.wav",
+    "startup": "audio/engines/v8_turbo/v8_turbo_start.wav",
+    "base_pitch_rpm": 740
+  },
+  "tags": [
+    "awd",
+    "hyper",
+    "hypercar",
+    "italy",
+    "turbo"
+  ],
+  "seed": 4252983440
+}

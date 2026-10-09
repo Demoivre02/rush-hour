@@ -1,0 +1,99 @@
+{
+  "id": "eisenbach-halde-rs",
+  "index": 49,
+  "name": "Eisenbach Halde RS",
+  "manufacturer": "Eisenbach",
+  "model": "Halde RS",
+  "country": "Germany",
+  "year": 2024,
+  "tier": "tuned",
+  "tier_label": "Tuned",
+  "body_type": "wagon",
+  "seats": 5,
+  "blurb": "The fast estate. Groceries at nine tenths.",
+  "engine": {
+    "code": "v6_turbo",
+    "label": "Twin-Turbo V6",
+    "cylinders": 6,
+    "aspiration": "turbocharged",
+    "idle_rpm": 780,
+    "redline_rpm": 7600,
+    "sound_family": "v6_turbo"
+  },
+  "performance": {
+    "power_hp": 450,
+    "power_kw": 336,
+    "torque_nm": 600,
+    "weight_kg": 1720,
+    "power_to_weight_hp_per_tonne": 261.6,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 301,
+    "top_speed_mph": 187,
+    "accel_0_100_kmh_s": 4.19,
+    "accel_0_200_kmh_s": 15.2,
+    "braking_100_0_m": 43.1,
+    "lateral_g": 0.97,
+    "handling_rating": 39,
+    "performance_index": 599,
+    "performance_class": "A"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.413,
+      2.568,
+      1.933,
+      1.455,
+      1.095,
+      0.824,
+      0.62
+    ],
+    "final_drive": 3.66,
+    "tyre_compound": "Performance Summer"
+  },
+  "nitro": {
+    "capacity_s": 4.0,
+    "power_mult": 1.22,
+    "refill_s": 12.0
+  },
+  "economy": {
+    "price_credits": 503000,
+    "unlock_level": 12,
+    "race_reward_credits": 22600
+  },
+  "dimensions": {
+    "length_m": 4.899,
+    "width_m": 1.873,
+    "wheelbase_m": 2.939
+  },
+  "visual": {
+    "primary_color": "#7C1D24",
+    "accent_color": "#2A2E33",
+    "livery": "solid",
+    "has_wing": false,
+    "sprite": "sprites/topdown/eisenbach-halde-rs.png",
+    "sprite_shadow": "sprites/shadow/eisenbach-halde-rs_shadow.png",
+    "thumbnail": "sprites/thumbs/eisenbach-halde-rs_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v6_turbo",
+    "loops": {
+      "idle": "audio/engines/v6_turbo/v6_turbo_idle.wav",
+      "low": "audio/engines/v6_turbo/v6_turbo_low.wav",
+      "mid": "audio/engines/v6_turbo/v6_turbo_mid.wav",
+      "high": "audio/engines/v6_turbo/v6_turbo_high.wav",
+      "redline": "audio/engines/v6_turbo/v6_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v6_turbo/v6_turbo_rev.wav",
+    "startup": "audio/engines/v6_turbo/v6_turbo_start.wav",
+    "base_pitch_rpm": 780
+  },
+  "tags": [
+    "awd",
+    "germany",
+    "tuned",
+    "turbo",
+    "wagon"
+  ],
+  "seed": 1695553791
+}

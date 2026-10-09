@@ -1,0 +1,100 @@
+{
+  "id": "alviero-nembo-gts",
+  "index": 66,
+  "name": "Alviero Nembo GTS",
+  "manufacturer": "Alviero",
+  "model": "Nembo GTS",
+  "country": "Italy",
+  "year": 2024,
+  "tier": "super",
+  "tier_label": "Supercar",
+  "body_type": "supercar",
+  "seats": 2,
+  "blurb": "The smaller Alviero. Twin turbos, shorter wheelbase, sharper temper.",
+  "engine": {
+    "code": "v8_turbo",
+    "label": "Twin-Turbo V8",
+    "cylinders": 8,
+    "aspiration": "turbocharged",
+    "idle_rpm": 740,
+    "redline_rpm": 7600,
+    "sound_family": "v8_turbo"
+  },
+  "performance": {
+    "power_hp": 700,
+    "power_kw": 522,
+    "torque_nm": 760,
+    "weight_kg": 1490,
+    "power_to_weight_hp_per_tonne": 469.8,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 359,
+    "top_speed_mph": 223,
+    "accel_0_100_kmh_s": 2.89,
+    "accel_0_200_kmh_s": 9.89,
+    "braking_100_0_m": 32.8,
+    "lateral_g": 1.22,
+    "handling_rating": 70,
+    "performance_index": 800,
+    "performance_class": "X"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.308,
+      2.566,
+      1.99,
+      1.543,
+      1.197,
+      0.928,
+      0.72
+    ],
+    "final_drive": 3.53,
+    "tyre_compound": "Semi-Slick"
+  },
+  "nitro": {
+    "capacity_s": 5.0,
+    "power_mult": 1.26,
+    "refill_s": 10.0
+  },
+  "economy": {
+    "price_credits": 1465000,
+    "unlock_level": 21,
+    "race_reward_credits": 65900
+  },
+  "dimensions": {
+    "length_m": 4.605,
+    "width_m": 2.008,
+    "wheelbase_m": 2.763
+  },
+  "visual": {
+    "primary_color": "#1F3F6E",
+    "accent_color": "#141619",
+    "livery": "solid",
+    "has_wing": true,
+    "sprite": "sprites/topdown/alviero-nembo-gts.png",
+    "sprite_shadow": "sprites/shadow/alviero-nembo-gts_shadow.png",
+    "thumbnail": "sprites/thumbs/alviero-nembo-gts_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v8_turbo",
+    "loops": {
+      "idle": "audio/engines/v8_turbo/v8_turbo_idle.wav",
+      "low": "audio/engines/v8_turbo/v8_turbo_low.wav",
+      "mid": "audio/engines/v8_turbo/v8_turbo_mid.wav",
+      "high": "audio/engines/v8_turbo/v8_turbo_high.wav",
+      "redline": "audio/engines/v8_turbo/v8_turbo_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v8_turbo/v8_turbo_rev.wav",
+    "startup": "audio/engines/v8_turbo/v8_turbo_start.wav",
+    "base_pitch_rpm": 740
+  },
+  "tags": [
+    "drift",
+    "italy",
+    "rwd",
+    "super",
+    "supercar",
+    "turbo"
+  ],
+  "seed": 4165527775
+}

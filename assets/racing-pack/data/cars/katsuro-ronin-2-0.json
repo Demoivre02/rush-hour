@@ -1,0 +1,97 @@
+{
+  "id": "katsuro-ronin-2-0",
+  "index": 13,
+  "name": "Katsuro Ronin 2.0",
+  "manufacturer": "Katsuro",
+  "model": "Ronin 2.0",
+  "country": "Japan",
+  "year": 2023,
+  "tier": "base",
+  "tier_label": "Base",
+  "body_type": "coupe",
+  "seats": 4,
+  "blurb": "Modern Kaido. Same recipe, better brakes, no rust.",
+  "engine": {
+    "code": "i4",
+    "label": "Inline-4",
+    "cylinders": 4,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 800,
+    "redline_rpm": 6800,
+    "sound_family": "i4"
+  },
+  "performance": {
+    "power_hp": 200,
+    "power_kw": 149,
+    "torque_nm": 215,
+    "weight_kg": 1240,
+    "power_to_weight_hp_per_tonne": 161.3,
+    "drivetrain": "RWD",
+    "top_speed_kmh": 238,
+    "top_speed_mph": 148,
+    "accel_0_100_kmh_s": 7.06,
+    "accel_0_200_kmh_s": 30.71,
+    "braking_100_0_m": 44.0,
+    "lateral_g": 0.93,
+    "handling_rating": 35,
+    "performance_index": 455,
+    "performance_class": "B"
+  },
+  "drivetrain_detail": {
+    "gears": 6,
+    "gear_ratios": [
+      3.517,
+      2.485,
+      1.756,
+      1.241,
+      0.877,
+      0.62
+    ],
+    "final_drive": 3.79,
+    "tyre_compound": "Street Radial"
+  },
+  "nitro": {
+    "capacity_s": 3.0,
+    "power_mult": 1.18,
+    "refill_s": 14.0
+  },
+  "economy": {
+    "price_credits": 176500,
+    "unlock_level": 7,
+    "race_reward_credits": 7900
+  },
+  "dimensions": {
+    "length_m": 4.505,
+    "width_m": 1.801,
+    "wheelbase_m": 2.703
+  },
+  "visual": {
+    "primary_color": "#C8CDD3",
+    "accent_color": "#8E2B2B",
+    "livery": "solid",
+    "has_wing": false,
+    "sprite": "sprites/topdown/katsuro-ronin-2-0.png",
+    "sprite_shadow": "sprites/shadow/katsuro-ronin-2-0_shadow.png",
+    "thumbnail": "sprites/thumbs/katsuro-ronin-2-0_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/i4",
+    "loops": {
+      "idle": "audio/engines/i4/i4_idle.wav",
+      "low": "audio/engines/i4/i4_low.wav",
+      "mid": "audio/engines/i4/i4_mid.wav",
+      "high": "audio/engines/i4/i4_high.wav",
+      "redline": "audio/engines/i4/i4_redline.wav"
+    },
+    "rev_sweep": "audio/engines/i4/i4_rev.wav",
+    "startup": "audio/engines/i4/i4_start.wav",
+    "base_pitch_rpm": 800
+  },
+  "tags": [
+    "base",
+    "coupe",
+    "japan",
+    "rwd"
+  ],
+  "seed": 1482536969
+}

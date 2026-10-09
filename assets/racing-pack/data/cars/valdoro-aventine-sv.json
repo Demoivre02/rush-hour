@@ -1,0 +1,98 @@
+{
+  "id": "valdoro-aventine-sv",
+  "index": 68,
+  "name": "Valdoro Aventine SV",
+  "manufacturer": "Valdoro",
+  "model": "Aventine SV",
+  "country": "Italy",
+  "year": 2024,
+  "tier": "super",
+  "tier_label": "Supercar",
+  "body_type": "supercar",
+  "seats": 2,
+  "blurb": "Lighter, louder, and wearing enough carbon to build a small aircraft.",
+  "engine": {
+    "code": "v10",
+    "label": "V10",
+    "cylinders": 10,
+    "aspiration": "naturally aspirated",
+    "idle_rpm": 900,
+    "redline_rpm": 8700,
+    "sound_family": "v10"
+  },
+  "performance": {
+    "power_hp": 780,
+    "power_kw": 582,
+    "torque_nm": 690,
+    "weight_kg": 1450,
+    "power_to_weight_hp_per_tonne": 537.9,
+    "drivetrain": "AWD",
+    "top_speed_kmh": 365,
+    "top_speed_mph": 227,
+    "accel_0_100_kmh_s": 2.3,
+    "accel_0_200_kmh_s": 7.78,
+    "braking_100_0_m": 31.6,
+    "lateral_g": 1.27,
+    "handling_rating": 77,
+    "performance_index": 842,
+    "performance_class": "X"
+  },
+  "drivetrain_detail": {
+    "gears": 7,
+    "gear_ratios": [
+      3.275,
+      2.544,
+      1.977,
+      1.536,
+      1.193,
+      0.927,
+      0.72
+    ],
+    "final_drive": 3.49,
+    "tyre_compound": "Semi-Slick"
+  },
+  "nitro": {
+    "capacity_s": 5.0,
+    "power_mult": 1.26,
+    "refill_s": 10.0
+  },
+  "economy": {
+    "price_credits": 1763000,
+    "unlock_level": 23,
+    "race_reward_credits": 79300
+  },
+  "dimensions": {
+    "length_m": 4.677,
+    "width_m": 2.027,
+    "wheelbase_m": 2.806
+  },
+  "visual": {
+    "primary_color": "#7BC043",
+    "accent_color": "#E4620F",
+    "livery": "racing_split",
+    "has_wing": true,
+    "sprite": "sprites/topdown/valdoro-aventine-sv.png",
+    "sprite_shadow": "sprites/shadow/valdoro-aventine-sv_shadow.png",
+    "thumbnail": "sprites/thumbs/valdoro-aventine-sv_thumb.png"
+  },
+  "audio": {
+    "engine_set": "audio/engines/v10",
+    "loops": {
+      "idle": "audio/engines/v10/v10_idle.wav",
+      "low": "audio/engines/v10/v10_low.wav",
+      "mid": "audio/engines/v10/v10_mid.wav",
+      "high": "audio/engines/v10/v10_high.wav",
+      "redline": "audio/engines/v10/v10_redline.wav"
+    },
+    "rev_sweep": "audio/engines/v10/v10_rev.wav",
+    "startup": "audio/engines/v10/v10_start.wav",
+    "base_pitch_rpm": 900
+  },
+  "tags": [
+    "awd",
+    "italy",
+    "super",
+    "supercar"
+  ],
+  "seed": 1035980121
+}
