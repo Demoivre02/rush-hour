@@ -31,7 +31,7 @@ const TIPS = [
 ];
 const DEFAULT_SETTINGS = {
   difficulty: 1, distance: 0, quali: true, tc: true, abs: true, autoGear: true,
-  nametags: true, volume: 1, graphicsQuality: 'auto', cameraProfile: 'broadcast',
+  nametags: true, volume: 1, musicVolume: 0.8, graphicsQuality: 'auto', cameraProfile: 'broadcast',
   autoPause: true, touchControls: true, steeringResponse: 'balanced',
   cockpitFov: 'natural', cockpitSeat: 'standard', headMotion: true,
 };
@@ -911,7 +911,7 @@ export class UI {
       tc: 'Traction control', abs: 'Anti-lock brakes', autoGear: 'Gearbox',
       nametags: 'Driver nametags', graphicsQuality: 'Graphics quality',
       cameraProfile: 'Camera style', autoPause: 'Auto pause',
-      touchControls: 'Touch controls', volume: 'Master volume',
+      touchControls: 'Touch controls', volume: 'Master volume', musicVolume: 'Music volume',
       steeringResponse: 'Keyboard steering response', cockpitFov: 'Cockpit field of view',
       cockpitSeat: 'Cockpit seat position', headMotion: 'Cockpit head motion',
     };
@@ -944,7 +944,8 @@ export class UI {
           ${row('Auto Pause', 'Pause when the game loses focus', seg('autoPause', ['OFF', 'ON'], s.autoPause !== false ? 1 : 0))}
           ${row('Touch Controls', 'Show steering and pedal controls on touch devices', seg('touchControls', ['OFF', 'ON'], s.touchControls !== false ? 1 : 0))}`)}
         ${group('AUDIO', 'Mix', `
-          ${row('Master Volume', 'Engine + effects', seg('volume', ['MUTE', '50%', '100%'], s.volume === 0 ? 0 : s.volume < 0.9 ? 1 : 2))}`)}
+          ${row('Master Volume', 'Everything: music, engine and effects', seg('volume', ['MUTE', '50%', '100%'], s.volume === 0 ? 0 : s.volume < 0.9 ? 1 : 2))}
+          ${row('Music', 'Menu and race soundtrack', seg('musicVolume', ['OFF', '50%', '100%'], (s.musicVolume ?? 0.8) === 0 ? 0 : (s.musicVolume ?? 0.8) < 0.7 ? 1 : 2))}`)}
       </div>
       <div class="btn-row">
         <button class="f1-btn ghost" id="btn-back"><span>← BACK</span></button>
@@ -970,6 +971,7 @@ export class UI {
         else if (k === 'cockpitFov') this.settings[k] = ['focused', 'natural', 'wide'][v] || 'natural';
         else if (k === 'cockpitSeat') this.settings[k] = ['low', 'standard', 'high'][v] || 'standard';
         else if (k === 'volume') this.settings.volume = [0, 0.5, 1][v];
+        else if (k === 'musicVolume') this.settings.musicVolume = [0, 0.45, 0.8][v];
         else this.settings[k] = v === 1;
         this.saveSettings();
         this.cb('settingsChanged', this.settings);

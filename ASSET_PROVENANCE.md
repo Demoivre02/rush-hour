@@ -13,6 +13,10 @@ project release and how they were created.
 | `assets/city/commercial/` | Kenney City Kit (Commercial) 2.1 (https://kenney.nl/assets/city-kit-commercial), GLB models and colormap; license copy in the folder | CC0 1.0 |
 | `assets/city/suburban/` | Kenney City Kit (Suburban) (https://kenney.nl/assets/city-kit-suburban), GLB models and colormap; license copy in the folder | CC0 1.0 |
 | `assets/city/people/` | Kenney Mini Characters (https://kenney.nl/assets/mini-characters), GLB models and colormap; license copy in the folder | CC0 1.0 |
+| `assets/music/menu_synth_wave.mp3` | "Synth Wave" by Pro Sensory (Alex McCulloch), https://opengameart.org/content/synth-wave; loudness-normalised, 128 kbps | CC0 1.0 |
+| `assets/music/race_diamond_race.mp3` | "Diamond Race" by iamoneabe, https://opengameart.org/node/150386; loudness-normalised, 128 kbps | CC0 1.0 |
+| `assets/music/race_drum_and_bass.mp3` | "Drum and bass" by bertsz, https://opengameart.org/content/drum-and-bass; loudness-normalised, 128 kbps | CC0 1.0 |
+| `assets/music/race_synthwave_type.mp3` | "synthwave_type" by G_P, https://opengameart.org/content/synthwavetype; loudness-normalised, 128 kbps | CC0 1.0 |
 | `textures/hdri/*.hdr` | Original environment lighting created for this project | Apache-2.0 |
 | `js/textures.js` output | Procedural Canvas textures generated at runtime by project code | Apache-2.0 |
 | `sounds/*.mp3` | Procedurally synthesised (numpy/scipy additive + filtered noise), no recordings or third-party samples | CC0 / Apache-2.0 |

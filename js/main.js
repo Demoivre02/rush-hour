@@ -161,7 +161,7 @@ function loadHDRI(key) {
 }
 import { HUD } from './hud.js';
 import { UI } from './ui.js';
-import { AudioEngine } from './audio.js';
+import { GameAudio } from './gameAudio.js';
 import { Championship } from './championship.js';
 import { Effects } from './effects.js';
 import { QualityController } from './quality.js';
@@ -311,7 +311,7 @@ class Game {
     this.hud = new HUD(document.getElementById('hud'));
     this.hud.cockpit.onPage = () => this.hud.nextCockpitPage();
     this.hud.cockpit.onExport = () => this.exportGhostReplay();
-    this.audio = new AudioEngine();
+    this.audio = new GameAudio();
     this.champ = new Championship();
     this.ui = new UI((action, payload) => this.onUI(action, payload));
     this.quality = new QualityController(this.renderer, (tier, automatic) => {
@@ -370,6 +370,7 @@ class Game {
     const unlock = () => {
       this.audio.init();
       this.audio.setVolume(this.ui.settings.volume);
+      this.audio.setMusicVolume?.(this.ui.settings.musicVolume ?? 0.8);
       // A Retry reload can restore a live session before this new document has
       // received an autoplay-unlocking gesture. Start its engine on that first
       // gesture instead of leaving the recovered race permanently silent.
@@ -950,6 +951,7 @@ class Game {
         break;
       case 'settingsChanged':
         this.audio.setVolume(payload.volume);
+        this.audio.setMusicVolume?.(payload.musicVolume ?? 0.8);
         if (this.session) this.session.setNametags(payload.nametags);
         this.quality.setMode(payload.graphicsQuality);
         this.updateTouchControls();
@@ -2402,6 +2404,8 @@ class Game {
     const rawDt = this.clock.getDelta();
     const renderDt = Math.min(rawDt, 0.05);
     this.pollMenuGamepad(renderDt);
+    // menu music in the menus, the race playlist from loading to the flag
+    this.audio.playMusic?.(['loading', 'race', 'quali', 'results'].includes(this.state) && this.session ? 'race' : 'menu');
     if (!this.session || !this.scene) return;
     if (!this.paused) this.quality.update(rawDt);
     const s = this.session;
