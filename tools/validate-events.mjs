@@ -184,6 +184,43 @@ console.log('[events] traffic');
   check(car.hit === 0 && Math.min(d, circuit.length - d) >= 250, 'a struck car respawns well away from the racers');
 }
 
+console.log('[events] crashes');
+{
+  const s = session('race');
+  racing(s);
+  const v = s.entries.find((e) => !e.isPlayer);
+  s.crashEvents.length = 0;
+  s._takedown(v);
+  check(v.wreckT > 0 && Math.abs(v.wreckRoll) >= Math.PI * 2 && s.crashEvents.length === 1,
+    'a takedown wrecks the car (barrel roll) and throws a crash burst');
+  s.update(DT, drive);
+  s.render(1);
+  for (let t = 0; t < 0.7; t += DT) s.update(DT, drive);
+  s.render(1);
+  check(Math.abs(v.mesh.rotation.z) > 0.5, 'mid-wreck the car is rolling');
+  for (let t = 0; t < 1; t += DT) s.update(DT, drive);
+  s.render(1);
+  check(Math.abs(Math.abs(v.mesh.rotation.z) % (Math.PI * 2)) < 0.05, 'after the roll it is back on its wheels');
+  for (let t = 0; t < 1.5; t += DT) s.update(DT, drive);
+  s.render(1);
+  check(v.wreckT === 0 && v.mesh.rotation.z === 0, 'it rejoins upright once the sit-out ends');
+
+  const p = s.player;
+  p.phys.wallImpactNormalSpeed = 30;
+  s._handleWallImpact(p, 0.9);
+  check(p.wreckT > 0 && s.playerWrecks === 1 && s.takedownCam?.victim === p, 'a head-on wall hit at speed wrecks the player (with the replay)');
+  const q = session('race');
+  racing(q);
+  q.player.phys.wallImpactNormalSpeed = 8;
+  q._handleWallImpact(q.player, 0.5);
+  check(!q.player.wreckT, 'a glancing wall hit does not');
+  const f = session('race', 'formula');
+  racing(f);
+  f.player.phys.wallImpactNormalSpeed = 30;
+  f._handleWallImpact(f.player, 0.9);
+  check(!f.player.wreckT && !f.crashEvents.length, 'Formula keeps its own damage model (no arcade wrecks)');
+}
+
 if (fails) {
   console.log(`\n[events] ${fails} FAILED`);
   process.exit(1);

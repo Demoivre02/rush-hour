@@ -2447,6 +2447,12 @@ class Game {
         }
         s.update(dt, this.playerInput(dt));
         if (this.effects) this.effects.update(dt, s.entries, this.circuit?.trackState);
+        // crash bursts (takedowns, wrecks, heavy wall hits, traffic)
+        if (s.crashEvents?.length) {
+          for (const c of s.crashEvents.splice(0)) {
+            this.effects?.crashBurst?.(c.x, c.y, c.z, c.heading, c.speed, c.intensity, c.y - 0.6);
+          }
+        }
         if (this.timeTrial) this._timeTrialStatus = this.timeTrial.update(dt);
       });
       s.render?.(this.pacing.alpha);

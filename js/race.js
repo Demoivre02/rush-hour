@@ -501,6 +501,7 @@ export class RaceSession {
     this.event = this.arcade && this.mode === 'race' ? eventSpec(opts.event) : eventSpec('race');
     if (this.event.laps) this.laps = this.event.laps;
     this.eventState = { timer: this.event.interval || this.event.timeLimit || 0, score: 0, done: false };
+    this.crashEvents = [];   // impacts for the sparks/debris bursts; main.js drains it
     // civilian traffic on the city venues (arcade races only; not Drift, which
     // needs the road clear)
     this.traffic = this.arcade && this.mode === 'race' && this.event.id !== 'drift' &&
@@ -1332,6 +1333,17 @@ export class RaceSession {
 
   _handleWallImpact(e, intensity) {
     if (!(intensity > 0)) return;
+    if (this.arcade && intensity > 0.45) {
+      this.crashEvents.push({ x: e.phys.pos.x, y: (e.renderY || 0) + 0.5, z: e.phys.pos.z,
+        heading: e.phys.heading, speed: Math.abs(e.phys.v), intensity });
+    }
+    // arcade: the player hitting a wall nearly head-on at speed is wrecked
+    const normal = e.phys.wallImpactNormalSpeed || 0;
+    if (this.arcade && e.isPlayer && !e.wreckT && this.phase === 'racing' && normal > 22) {
+      this._wreck(e);
+      this.playerWrecks = (this.playerWrecks || 0) + 1;
+      this.onMessage('WRECKED!', 'red');
+    }
     applyImpactDamage(e.damage, {
       severity: intensity,
       front: !!e.phys.wallImpactFront,
@@ -1702,19 +1714,33 @@ export class RaceSession {
 
   /** Arcade: a hard hit wrecks a rival (spin, stop, sit out, rejoin). */
   _takedown(victim) {
-    victim.wreckT = 2.5;
-    victim.phys.v *= 0.25;
-    victim.phys.heading += (this.random() < 0.5 ? -1 : 1) * (0.9 + this.random() * 0.8);
+    this._wreck(victim);
     if (this.player) this.player.phys.battery = Math.min(1, this.player.phys.battery + 0.35);
     this.takedowns = (this.takedowns || 0) + 1;
-    // main.js plays it back in slow motion from a crash camera
-    this.takedownCam = { victim, at: victim.phys.heading };
     this.onMessage(`TAKEDOWN! ${victim.driver?.code || ''}`.trim(), 'yellow');
+  }
+
+  /**
+   * Wreck a car: it spins and barrel-rolls (render only, see _applyRenderPose),
+   * sits out, then rejoins behind (the arcade block in update()). The crash
+   * replays in slow motion (main.js) and throws sparks and debris.
+   */
+  _wreck(e) {
+    e.wreckT = e.wreckDur = 2.5;
+    e.wreckRoll = (this.random() < 0.5 ? -1 : 1) * Math.PI * 2 * (this.random() < 0.35 ? 2 : 1);
+    this.crashEvents.push({ x: e.phys.pos.x, y: (e.renderY || 0) + 0.6, z: e.phys.pos.z,
+      heading: e.phys.heading, speed: Math.abs(e.phys.v), intensity: 1 });
+    e.phys.v *= 0.25;
+    e.phys.heading += (this.random() < 0.5 ? -1 : 1) * (0.9 + this.random() * 0.8);
+    // main.js plays it back in slow motion from a crash camera
+    this.takedownCam = { victim: e, at: e.phys.heading };
   }
 
   /** Traffic moves and is struck; the player's hits cost speed or, under nitro, pay. */
   _trafficTick(dt) {
     for (const hit of this.traffic.update(dt, this.entries)) {
+      this.crashEvents.push({ x: hit.car.x, y: hit.car.y + 0.6, z: hit.car.z,
+        heading: hit.entry.phys.heading, speed: Math.abs(hit.entry.phys.v), intensity: hit.boosting ? 0.8 : 0.6 });
       if (!hit.entry.isPlayer) continue;
       this.trafficHits = (this.trafficHits || 0) + 1;     // js/main.js plays the crash
       this.lastTrafficHitBoosted = hit.boosting;
@@ -2315,6 +2341,14 @@ export class RaceSession {
     e.renderY = pose.y;
     e.mesh.position.set(pose.x, pose.y, pose.z);
     e.mesh.rotation.y = pose.heading;
+    // a wrecked car barrel-rolls about its length with a hop, over the first
+    // 1.4 s of its sit-out, and lands back on its wheels (render only)
+    if (e.wreckT > 0 && e.wreckRoll) {
+      const k = Math.min(1, Math.max(0, (e.wreckDur - e.wreckT) / 1.4));
+      const ease = 1 - (1 - k) * (1 - k);
+      e.mesh.rotation.z = e.wreckRoll * ease;
+      e.mesh.position.y += Math.sin(Math.PI * k) * 1.8;
+    } else if (e.mesh.rotation.z) e.mesh.rotation.z = 0;
 
     // Counter-rotate the local lobe so its direction remains fixed in world space.
     if (e.shadowLobe) {

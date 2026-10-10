@@ -418,6 +418,33 @@ export class Effects {
     this.emissionCounts[rubber ? 'rubber' : 'gravel']++;
   }
 
+  /**
+   * A crash: a shower of sparks, shards of bodywork and a puff of smoke at
+   * (x, y, z). `intensity` 0-1 scales the counts; quality tiers scale them
+   * again through the pools.
+   */
+  crashBurst(x, y, z, heading = 0, speed = 0, intensity = 1, floor = 0) {
+    const k = Math.max(0.2, Math.min(1, intensity)) * Math.max(0.35, Math.min(1, this.motionScale ?? 1));
+    const sparks = Math.round(34 * k), shards = Math.round(16 * k), puffs = Math.round(5 * k);
+    for (let i = 0; i < sparks; i++) {
+      this._emitSpark(x + (this.random() - 0.5) * 1.6, y + this.random() * 0.6, z + (this.random() - 0.5) * 1.6,
+        heading + (this.random() - 0.5) * 1.2, speed * (0.4 + this.random() * 0.6), floor);
+    }
+    const c = this.debris.geometry.attributes.color;
+    for (let i = 0; i < shards; i++) {
+      const at = this._debrisCursor;
+      this._emitDebris(x + (this.random() - 0.5) * 1.2, y + this.random() * 0.4, z + (this.random() - 0.5) * 1.2,
+        heading + (this.random() - 0.5) * 2, speed * 1.6, floor);
+      // bodywork rather than gravel: dark carbon, grey metal, the odd bright chip
+      const tone = this.random();
+      const v = tone < 0.15 ? 0.75 : 0.06 + tone * 0.22;
+      c.array[at * 3] = v; c.array[at * 3 + 1] = v; c.array[at * 3 + 2] = v * 1.05;
+      this.debrisData[at].vel.y += 2 + this.random() * 3;
+    }
+    c.needsUpdate = true;
+    for (let i = 0; i < puffs; i++) this._emitSmoke(x, y, z, heading, speed * 0.2, 1.4);
+  }
+
   _stateFor(entry) {
     let state = this._entryState.get(entry);
     if (!state) {
