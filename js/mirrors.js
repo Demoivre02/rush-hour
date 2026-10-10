@@ -118,9 +118,13 @@ export class MirrorViews {
     if (!this.enabled || !this.quality.enabled) return false;
     this._frame++;
     const renderer = this.renderer;
-    renderer.getDrawingBufferSize(this._size);
+    // Viewports and scissors take CSS pixels (three multiplies them by the
+    // pixel ratio); passing drawing-buffer pixels shrank the whole frame into
+    // a corner once dynamic resolution took the ratio below 1.
+    renderer.getSize(this._size);
+    const pr = renderer.getPixelRatio();
     const rects = mirrorRects(this._size.x, this._size.y);
-    const scale = this.quality.scale;
+    const scale = this.quality.scale * pr;          // mirror textures in device pixels
 
     // Re-render the mirror contents only every Nth frame on lower tiers; the
     // composite still draws every frame, so the mirrors never flicker.

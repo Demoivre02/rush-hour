@@ -227,8 +227,10 @@ export class QualityController {
     if (this.gtao?.setResolutionScale) this.gtao.setResolutionScale(p.gtaoScale);
     if (this.composer) {
       const composerChanged = this.composer !== this._composerSynced;
+      // Ratio and size together: setPixelRatio() alone reuses the composer's
+      // last size, which left a stale (small) buffer after a window resize.
       if (composerChanged || pixelRatioChanged) this.composer.setPixelRatio(pixelRatio);
-      else if (sizeChanged || force) this.composer.setSize(this.width, this.height);
+      if (composerChanged || pixelRatioChanged || sizeChanged || force) this.composer.setSize(this.width, this.height);
       this._composerSynced = this.composer;
     }
     if (this.gtao) this.gtao.enabled = p.gtao;

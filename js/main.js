@@ -1558,6 +1558,11 @@ class Game {
       { type: THREE.HalfFloatType, samples: 4 },
     );
     this.composer = new EffectComposer(this.renderer, msaaTarget);
+    // A composer built around a given target takes its size in device pixels
+    // with a pixel ratio of 1; re-base it on CSS pixels and the renderer's
+    // ratio so later setPixelRatio()/setSize() calls scale it correctly.
+    this.composer.setPixelRatio(this.renderer.getPixelRatio());
+    this.composer.setSize(innerWidth, innerHeight);
     this.composer.addPass(new RenderPass(this.scene, this.camera));
     this.gtao = new ScaledGTAOPass(this.scene, this.camera, innerWidth, innerHeight, 0.5, {
       noiseRandom: createRendererNoiseRandom(),
