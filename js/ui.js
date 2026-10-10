@@ -554,6 +554,15 @@ export class UI {
           <div class="ce-foot"><span class="ce-stars">${starRow}</span><b>${e.reward.toLocaleString()} CR</b></div>
         </div></div>`;
     }).join('');
+    const daily = C.todaysChallenge(state);
+    const dailyDone = state.dailyDone === daily.dateKey;
+    const dailyCard = `<button type="button" class="career-daily${dailyDone ? ' done' : ''}" id="btn-daily"
+        aria-label="Daily challenge: ${daily.title}, ${TRACKS[daily.trackId]?.name || daily.trackId}">
+      <span class="cd-tag">DAILY CHALLENGE · CLASS ${daily.tier}</span>
+      <b>${daily.title}</b>
+      <span class="cd-where">${FLAGS[daily.trackId] || ''} ${TRACKS[daily.trackId]?.name || daily.trackId} · ${typeLabel[daily.event]}</span>
+      <span class="cd-reward">${dailyDone ? 'DONE TODAY ✓' : `${daily.reward.toLocaleString()} CR · top 3 to win`}</span>
+    </button>`;
     el.innerHTML = `
       ${header('CAREER <small>WORLD TOUR</small>')}
       <div class="menu-body">
@@ -563,6 +572,7 @@ export class UI {
           <span class="cw-cars"><i>GARAGE</i><b>${state.owned.length} cars</b></span>
           <button class="f1-btn ghost" id="btn-dealer"><span>DEALERSHIP</span></button>
         </div>
+        ${dailyCard}
         <div class="career-tabs" role="group" aria-label="Class">${tabs}</div>
         <div class="card-grid career-grid">${events}</div>
         <div class="btn-row"><button class="f1-btn ghost" id="btn-back"><span>← BACK</span></button></div>
@@ -578,6 +588,7 @@ export class UI {
     });
     el.querySelectorAll('.career-tab').forEach((b) => b.addEventListener('click', () => this.showCareer(b.dataset.t)));
     el.querySelector('#btn-dealer').addEventListener('click', () => this.showDealership());
+    el.querySelector('#btn-daily').addEventListener('click', () => this.cb('careerEvent', daily.id));
     el.querySelector('#btn-back').addEventListener('click', () => this.cb('back', 'main'));
     this._enter(el);
   }

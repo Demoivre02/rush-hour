@@ -56,7 +56,48 @@ const KEY = 'rushhour_career_v1';
 
 export const careerSetupKey = (carId) => `career:${carId}`;
 export const classRank = (c) => Math.max(0, CLASS_ORDER.indexOf(c));
-export const eventById = (id) => CAREER_EVENTS.find((e) => e.id === id) || null;
+export const eventById = (id) => (String(id).startsWith('daily-')
+  ? dailyEvent(String(id).slice(6, 16), String(id).slice(17) || 'D')
+  : CAREER_EVENTS.find((e) => e.id === id) || null);
+
+// ---- daily challenge ----------------------------------------------------------
+// One extra event a day, the same for everyone on that date: the date picks the
+// venue and the event type; the class is your highest open class. It pays 1.5x
+// the class's best regular reward, once per day, and gives no stars.
+const DAILY_TRACKS = ['miami', 'monaco', 'singapore', 'baku', 'jeddah', 'lasvegas', 'melbourne'];
+const DAILY_TYPES = ['race', 'sprint', 'elimination', 'takedown', 'drift'];
+const DAILY_NAMES = { race: 'Daily Grand Prix', sprint: 'Daily Dash', elimination: 'Daily Knockout',
+  takedown: 'Daily Demolition', drift: 'Daily Slide' };
+
+export function todayKey(date = new Date()) {
+  const p = (n) => String(n).padStart(2, '0');
+  return `${date.getFullYear()}-${p(date.getMonth() + 1)}-${p(date.getDate())}`;
+}
+
+function dateHash(key) {
+  let h = 2166136261;
+  for (const ch of key) h = Math.imul(h ^ ch.charCodeAt(0), 16777619) >>> 0;
+  return h;
+}
+
+export function dailyEvent(dateKey = todayKey(), tier = 'D') {
+  const h = dateHash(dateKey);
+  const kind = DAILY_TYPES[h % DAILY_TYPES.length];
+  const trackId = DAILY_TRACKS[(h >>> 8) % DAILY_TRACKS.length];
+  const best = Math.max(...CAREER_EVENTS.filter((e) => e.tier === tier).map((e) => e.reward));
+  return Object.freeze({
+    id: `daily-${dateKey}-${tier}`, daily: true, dateKey, tier,
+    title: DAILY_NAMES[kind], trackId, event: kind,
+    laps: kind === 'race' ? 3 : kind === 'sprint' ? 1 : 0,
+    reward: Math.round(best * 1.5 / 500) * 500,
+  });
+}
+
+/** Today's challenge for this career (at its highest open class). */
+export function todaysChallenge(state, date = new Date()) {
+  const open = TIERS.filter((t) => tierUnlocked(state, t.id));
+  return dailyEvent(todayKey(date), open.at(-1).id);
+}
 export const tierOf = (id) => TIERS.find((t) => t.id === id) || TIERS[0];
 
 function blank() {
@@ -149,6 +190,17 @@ export function scoreResult(event, result) {
 }
 
 export function recordResult(state, event, result) {
+  if (event.daily) {
+    // daily: credits for a top-three finish (or success), once per day
+    const { stars } = scoreResult(event, result);
+    const already = state.dailyDone === event.dateKey;
+    const won = stars >= 2;
+    const credits = won && !already ? event.reward : 0;
+    if (won) state.dailyDone = event.dateKey;
+    state.credits += credits;
+    saveCareer(state);
+    return { stars, credits, newBest: won && !already, totalStars: totalStars(state), daily: true };
+  }
   const { stars, credits } = scoreResult(event, result);
   const best = state.stars[event.id] || 0;
   state.stars[event.id] = Math.max(best, stars);

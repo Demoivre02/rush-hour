@@ -67,5 +67,20 @@ check(C.carEligible(byClass('D')[0], C.eventById('c1')) && !C.carEligible(aCar, 
   'lower-class cars may enter, faster ones may not');
 check(JSON.parse(store.get('rushhour_career_v1')).stars.d1 === 3, 'progress is saved');
 
+console.log('[career] daily challenge');
+const d1 = C.dailyEvent('2026-10-10', 'C'), d1b = C.dailyEvent('2026-10-10', 'C'), d2 = C.dailyEvent('2026-10-11', 'C');
+check(d1.id === d1b.id && d1.trackId === d1b.trackId && d1.event === d1b.event, 'the same date gives the same challenge');
+check(d1.id !== d2.id, 'a new day gives a new challenge');
+check(C.eventById(d1.id)?.trackId === d1.trackId && C.eventById(d1.id).daily, 'a daily id resolves back to its event');
+check(C.todaysChallenge(s).tier === 'C', 'the challenge runs at your highest open class');
+const today = C.todaysChallenge(s);
+const credits0 = s.credits, stars0 = C.totalStars(s);
+const lose = C.recordResult(s, today, { pos: 7, success: false });
+check(lose.credits === 0 && s.dailyDone !== today.dateKey, 'losing pays nothing and leaves it open');
+const win = C.recordResult(s, today, { pos: 2, success: true });
+check(win.credits === today.reward && s.credits === credits0 + today.reward && C.totalStars(s) === stars0,
+  'a top-three finish pays the daily reward (no stars)');
+check(C.recordResult(s, today, { pos: 1, success: true }).credits === 0, 'it pays only once a day');
+
 if (fails) { console.log(`\n[career] ${fails} FAILED`); process.exit(1); }
 console.log('\n[career] ALL CAREER CHECKS PASSED');
