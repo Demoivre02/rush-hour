@@ -1186,6 +1186,7 @@ export class UI {
           <b>${reward.title}</b>
           <span class="cr-stars">${[1, 2, 3].map((n) => `<i class="${n <= reward.stars ? 'on' : ''}">★</i>`).join('')}</span>
           <span class="cr-credits">+${reward.credits.toLocaleString()} CR</span>
+          ${reward.rivalBonus ? `<span class="cr-rival">RIVAL BEATEN +${reward.rivalBonus.toLocaleString()}</span>` : ''}
           <i>${reward.newBest ? 'New best · ' : ''}${reward.balance.toLocaleString()} CR · ★ ${reward.totalStars}</i></div>` : ''}
         <div class="podium-strip">
           ${podium.map((r, i) => `

@@ -789,6 +789,7 @@ export class HUD {
       row.pos.textContent = e.dnf ? '—' : e.position;
       row.bar.style.background = '#' + e.team.color.toString(16).padStart(6, '0');
       row.code.textContent = e.driver.code;
+      row.el.classList.toggle('tw-rival', !!e.rival);     // career rival
 
       // blue flag (driver currently being shown blue flags)
       row.blue.classList.toggle('shown', !!(blueFor && id === blueFor && !e.dnf));

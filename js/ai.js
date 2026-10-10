@@ -326,6 +326,7 @@ export class AIDriver {
     if (this.scrubT > 0) vT *= 0.985;             // track-limits sanction
     if (this.vscFactor !== 1) vT *= this.vscFactor; // virtual safety car
     if (this.rubberBand && this.rubberBand !== 1) vT *= this.rubberBand; // arcade: keep the pack close
+    if (this.rivalPace) vT *= this.rivalPace;    // career rival: a little quicker than the field
     // Keep a real nose-to-tail buffer until the cars have PHYSICALLY separated
     // laterally. Releasing this from avoidOffset let the throttle come back as
     // soon as a pass was requested, several frames before the car moved over.

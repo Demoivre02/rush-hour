@@ -1090,3 +1090,6 @@ kbd { padding: 2px 5px; color: #fff; background: #282a33; border: 1px solid #454
 #event-badge.urgent { border-left-color: #ff3b3b; }
 #event-badge.urgent span { color: #ff6a5a; }
 #touch-controls .touch-drift { width: 58px; height: 58px; color: #2ec8ff; border-color: #2ec8ff; font-size: 11px; }
+/* career rival in the timing tower */
+.tw-row.tw-rival { box-shadow: inset 3px 0 0 #ffcf3a; }
+.tw-row.tw-rival::after { content: '★'; color: #ffcf3a; margin-left: 4px; font-size: 11px; }

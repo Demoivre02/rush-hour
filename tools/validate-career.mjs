@@ -67,6 +67,14 @@ check(C.carEligible(byClass('D')[0], C.eventById('c1')) && !C.carEligible(aCar, 
   'lower-class cars may enter, faster ones may not');
 check(JSON.parse(store.get('rushhour_career_v1')).stars.d1 === 3, 'progress is saved');
 
+console.log('[career] rivals');
+check(C.CLASS_ORDER.every((t) => C.RIVALS[t]?.driverId && C.RIVALS[t].bonus > 0), 'every class has a rival with a bonus');
+const { DRIVERS } = await import('../js/data.js');
+check(C.CLASS_ORDER.every((t) => DRIVERS.some((d) => d.id === C.RIVALS[t].driverId)), 'each rival is a real driver in the roster');
+const rr = C.recordResult(s, C.eventById('d3'), { pos: 4, rivalBeaten: true });
+check(rr.rivalBonus === C.RIVALS.D.bonus, 'finishing ahead of the rival pays their bonus');
+check(C.recordResult(s, C.eventById('d3'), { pos: 4, rivalBeaten: false }).rivalBonus === 0, 'no bonus when the rival beats you');
+
 console.log('[career] daily challenge');
 const d1 = C.dailyEvent('2026-10-10', 'C'), d1b = C.dailyEvent('2026-10-10', 'C'), d2 = C.dailyEvent('2026-10-11', 'C');
 check(d1.id === d1b.id && d1.trackId === d1b.trackId && d1.event === d1b.event, 'the same date gives the same challenge');

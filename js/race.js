@@ -505,6 +505,8 @@ export class RaceSession {
     // civilian traffic on the city venues (arcade races only; not Drift, which
     // needs the road clear)
     this._aggressorsPending = this.arcade && this.mode === 'race';
+    this.rivalId = opts.rival?.driverId || null;     // career: this class's rival
+    this.rivalNick = opts.rival?.nick || '';
     this.traffic = this.arcade && this.mode === 'race' && this.event.id !== 'drift' &&
       cityStyleFor(this.circuit?.id) && opts.traffic !== false
       ? new Traffic(this.circuit, { count: 10, random: this.random })
@@ -1826,6 +1828,14 @@ export class RaceSession {
       // about a quarter of the field races dirty: they try to take you down
       this._aggressorsPending = false;
       for (const e of this.entries) if (e.ai && this.random() < 0.25) e.ai.aggressive = true;
+      // a career rival always does, and is a little quicker
+      const rival = this.rivalId && this.entries.find((e) => e.ai && e.driver?.id === this.rivalId);
+      if (rival) {
+        rival.rival = true;
+        rival.ai.aggressive = true;
+        rival.ai.rivalPace = 1.025;
+        this.onMessage(`RIVAL: ${rival.driver.firstName} "${this.rivalNick}" ${rival.driver.lastName}`, 'yellow');
+      }
     }
     const pp = p.phys;
     const N = this.circuit.N;

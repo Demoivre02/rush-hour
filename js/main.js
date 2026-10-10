@@ -1060,6 +1060,7 @@ class Game {
       event: event.event,
       laps: event.event === 'race' ? event.laps : undefined,
       career: event.id,
+      rival: C.RIVALS[event.tier] || null,
     });
   }
 
@@ -1077,6 +1078,12 @@ class Game {
       success: !!s.eventState?.success,
       takedowns: s.takedowns || 0,
       nearMisses: s.nearMisses || 0,
+      // finished ahead of the class rival (or they were knocked out first)
+      rivalBeaten: (() => {
+        const rid = this.raceConfig.rival?.driverId;
+        const rr = rid && results.find((r) => r.driver?.id === rid);
+        return !!(rr && me && !(me.dnf && event.event !== 'elimination') && me.pos < rr.pos);
+      })(),
     });
     return { ...out, title: event.title, balance: state.credits };
   }
@@ -1160,6 +1167,7 @@ class Game {
         playerCarId: cfg.playerCarId || null,
         event: cfg.event || 'race',
         setupPrefix: cfg.career ? 'career:' : '',
+        rival: cfg.rival || null,
         random: simulationRandom,
         seed: sessionSeed,
         onMessage: (t, c, meta) => { this.hud.message(t, c, meta); },

@@ -48,6 +48,17 @@ export const CAREER_EVENTS = Object.freeze([
 ]);
 
 // Dealership prices and the cost of one upgrade level, by class.
+// One rival per class: an AI driver from the field who turns up in that
+// class's events, races a touch quicker and dirty, and pays a bonus if you
+// finish ahead of them.
+export const RIVALS = Object.freeze({
+  D: Object.freeze({ driverId: 'dewolff', nick: 'The Bulldozer', bonus: 1000 }),
+  C: Object.freeze({ driverId: 'sorensen', nick: 'Nightshade', bonus: 2000 }),
+  B: Object.freeze({ driverId: 'quintero', nick: 'El Rayo', bonus: 4000 }),
+  A: Object.freeze({ driverId: 'nyholm', nick: 'Ice', bonus: 6000 }),
+  S: Object.freeze({ driverId: 'vesely', nick: 'The Baron', bonus: 10000 }),
+});
+
 export const CAR_PRICE = Object.freeze({ D: 8000, C: 20000, B: 45000, A: 90000, S: 180000 });
 const UPGRADE_UNIT = Object.freeze({ D: 600, C: 1000, B: 1600, A: 2500, S: 4000 });
 
@@ -201,10 +212,13 @@ export function recordResult(state, event, result) {
     saveCareer(state);
     return { stars, credits, newBest: won && !already, totalStars: totalStars(state), daily: true };
   }
-  const { stars, credits } = scoreResult(event, result);
+  const { stars, credits: earned } = scoreResult(event, result);
+  // beating the class rival (finishing ahead of them) pays a bonus
+  const rivalBonus = result.rivalBeaten ? (RIVALS[event.tier]?.bonus || 0) : 0;
+  const credits = earned + rivalBonus;
   const best = state.stars[event.id] || 0;
   state.stars[event.id] = Math.max(best, stars);
   state.credits += credits;
   saveCareer(state);
-  return { stars, credits, newBest: stars > best, totalStars: totalStars(state) };
+  return { stars, credits, rivalBonus, newBest: stars > best, totalStars: totalStars(state) };
 }

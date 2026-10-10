@@ -194,6 +194,20 @@ console.log('[events] traffic');
   check(car.hit === 0 && Math.min(d, circuit.length - d) >= 250, 'a struck car respawns well away from the racers');
 }
 
+console.log('[events] career rival');
+{
+  const s = new RaceSession({
+    scene: new THREE.Scene(), circuit, playerDriverId: DRIVERS[0].id, laps: 3, difficulty: 1,
+    assists: { tc: true, abs: true, autoGear: true }, mode: 'race', discipline: 'street', event: 'race',
+    seed: 7, random: createRandom(7), onMessage: () => {}, rival: { driverId: 'dewolff', nick: 'The Bulldozer' },
+  });
+  racing(s);
+  s.update(DT, drive);
+  const r = s.entries.find((e) => e.driver?.id === 'dewolff');
+  check(!!r && r.rival && r.ai.aggressive && r.ai.rivalPace > 1, 'the class rival is in the field, marked, aggressive and quicker');
+  check(s.entries.filter((e) => e.rival).length === 1, 'only the rival is marked');
+}
+
 console.log('[events] crashes');
 {
   const s = session('race');
