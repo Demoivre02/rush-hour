@@ -48,7 +48,7 @@ function clampNum(v, lo, hi) {
 // Master switch. false = the game runs silent: init() takes the same path as
 // a browser without Web Audio, so every sound call is a no-op and no sound
 // files are downloaded. Set back to true to restore all audio.
-export const SOUND_ENABLED = true;
+export const SOUND_ENABLED = false;
 
 export class AudioEngine {
   constructor() {
