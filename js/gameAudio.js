@@ -14,7 +14,8 @@
 //   crossfades. Big crashes duck it briefly.
 // * Engine: only the player's car, from the racing pack's recorded loops for its
 //   engine type, crossfaded between the two rev bands that bracket the rpm and
-//   pitched to match.
+//   pitched to match, driven through a small engine model (rev inertia, load,
+//   gear changes) so it rises, falls and burbles like the real thing.
 // * Effects: one recorded sample per event, each with its own cooldown, and a
 //   cap on simultaneous voices so nothing stacks into noise.
 //
@@ -104,9 +105,15 @@ export class GameAudio {
     this.musicGain = ctx.createGain();
     this.musicGain.gain.value = 0.42 * this._musicVolume;
     this.musicGain.connect(this.musicDuck);
+    // engine: loops -> load filter (bright on throttle, muffled off it) -> gain
     this.engineGain = ctx.createGain();
     this.engineGain.gain.value = 0;
     this.engineGain.connect(this.master);
+    this.engineFilter = ctx.createBiquadFilter();
+    this.engineFilter.type = 'lowpass';
+    this.engineFilter.frequency.value = 6000;
+    this.engineFilter.Q.value = 0.7;
+    this.engineFilter.connect(this.engineGain);
     this.sfxGain = ctx.createGain();
     this.sfxGain.gain.value = 0.9;
     this.sfxGain.connect(this.master);
@@ -224,6 +231,7 @@ export class GameAudio {
     if (!spec?.loops) return false;
     const buffers = await Promise.all(BANDS.map((b) => this._load(this._pack(spec.loops[b].file)).catch(() => null)));
     const decel = spec.decel ? await this._load(this._pack(spec.decel)).catch(() => null) : null;
+    const start = spec.start ? await this._load(this._pack(spec.start)).catch(() => null) : null;
     if (this._family !== want || buffers.some((b) => !b)) return false;
     this._disposeEngine();
     const mk = (buffer) => {
@@ -232,7 +240,7 @@ export class GameAudio {
       src.loop = true;
       const gain = this.ctx.createGain();
       gain.gain.value = 0;
-      src.connect(gain).connect(this.engineGain);
+      src.connect(gain).connect(this.engineFilter);
       src.start();
       return { src, gain };
     };
@@ -241,7 +249,11 @@ export class GameAudio {
       redline: spec.redline_rpm || 7000,
       layers: BANDS.map((b, i) => ({ ...mk(buffers[i]), rpm: spec.loops[b].rpm })),
       decel: decel ? mk(decel) : null,
+      start,
     };
+    this._rpm = this._engine.idle;
+    this._load01 = 0;
+    this._started = false;
     if (this._engineOn) this.startEngine();
     return true;
   }
@@ -262,7 +274,19 @@ export class GameAudio {
 
   startEngine() {
     this._engineOn = true;
-    if (this._ready) this.engineGain.gain.setTargetAtTime(0.5, this.ctx.currentTime, 0.25);
+    if (!this._ready) return;
+    this.engineGain.gain.setTargetAtTime(0.5, this.ctx.currentTime, 0.25);
+    // the starter motor and catch, once per car
+    const e = this._engine;
+    if (e?.start && !this._started) {
+      this._started = true;
+      const src = this.ctx.createBufferSource();
+      src.buffer = e.start;
+      const g = this.ctx.createGain();
+      g.gain.value = 0.45;
+      src.connect(g).connect(this.engineGain);
+      src.start();
+    }
   }
 
   stopEngine() {
@@ -271,32 +295,63 @@ export class GameAudio {
     for (const l of Object.values(this._loops)) l.gain.gain.setTargetAtTime(0, this.ctx?.currentTime || 0, 0.08);
   }
 
-  /** Per frame. s = { rpmFrac, throttle, speed, ... } (the old snapshot works). */
+  /**
+   * Per frame. s = { rpmFrac (0-1 of the rev range), throttle, brake, speed,
+   * gear }. The sound follows an engine model rather than the raw value:
+   * - revs have inertia: they climb fast under throttle, fall slowly when you
+   *   lift, and drop quickly through an upshift;
+   * - standing still, the throttle free-revs the engine (the grid);
+   * - load: on throttle the recorded loops play bright through an open filter;
+   *   off throttle and under braking they fade toward the overrun loop and
+   *   the filter closes, the muffled burble of engine braking.
+   */
   update(dt, s) {
     if (!this._ready) return;
     const e = this._engine;
     if (!e || !s) return;
+    dt = clamp(dt || 0.016, 0.001, 0.1);
     const t = this.ctx.currentTime;
-    const rpmFrac = clamp(s.rpmFrac || 0, 0, 1);
-    const rpm = e.idle + rpmFrac * (e.redline - e.idle);
+    const range = e.redline - e.idle;
     const thr = clamp(s.throttle || 0, 0, 1);
-    const coast = thr < 0.12 && (s.speed || 0) > 4;
-    // the two bands either side of the rpm, equal-power crossfade
+    const speed = s.speed || 0;
+    let target = e.idle + clamp(s.rpmFrac || 0, 0, 1) * range;
+    if (speed < 2) target = e.idle + thr * 0.62 * range;          // free revs on the grid
+    // gear changes: an upshift drops the revs in a blink
+    const shifted = s.gear != null && this._gear != null && s.gear !== this._gear;
+    this._gear = s.gear;
+    if (shifted) this._shiftT = 0.09;
+    this._shiftT = Math.max(0, (this._shiftT || 0) - dt);
+    const rise = (thr > 0.1 ? 1.6 : 0.5) * range;               // rpm per second
+    const fall = this._shiftT > 0 ? 12 * range : (thr > 0.1 ? 1.4 : 0.55) * range;
+    const d = target - this._rpm;
+    this._rpm += d > 0 ? Math.min(d, rise * dt) : Math.max(d, -fall * dt);
+    const rpm = this._rpm;
+    const revs = clamp((rpm - e.idle) / range, 0, 1);
+    // load follows the throttle with a little lag; braking means none
+    const loadTarget = (s.brake || 0) > 0.1 ? 0 : thr;
+    this._load01 += (loadTarget - this._load01) * Math.min(1, dt * 9);
+    const load = this._load01;
+    // the two bands either side of the rpm, equal-power crossfade, pitched
     let hi = e.layers.findIndex((l) => l.rpm >= rpm);
     if (hi < 0) hi = e.layers.length - 1;
     const lo = Math.max(0, hi - 1);
     const span = Math.max(1, e.layers[hi].rpm - e.layers[lo].rpm);
     const x = lo === hi ? 1 : clamp((rpm - e.layers[lo].rpm) / span, 0, 1);
-    const level = coast ? 0.35 : 0.55 + 0.45 * thr;
+    const onLoad = 0.3 + 0.7 * load;
     e.layers.forEach((l, i) => {
       const w = i === hi ? Math.sin(x * Math.PI / 2) : i === lo ? Math.cos(x * Math.PI / 2) : 0;
-      l.gain.gain.setTargetAtTime(w * level, t, 0.04);
-      l.src.playbackRate.setTargetAtTime(clamp(rpm / l.rpm, 0.5, 2), t, 0.04);
+      l.gain.gain.setTargetAtTime(w * onLoad, t, 0.03);
+      l.src.playbackRate.setTargetAtTime(clamp(rpm / l.rpm, 0.5, 2), t, 0.03);
     });
     if (e.decel) {
-      e.decel.gain.gain.setTargetAtTime(coast && rpmFrac > 0.25 ? 0.35 * rpmFrac : 0, t, 0.08);
-      e.decel.src.playbackRate.setTargetAtTime(0.85 + rpmFrac * 0.35, t, 0.08);
+      // the overrun loop carries the sound while coasting and braking
+      const overrun = (1 - load) * clamp(revs * 1.6, 0, 1) * (speed > 3 ? 0.75 : 0.2);
+      e.decel.gain.gain.setTargetAtTime(overrun, t, 0.05);
+      e.decel.src.playbackRate.setTargetAtTime(clamp(0.7 + revs * 0.6, 0.5, 1.6), t, 0.05);
     }
+    // the exhaust note opens up with load and revs
+    const cutoff = 700 + (2200 + 9000 * load) * (0.55 + 0.45 * revs);
+    this.engineFilter.frequency.setTargetAtTime(cutoff, t, 0.04);
   }
 
   // ---- effects -------------------------------------------------------------
@@ -362,8 +417,8 @@ export class GameAudio {
     if (a.boosting && !this._wasBoosting) this._play('nitroOn');
     this._wasBoosting = !!a.boosting;
     const screech = this._loop('screech');
-    const slide = a.drifting ? clamp(0.5 + (a.driftAngle || 0) * 1.4, 0, 1)
-      : a.speed > 14 && a.slip > 0.6 ? clamp((a.slip - 0.6) * 1.2, 0, 0.5) : 0;
+    // only a drift screeches: braking is the engine winding down, not tyres
+    const slide = a.drifting ? clamp(0.5 + (a.driftAngle || 0) * 1.4, 0, 1) : 0;
     if (screech) screech.gain.gain.setTargetAtTime(slide * 0.2, t, slide ? 0.06 : 0.15);
     const scrape = this._loop('scrape');
     if (scrape) scrape.gain.gain.setTargetAtTime(a.scraping && a.speed > 6 ? 0.18 : 0, t, 0.05);

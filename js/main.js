@@ -2173,7 +2173,9 @@ class Game {
   renderMirrors() {
     const mirrors = this.mirrors;
     if (!mirrors || !this.scene) return;
-    const wanted = this.hud?.mirrorsEnabled !== false &&
+    // Arcade races have none: each mirror redrew the whole city every frame
+    // (~30 ms on a big screen), and the chase camera already shows behind.
+    const wanted = this.hud?.mirrorsEnabled !== false && !this.session?.arcade &&
       this.ui?.settings?.mirrors !== false && !this.paused;
     mirrors.setEnabled(wanted);
     if (!wanted) return;

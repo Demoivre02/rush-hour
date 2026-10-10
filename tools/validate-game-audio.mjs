@@ -13,7 +13,7 @@ class Param {
   cancelScheduledValues() {}
 }
 class Node {
-  constructor() { this.gain = new Param(1); this.pan = new Param(0); this.playbackRate = new Param(1); }
+  constructor() { this.gain = new Param(1); this.pan = new Param(0); this.playbackRate = new Param(1); this.frequency = new Param(1000); this.Q = new Param(1); }
   connect(n) { return n; }
   disconnect() {}
 }
@@ -25,6 +25,7 @@ class Ctx {
   static started = [];
   constructor() { this.currentTime = 0; this.state = 'running'; this.destination = new Node(); }
   createGain() { return new Node(); }
+  createBiquadFilter() { return new Node(); }
   createStereoPanner() { return new Node(); }
   createDynamicsCompressor() { const n = new Node(); for (const k of ['threshold', 'knee', 'ratio', 'attack', 'release']) n[k] = new Param(); return n; }
   createBufferSource() { return new Src(); }
@@ -58,16 +59,34 @@ a.startEngine();
 const e = a._engine;
 const spec = manifest.engines.i6_turbo;
 const rpmFor = (f) => spec.idle_rpm + f * (spec.redline_rpm - spec.idle_rpm);
-a.update(0.016, { rpmFrac: 0.45, throttle: 1, speed: 30 });
+const run = (sec, snap) => { for (let t = 0; t < sec; t += 1 / 60) a.update(1 / 60, snap); };
+run(2, { rpmFrac: 0.45, throttle: 1, speed: 30, gear: 3 });
 const live = e.layers.filter((l) => l.gain.gain.value > 0.001);
 check(live.length === 2, 'two bands sound at once (the pair around the rpm)');
-const rpm = rpmFor(0.45);
+const rpm = a._rpm;
+check(Math.abs(rpm - rpmFor(0.45)) < 1, 'after a moment the revs settle on the target');
 check(live.every((l) => Math.abs(l.src.playbackRate.value - rpm / l.rpm) < 1e-6), 'each band is pitched to the live rpm');
-const power = live.reduce((s, l) => s + l.gain.gain.value ** 2, 0);
-check(Math.abs(power - 1) < 0.02, 'equal-power crossfade at full throttle');
-a.update(0.016, { rpmFrac: 0.45, throttle: 0, speed: 30 });
-check(e.layers.every((l) => l.gain.gain.value < 0.4) && e.decel.gain.gain.value > 0, 'off throttle: engine quieter, overrun layer on');
+const power = live.reduce((s2, l) => s2 + l.gain.gain.value ** 2, 0);
+check(Math.abs(power - 1) < 0.03, 'equal-power crossfade at full throttle');
+const openCutoff = a.engineFilter.frequency.value;
+// lifting: revs fall slower than they rose, the filter closes, overrun takes over
+a.update(1 / 60, { rpmFrac: 0.2, throttle: 0, speed: 30, gear: 3 });
+const oneFrameDrop = rpm - a._rpm;
+check(oneFrameDrop > 0 && oneFrameDrop < (rpmFor(0.45) - rpmFor(0.2)) / 4, 'lifting off, the revs fall with inertia, not instantly');
+run(0.5, { rpmFrac: 0.4, throttle: 0, brake: 1, speed: 30, gear: 3 });
+check(a.engineFilter.frequency.value < openCutoff * 0.7, 'off throttle the exhaust note is muffled');
+check(e.decel.gain.gain.value > 0.2 && e.layers.every((l) => l.gain.gain.value < 0.35), 'braking: the overrun loop carries the sound');
+// an upshift drops the revs quickly
+run(1, { rpmFrac: 0.95, throttle: 1, speed: 40, gear: 3 });
+const beforeShift = a._rpm;
+a.update(1 / 60, { rpmFrac: 0.6, throttle: 1, speed: 40, gear: 4 });
+check(beforeShift - a._rpm > (rpmFor(0.95) - rpmFor(0.6)) * 0.15, 'an upshift drops the revs in a blink');
+// on the grid the throttle free-revs the engine
+run(1, { rpmFrac: 0, throttle: 0.8, speed: 0, gear: 1 });
+check(a._rpm > rpmFor(0.4), 'standing still, the throttle free-revs the engine');
 check(await a.loadCarSoundFamily('formula') && a._family === 'v10', 'the open-wheel car uses the V10 recording');
+a.updateArcade(1 / 60, { boosting: false, drifting: false, slip: 1, speed: 40, throttle: 0, brake: 1 });
+check(!a._loops.screech || a._loops.screech.gain.gain.value === 0, 'hard braking does not set off the tyre screech');
 
 console.log('[game-audio] effects');
 await a.loadArcadeSfx();

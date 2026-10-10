@@ -22,7 +22,7 @@ export const QUALITY_PRESETS = {
   medium: {
     pixelRatio: 2,
     supersample: 1,
-    maxPixels: 3_000_000,
+    maxPixels: 2_800_000,
     fxaa: false,
     msaa: 4,
     gtao: true,
@@ -34,14 +34,17 @@ export const QUALITY_PRESETS = {
   high: {
     pixelRatio: 2,
     supersample: 1.25,   // with 4x MSAA on top (was 1.5x alone)
-    maxPixels: 3_800_000,
+    // 3.3 MP and the same 2048 shadow map as medium: a 4096 map redrawn every
+    // frame plus 3.8 MP made High lag hard on a big screen. High keeps the
+    // larger pixel budget and supersampling on smaller windows.
+    maxPixels: 3_300_000,
     fxaa: false,
     msaa: 4,
     gtao: true,
     gtaoScale: 0.5,
     bloom: true,
     shadows: true,
-    shadowMap: 4096,
+    shadowMap: 2048,
   },
 };
 
