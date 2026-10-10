@@ -12,6 +12,11 @@ import {
   stepVehicleDynamics,
 } from './vehicleDynamics.js';
 
+
+// Extra steering lock per class: [at speed, added in slow corners].
+const SHARP_STEER = Object.freeze({
+  formula: [1, 0], street: [1.2, 0.4], stock: [1.2, 0.4], gt3: [1, 0.25], hyper: [1.05, 0.3],
+});
 export const COMPOUNDS = {
   S: { key: 'S', name: 'SOFT', grip: 1.045, wearRate: 1.6, wetTyre: 0 },
   M: { key: 'M', name: 'MEDIUM', grip: 1.0, wearRate: 1.0, wetTyre: 0 },
@@ -355,11 +360,13 @@ export class CarPhysics {
     }
 
     // ---- steering and powertrain demand ----
-    // Closed-wheel cars steer more keenly than the open-wheel baseline: +60%
-    // lock up to 54 km/h for hairpins and chicanes, easing to +20% from
-    // 162 km/h so fast corners still respond. The open-wheel car keeps its own.
-    const sharpBoost = this.vehicleClassId === 'formula' ? 1
-      : 1.2 + 0.4 * THREE.MathUtils.clamp((45 - Math.abs(this.v)) / 30, 0, 1);
+    // Closed-wheel cars steer more keenly than the open-wheel baseline: extra
+    // lock up to 54 km/h for hairpins and chicanes, easing off by 162 km/h.
+    // Road and stock cars get +60% easing to +20%; the slick-tyred downforce
+    // cars (GT, hypercar) already turn sharply, so they get far less and
+    // nothing extra at speed, or they feel twitchy.
+    const [boostFast, boostSlow] = SHARP_STEER[this.vehicleClassId] || SHARP_STEER.street;
+    const sharpBoost = boostFast + boostSlow * THREE.MathUtils.clamp((45 - Math.abs(this.v)) / 30, 0, 1);
     const dMax = maxSteerAngle(this.v) * (this.profile.steerLock || 1) * sharpBoost;
     this.steerAuthority = dMax;   // road-wheel angle per unit of steer input (read by the AI)
     // dirty air robs front downforce first: in corners behind a car the front
