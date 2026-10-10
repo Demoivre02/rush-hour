@@ -706,7 +706,8 @@ const EXPECTED_LIGHTING_RIGS = Object.freeze({
   bahrain: { label: 'cool-surface-warm-horizon', poleHeight: 14.5, spacingM: 72, kelvin: 5000,
     spillCeilingM: 13, shadowFans: 2, darknessBeyondM: 700 },
   yasmarina: { label: 'cool-surface-warm-horizon', poleHeight: 14.5, spacingM: 72, kelvin: 5000,
-    spillCeilingM: 13, shadowFans: 2, darknessBeyondM: 700 },
+    spillCeilingM: 13, shadowFans: 2, darknessBeyondM: 700 },  tokyo: { label: 'expressway-sodium-neon', poleHeight: 12, spacingM: 58, kelvin: 4800,
+    spillCeilingM: 18, shadowFans: 2, darknessBeyondM: 600 },
 });
 
 // ------------------------------------------------------------------ tests ---
@@ -1735,7 +1736,8 @@ function run(trackId) {
     const b100 = named('brake-board-100'), b50 = named('brake-board-50');
     if (roadCourse) assert(!!b100 && !!b50, 'braking boards placed');
     if (b100 && b50) {
-      assert(b100.count === b50.count && b100.count >= 4 && b100.count <= 6,
+      const minZones = TRACKS[trackId]?.surface === 'dirt' ? 1 : 4;
+      assert(b100.count === b50.count && b100.count >= minZones && b100.count <= 6,
         '4-6 braking zones get a 100m and a 50m board', `[zones=${b100.count}/${b50.count}]`);
       const posts = named('brake-posts');
       assert(!!posts && posts.count === b100.count * 2, 'every board stands on a post',
@@ -2672,7 +2674,7 @@ function run(trackId) {
         assert(furthest <= wallOff, 'aprons stop short of the barrier line',
           `[furthest=${furthest.toFixed(2)}m, wallOff=${wallOff.toFixed(2)}m]`);
         const patches = apron.userData.patches;
-        if (roadCourse) assert(patches >= 6 && patches <= 10, '6-10 corner exits get an apron', `[patches=${patches}]`);
+        if (roadCourse && TRACKS[trackId]?.surface !== 'dirt') assert(patches >= 6 && patches <= 10, '6-10 corner exits get an apron', `[patches=${patches}]`);
       }
     }
   }

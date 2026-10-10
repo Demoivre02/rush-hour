@@ -658,8 +658,11 @@ export class Effects {
         this._emitSpark(rx + left.x * 0.8 * side, ry + 0.06,
           rz + left.z * 0.8 * side, p.heading, speed, ry);
       }
+      // dirt roads: every car trails dust, and a slide throws more dust
+      // instead of tyre smoke (and leaves no rubber on the ground)
+      const onDirt = p.surface?.material === 'dirt';
       // tyre smoke on slip
-      const smokeRate = p.slip && speed > 14 ? Math.min(14, 6 + speed * 0.09) : 0;
+      const smokeRate = p.slip && !onDirt && speed > 14 ? Math.min(14, 6 + speed * 0.09) : 0;
       const smokeCount = this._emissions(state, 'smoke', frameDt, smokeRate);
       for (let n = 0; n < smokeCount; n++) {
         const side = this.random() < 0.5 ? 1 : -1;
@@ -669,7 +672,8 @@ export class Effects {
       }
       // off-track excursions build a low dust wake as the tyres dig in
       const dustRate = p.offTrack && speed > 5
-        ? Math.min(15, 4 + speed * 0.1 + (p.offTrackSink || 0) * 5) : 0;
+        ? Math.min(15, 4 + speed * 0.1 + (p.offTrackSink || 0) * 5)
+        : onDirt && speed > 6 ? Math.min(14, 2 + speed * 0.12 + (p.slip ? 5 : 0)) : 0;
       const dustCount = this._emissions(state, 'dust', frameDt, dustRate);
       for (let n = 0; n < dustCount; n++) {
         const side = this.random() < 0.5 ? 1 : -1;
@@ -687,7 +691,7 @@ export class Effects {
       }
       // A little rubber is shed under sustained on-track slip and settles as
       // temporary marbles instead of flying like sparks.
-      const rubberRate = p.slip && !p.offTrack && speed > 24 ? 1.25 : 0;
+      const rubberRate = p.slip && !p.offTrack && !onDirt && speed > 24 ? 1.25 : 0;
       const rubberCount = this._emissions(state, 'rubber', frameDt, rubberRate, 1);
       for (let n = 0; n < rubberCount; n++) {
         const side = this.random() < 0.5 ? 1 : -1;
@@ -709,7 +713,7 @@ export class Effects {
       }
       // skid marks: player only
       if (e.isPlayer) {
-        if (p.slip && p.v > 12 && !p.offTrack) {
+        if (p.slip && p.v > 12 && !p.offTrack && !onDirt) {
           this._skidSegment(
             { x: rx + left.x * 0.85, z: rz + left.z * 0.85 },
             { x: rx - left.x * 0.85, z: rz - left.z * 0.85 },

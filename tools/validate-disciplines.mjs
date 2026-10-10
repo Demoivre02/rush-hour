@@ -32,7 +32,7 @@ const ok = (c, label, detail = '') => {
 };
 
 console.log('[disciplines] definitions');
-ok(DISCIPLINE_ORDER.length === 6, 'six disciplines defined', `[${DISCIPLINE_ORDER.join(', ')}]`);
+ok(DISCIPLINE_ORDER.length === 7, 'seven disciplines defined', `[${DISCIPLINE_ORDER.join(', ')}]`);
 for (const id of DISCIPLINE_ORDER) {
   const d = DISCIPLINES[id];
   ok(!!vehicleClass(d.vehicleClass) && vehicleClass(d.vehicleClass).id === d.vehicleClass,

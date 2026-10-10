@@ -9,7 +9,9 @@ import { CAR_ROSTER } from './carRoster.js';
 import { modelRoster } from './modelCars.js';
 import { vehicleClass } from './vehicleClasses.js';
 
-const STREET_CIRCUITS = ['monaco', 'singapore', 'baku', 'jeddah', 'lasvegas', 'miami', 'melbourne'];
+const STREET_CIRCUITS = ['monaco', 'singapore', 'baku', 'jeddah', 'lasvegas', 'miami', 'melbourne',
+  'tokyo', 'rio'];
+const DIRT_TRACKS = ['kalahari', 'highland', 'canyon'];
 const PERMANENT_CIRCUITS = ['spa', 'silverstone', 'suzuka', 'monza', 'barcelona', 'austin',
   'interlagos', 'zandvoort', 'spielberg', 'hungaroring'];
 const CHAMPIONSHIP_CALENDAR = ['melbourne', 'shanghai', 'suzuka', 'bahrain', 'jeddah', 'miami',
@@ -50,6 +52,23 @@ export const DISCIPLINES = Object.freeze({
     laps: Object.freeze({ short: 3, normal: 6, long: 12 }),
     format: Object.freeze({ qualifying: false, pitStops: false, championship: true, damage: true }),
     features: Object.freeze({ ers: false, override: true, activeAero: false, slipstream: true }),
+    compounds: Object.freeze(['S', 'M', 'H']),
+  }),
+
+  rally: Object.freeze({
+    id: 'rally',
+    label: 'Dirt & Offroad',
+    tagline: 'Gravel stages and open desert',
+    blurb: 'Loose dirt, dust and jumps in the terrain. Grip is two-thirds of tarmac, ' +
+      'so brake early, get it sideways and steer with the throttle.',
+    vehicleClass: 'street',
+    carSource: 'roster',
+    carFilter: Object.freeze(['base', 'tuned', 'super']),
+    tracks: Object.freeze(DIRT_TRACKS),
+    gridSize: 10,
+    laps: Object.freeze({ short: 2, normal: 4, long: 8 }),
+    format: Object.freeze({ qualifying: false, pitStops: false, championship: true, damage: true }),
+    features: Object.freeze({ ers: false, override: true, activeAero: false, slipstream: false }),
     compounds: Object.freeze(['S', 'M', 'H']),
   }),
 
@@ -126,7 +145,7 @@ export const DISCIPLINES = Object.freeze({
 });
 
 export const DISCIPLINE_ORDER = Object.freeze(
-  ['formula', 'street', 'hypercar', 'gt', 'stock', 'nordschleife']);
+  ['formula', 'street', 'rally', 'hypercar', 'gt', 'stock', 'nordschleife']);
 
 export const DEFAULT_DISCIPLINE = 'formula';
 

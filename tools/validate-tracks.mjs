@@ -17,7 +17,7 @@ const REQUIRED_IDS = [
 const REQUIRED_FIELDS = ['name', 'location', 'country', 'lengthKm', 'width', 'points'];
 // Non-championship venues: not part of the 24-round calendar, but held to the
 // same geometry standard. Added by tools/gen-track.mjs.
-const EXTRA_IDS = ['thunderdome', 'eifelring'];
+const EXTRA_IDS = ['thunderdome', 'eifelring', 'tokyo', 'rio', 'kalahari', 'highland', 'canyon'];
 
 let failures = 0;
 const fail = (msg) => { failures++; console.error('  FAIL:', msg); };
@@ -125,5 +125,5 @@ if (failures > 0) {
   console.error(`VALIDATION FAILED: ${failures} problem(s)`);
   process.exit(1);
 } else {
-  console.log('ALL CHECKS PASSED: 24 tracks, lengths within 15%, min spacing >= 10 m, no self-intersections');
+  console.log(`ALL CHECKS PASSED: ${ids.length} tracks, lengths within 15%, min spacing >= 10 m, no self-intersections`);
 }

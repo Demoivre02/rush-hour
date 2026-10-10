@@ -18,6 +18,7 @@ const FLAGS = {
   silverstone: '🇬🇧', spa: '🇧🇪', hungaroring: '🇭🇺', zandvoort: '🇳🇱', monza: '🇮🇹',
   madrid: '🇪🇸', baku: '🇦🇿', singapore: '🇸🇬', austin: '🇺🇸', mexico: '🇲🇽',
   interlagos: '🇧🇷', lasvegas: '🇺🇸', lusail: '🇶🇦', yasmarina: '🇦🇪',
+  tokyo: '🇯🇵', rio: '🇧🇷', kalahari: '🇿🇦', highland: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', canyon: '🇺🇸',
 };
 const TIPS = [
   '2026 regs: X-mode slashes drag on the straights — it engages automatically when you hold full throttle with the wheel straight.',

@@ -1,7 +1,9 @@
 import { createWeatherTimeline } from './weather.js';
 
 const TAU = Math.PI * 2;
-const MATERIAL_GRIP = Object.freeze({ asphalt: 1, kerb: 0.82, runoff: 0.88, gravel: 0.61, grass: 0.49 });
+// `dirt` is the road surface of the dirt and offroad venues: loose, so cars
+// slide and drift on it, but far grippier than the gravel traps beside it.
+const MATERIAL_GRIP = Object.freeze({ asphalt: 1, kerb: 0.82, runoff: 0.88, gravel: 0.61, grass: 0.49, dirt: 0.76 });
 
 export const TRACK_STATE_LIMITS = Object.freeze({
   minSegments: 64,
@@ -20,6 +22,13 @@ export const TRACK_PROFILES = Object.freeze({
     drainage: 0.50,
     initialDust: 0.10,
     weatherClimate: 'forest',
+  }),
+  // dirt roads: rutted and dusty; the canyon offroad course more so
+  dirt: Object.freeze({
+    publicName: null, shade: 0.30, bump: 0.013, camber: 0.04, drainage: 0.75, initialDust: 0.45, weatherClimate: null,
+  }),
+  offroad: Object.freeze({
+    publicName: null, shade: 0.20, bump: 0.02, camber: 0.05, drainage: 0.85, initialDust: 0.6, weatherClimate: null,
   }),
   default: Object.freeze({
     publicName: null,
@@ -70,7 +79,11 @@ export class TrackState {
     this.length = Math.max(1, Number(options.length) || this.sampleCount * (Number(options.ds) || 1));
     this.ds = this.length / this.sampleCount;
     this.halfWidth = clamp(options.halfWidth ?? 6, 3, 12);
-    this.profile = TRACK_PROFILES[this.trackId] || TRACK_PROFILES.default;
+    // the road surface: 'asphalt' (default) or 'dirt' (dirt and offroad venues)
+    this.roadSurface = options.roadSurface === 'dirt' ? 'dirt' : 'asphalt';
+    this.profile = TRACK_PROFILES[this.trackId]
+      || (this.roadSurface === 'dirt' ? TRACK_PROFILES[options.offroad ? 'offroad' : 'dirt'] : null)
+      || TRACK_PROFILES.default;
     this.publicName = this.profile.publicName || options.publicName || options.name || 'Grand Prix Circuit';
     this.seed = hash32(`${options.seed ?? 'surface'}:${this.trackId}`);
     this.heights = new Float32Array(this.sampleCount);
@@ -161,6 +174,11 @@ export class TrackState {
 
   materialAt(lateral = 0) {
     const a = Math.abs(Number.isFinite(lateral) ? lateral : 0);
+    if (this.roadSurface === 'dirt') {
+      // no kerbs on a dirt road: the track edge runs straight into loose verge
+      if (a <= this.halfWidth + 0.6) return 'dirt';
+      return a <= this.halfWidth + 6 ? 'gravel' : 'grass';
+    }
     if (a <= this.halfWidth - 0.45) return 'asphalt';
     if (a <= this.halfWidth + 1.15) return 'kerb';
     if (a <= this.halfWidth + 5.5) return 'runoff';

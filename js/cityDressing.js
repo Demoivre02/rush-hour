@@ -49,7 +49,7 @@ const PEOPLE = ['female', 'male'].flatMap((g) => 'abcdef'.split('').map((c) => `
 const CITY_STYLE = Object.freeze({
   monaco: 'downtown', singapore: 'downtown', baku: 'downtown', jeddah: 'downtown',
   lasvegas: 'downtown', madrid: 'downtown', montreal: 'mixed', miami: 'mixed',
-  melbourne: 'suburban',
+  melbourne: 'suburban', tokyo: 'downtown', rio: 'mixed',
 });
 
 export function cityStyleFor(trackId) {

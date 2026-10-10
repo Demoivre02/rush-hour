@@ -27,19 +27,19 @@ const ev = (id, tier, title, trackId, event, laps, reward) =>
 export const CAREER_EVENTS = Object.freeze([
   ev('d1', 'D', 'First Night Out', 'miami', 'race', 2, 3000),
   ev('d2', 'D', 'Last One Standing', 'melbourne', 'elimination', 0, 3500),
-  ev('d3', 'D', 'Harbour Sprint', 'monaco', 'sprint', 1, 4000),
+  ev('d3', 'D', 'Kalahari Dash', 'kalahari', 'sprint', 1, 4000),
   ev('d4', 'D', 'Sideways in Miami', 'miami', 'drift', 0, 4500),
   ev('c1', 'C', 'Marina Bay Run', 'singapore', 'race', 3, 6000),
   ev('c2', 'C', 'Wreck Them All', 'jeddah', 'takedown', 0, 6500),
-  ev('c3', 'C', 'Old Town Knockout', 'baku', 'elimination', 0, 7000),
+  ev('c3', 'C', 'Highland Knockout', 'highland', 'elimination', 0, 7000),
   ev('c4', 'C', 'Strip Showdown', 'lasvegas', 'race', 3, 8000),
-  ev('b1', 'B', 'Corniche Dash', 'jeddah', 'sprint', 1, 11000),
-  ev('b2', 'B', 'Neon Drift', 'lasvegas', 'drift', 0, 12000),
+  ev('b1', 'B', 'Bayshore Sprint', 'tokyo', 'sprint', 1, 11000),
+  ev('b2', 'B', 'Tokyo Drift', 'tokyo', 'drift', 0, 12000),
   ev('b3', 'B', 'Castle Walls', 'baku', 'takedown', 0, 13000),
   ev('b4', 'B', 'Principality GP', 'monaco', 'race', 4, 15000),
   ev('a1', 'A', 'Midnight Express', 'singapore', 'elimination', 0, 20000),
-  ev('a2', 'A', 'Ocean Drive', 'miami', 'race', 4, 22000),
-  ev('a3', 'A', 'Albert Park Brawl', 'melbourne', 'takedown', 0, 24000),
+  ev('a2', 'A', 'Copacabana Run', 'rio', 'race', 4, 22000),
+  ev('a3', 'A', 'Canyon Brawl', 'canyon', 'takedown', 0, 24000),
   ev('a4', 'A', 'Vegas Royale', 'lasvegas', 'race', 5, 28000),
   ev('s1', 'S', 'Hypercar Debut', 'monza', 'race', 3, 40000),
   ev('s2', 'S', 'Spa Shootout', 'spa', 'elimination', 0, 45000),
@@ -75,7 +75,8 @@ export const eventById = (id) => (String(id).startsWith('daily-')
 // One extra event a day, the same for everyone on that date: the date picks the
 // venue and the event type; the class is your highest open class. It pays 1.5x
 // the class's best regular reward, once per day, and gives no stars.
-const DAILY_TRACKS = ['miami', 'monaco', 'singapore', 'baku', 'jeddah', 'lasvegas', 'melbourne'];
+const DAILY_TRACKS = ['miami', 'monaco', 'singapore', 'baku', 'jeddah', 'lasvegas', 'melbourne',
+  'tokyo', 'rio', 'kalahari', 'highland', 'canyon'];
 const DAILY_TYPES = ['race', 'sprint', 'elimination', 'takedown', 'drift'];
 const DAILY_NAMES = { race: 'Daily Grand Prix', sprint: 'Daily Dash', elimination: 'Daily Knockout',
   takedown: 'Daily Demolition', drift: 'Daily Slide' };

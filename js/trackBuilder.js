@@ -7,7 +7,7 @@ import { createTrackState } from './trackState.js';
 
 const UP = new THREE.Vector3(0, 1, 0);
 
-const STREET = new Set(['monaco', 'baku', 'singapore', 'jeddah', 'lasvegas', 'miami', 'montreal', 'madrid']);
+const STREET = new Set(['monaco', 'baku', 'singapore', 'jeddah', 'lasvegas', 'miami', 'montreal', 'madrid', 'tokyo', 'rio']);
 // CAREFUL: the deterministic visual harness classifies non-night themes by
 // `sunI < 2.2`, so a daylight theme must stay >= 2.2 to exercise the day HDR.
 // The daylight suns were pulled back from 2.9/2.6 to 2.25 for highlight
@@ -27,6 +27,10 @@ const THEMES = {
   classic: { skyTop: 0x3577d4, skyBot: 0xbfd9f2, ground: 0x3f7d3a, sun: 0xfff2d8, sunI: 2.25, hemi: 0.85, fog: 0xc4d7ea, night: false },
   dusk:    { skyTop: 0x25336e, skyBot: 0xe89a5f, ground: 0x8a7a58, sun: 0xffb070, sunI: 1.9, hemi: 0.6,
     fog: 0xc79a74, night: false, floodlit: true },
+  tokyoNight: { skyTop: 0x070914, skyBot: 0x2a2342, ground: 0x23252c, sun: 0xe2e8ff, sunI: 0.74, hemi: 0.40,
+    fog: 0x15142a, fogNear: 300, fogFar: 1300, night: true, nightRig: 'tokyo', stars: false, proceduralSky: true },
+  savanna: { skyTop: 0x3d63a8, skyBot: 0xe6c79a, ground: 0xb08a5c, sun: 0xffdcae, sunI: 2.25, hemi: 0.72, fog: 0xd4b48c, night: false },
+  canyon:  { skyTop: 0x3a6db8, skyBot: 0xe9b88a, ground: 0xa65f3c, sun: 0xffe2b8, sunI: 2.3, hemi: 0.74, fog: 0xd8a983, night: false },
   city:    { skyTop: 0x2f6cc4, skyBot: 0xb9d2ea, ground: 0x565b60, sun: 0xfff0d0, sunI: 2.25, hemi: 0.8, fog: 0xb6c8da, night: false },
 };
 const TRACK_THEME = {
@@ -36,6 +40,7 @@ const TRACK_THEME = {
   suzuka: 'classic', barcelona: 'classic', spielberg: 'classic', silverstone: 'classic',
   spa: 'classic', hungaroring: 'classic', zandvoort: 'classic', monza: 'classic',
   austin: 'classic', interlagos: 'classic',
+  tokyo: 'tokyoNight', rio: 'city', kalahari: 'savanna', highland: 'classic', canyon: 'canyon',
 };
 
 // The night venues are four lighting systems, not one colour grade. All values
@@ -68,6 +73,13 @@ export const NIGHT_LIGHTING_RIGS = Object.freeze({
     poolBeyondBarrierM: 5, barrierOpacity: 0.25, spillCeilingM: 14,
     mastEmissive: 0.12, shadowFans: 2, darknessBeyondM: 500, washColors: null,
   }),
+  tokyo: Object.freeze({
+    label: 'expressway-sodium-neon', poleHeight: 12, spacingM: 58, kelvin: 4800,
+    lamp: 0xe8e6ff, pool: 0xd2d6ff, poolOpacity: 0.26, poolHalfLengthM: 26,
+    poolBeyondBarrierM: 5, barrierOpacity: 0.28, spillCeilingM: 18,
+    mastEmissive: 0.13, shadowFans: 2, darknessBeyondM: 600,
+    washColors: Object.freeze([0xff3a8c, 0x3ad8ff, 0xa66bff, 0xffd23a]),
+  }),
   dusk: Object.freeze({
     label: 'cool-surface-warm-horizon', poleHeight: 14.5, spacingM: 72, kelvin: 5000,
     lamp: 0xd9e8ff, pool: 0xb8d2ff, poolOpacity: 0.16, poolHalfLengthM: 30,
@@ -82,7 +94,7 @@ export const NIGHT_LIGHTING_RIGS = Object.freeze({
 // is what makes Monza's park and Spa's Ardennes read as a forest corridor.
 const FOREST = new Set([
   'monza', 'spa', 'silverstone', 'suzuka', 'zandvoort', 'spielberg', 'hungaroring',
-  'montreal', 'melbourne', 'interlagos', 'austin', 'barcelona', 'shanghai', 'mexico',
+  'highland', 'montreal', 'melbourne', 'interlagos', 'austin', 'barcelona', 'shanghai', 'mexico',
 ]);
 // Venue vegetation: which species, in what mix, and how dense the treeline is.
 // `wall` scales the forest-wall density (0 = no wall, scatter only).
@@ -111,6 +123,11 @@ const VEG = {
   monaco:      { mix: [['palm', 0.5], ['broadleaf', 0.5]], wall: 0, sparse: 0.45 },
   madrid:      { mix: [['broadleaf', 1]], wall: 0, sparse: 0.45 },
   baku:        { mix: [['broadleaf', 1]], wall: 0, sparse: 0.4 },
+  tokyo:       { mix: [['broadleaf', 1]], wall: 0, sparse: 0.3 },
+  rio:         { mix: [['palm', 1]], wall: 0, sparse: 0.75 },
+  kalahari:    { mix: [['scrub', 0.6], ['broadleaf', 0.4]], wall: 0, sparse: 0.6 },
+  highland:    { mix: [['pine', 0.75], ['broadleaf', 0.25]], wall: 1.0 },
+  canyon:      { mix: [['scrub', 0.7], ['pine', 0.3]], wall: 0, sparse: 0.7 },
 };
 // Billboard height range per species, in metres.
 const SPECIES_H = {
@@ -152,6 +169,11 @@ const VENUE_DEPTH = {
   interlagos:  { cue: 'hillside-workshop',  mass: 'tropical', accent: 0x568064 },
   lasvegas:    { cue: 'desert-night-depot', mass: 'arid',     accent: 0x8b70b1, rngSkyline: 'vertical' },
   lusail:      { cue: 'dune-light-post',     mass: 'arid',     accent: 0x5c83a8, rngSkyline: 'low' },
+  tokyo:       { cue: 'bayshore-parking-deck', mass: 'park',  accent: 0x6b5fb8, rngSkyline: 'vertical' },
+  rio:         { cue: 'beach-kiosk',         mass: 'tropical', accent: 0xe0a33e, rngSkyline: 'terrace' },
+  kalahari:    { cue: 'rally-service-camp',  mass: 'arid',     accent: 0xc9773b, rngSkyline: 'low' },
+  highland:    { cue: 'forest-stage-hut',    mass: 'alpine',   accent: 0x4e6e47 },
+  canyon:      { cue: 'mesa-trailhead',      mass: 'arid',     accent: 0xb5532f, rngSkyline: 'low' },
   yasmarina:   { cue: 'marina-service',      mass: 'tropical', accent: 0x4d9ca3, rngSkyline: 'terrace' },
 };
 const VENUE_DEPTH_DEFAULT = { cue: 'circuit-service', mass: 'woodland', accent: 0x687b71, rngSkyline: 'mixed' };
@@ -428,6 +450,65 @@ export const VENUE = Object.freeze({
     ], landform: 'flat',
     backdrop: [{ kind: 'none', dist: 0, height: 0, spread: 0 }],
   },
+  // ---- Rush Hour venues ----------------------------------------------------
+  // Tokyo by night: expressway concrete and a tight wall of towers on the bay.
+  tokyo: {
+    ground: [
+      { to: 32, surface: 'expressway-concrete-shoulder', tint: 0x8e9196 },
+      { to: 80, surface: 'harbour-container-yard', tint: 0x6e7279 },
+      { to: Infinity, surface: 'reclaimed-bay-lot', tint: 0x5d6066 },
+    ], landform: 'flat',
+    backdrop: [
+      { kind: 'city-sprawl', dist: 700, height: 40, spread: 3400, tint: 0x232741 },
+      { kind: 'city-cluster', dist: 1100, height: 170, spread: 2600, tint: 0x2c3150 },
+    ],
+  },
+  // Rio: a beachfront avenue between the sand and the hills.
+  rio: {
+    ground: [
+      { to: 22, surface: 'wave-mosaic-promenade', tint: 0xc9c2b4 },
+      { to: 70, surface: 'golden-beach-sand', tint: 0xd8c08e },
+      { to: Infinity, surface: 'coastal-palm-lawn', tint: 0x5f8d55 },
+    ], landform: 'flat',
+    backdrop: [
+      { kind: 'city-cluster', dist: 1200, height: 70, spread: 2400, tint: 0xa9b6c2 },
+      { kind: 'mountain', dist: 2300, height: 260, spread: 1800, tint: 0x4f6d55 },
+      { kind: 'sea', dist: 2500, height: 8, spread: 3000, tint: 0x2f6f96 },
+    ],
+  },
+  // Kalahari: red sand, thorn scrub and a far, flat horizon.
+  kalahari: {
+    ground: [
+      { to: 18, surface: 'graded-rally-berm', tint: 0xa77a52 },
+      { to: 90, surface: 'red-kalahari-sand', tint: 0xb9774a },
+      { to: Infinity, surface: 'thornveld-scrub', tint: 0x8f7a4f },
+    ], landform: 'dune',
+    backdrop: [{ kind: 'dune-ridge', dist: 2400, height: 60, spread: 3200, tint: 0xb98a62 }],
+  },
+  // Highland: a forest stage between heather moor and pine plantation.
+  highland: {
+    ground: [
+      { to: 10, surface: 'muddy-stage-verge', tint: 0x6a5a40 },
+      { to: 50, surface: 'heather-moorland', tint: 0x5f5a45 },
+      { to: Infinity, surface: 'pine-plantation-floor', tint: 0x33452c },
+    ], landform: 'hillside',
+    backdrop: [
+      { kind: 'ridge-forest', dist: 2000, height: 150, spread: 2600, tint: 0x3e5240 },
+      { kind: 'mountain', dist: 2500, height: 240, spread: 2200, tint: 0x6f7a80 },
+    ],
+  },
+  // Red Rock Canyon: a wide offroad basin under sandstone mesas.
+  canyon: {
+    ground: [
+      { to: 26, surface: 'churned-red-dirt', tint: 0xa8603c },
+      { to: 120, surface: 'sandstone-slickrock', tint: 0xb46e48 },
+      { to: Infinity, surface: 'sagebrush-flat', tint: 0x9c7f5a },
+    ], landform: 'cut-bank',
+    backdrop: [
+      { kind: 'ridge-bare', dist: 1700, height: 190, spread: 2600, tint: 0xa4583a },
+      { kind: 'mountain', dist: 2450, height: 260, spread: 3000, tint: 0xb87a5a },
+    ],
+  },
 });
 
 const GROUND_SURFACE_TILE = Object.freeze({
@@ -454,6 +535,11 @@ const GROUND_SURFACE_TILE = Object.freeze({
   'narrow-rain-darkened-grass': 'grass', 'red-laterite-bank': 'grass', 'dense-secondary-forest': 'grass',
   'strip-concrete-sidewalk': 'asphalt', 'decorative-paver': 'asphalt', 'gravel-mulch-bed': 'gravel',
   'hard-edge-artificial-turf': 'grass', 'pale-gravel-hardpan': 'gravel', 'flat-stony-desert': 'gravel',
+  'expressway-concrete-shoulder': 'asphalt', 'harbour-container-yard': 'asphalt', 'reclaimed-bay-lot': 'asphalt',
+  'wave-mosaic-promenade': 'asphalt', 'golden-beach-sand': 'gravel', 'coastal-palm-lawn': 'grass',
+  'graded-rally-berm': 'gravel', 'red-kalahari-sand': 'gravel', 'thornveld-scrub': 'grass',
+  'muddy-stage-verge': 'gravel', 'heather-moorland': 'grass', 'pine-plantation-floor': 'grass',
+  'churned-red-dirt': 'gravel', 'sandstone-slickrock': 'gravel', 'sagebrush-flat': 'grass',
   'white-crushed-limestone': 'gravel', 'sculpted-sand-berm': 'gravel', 'over-green-irrigated-turf': 'grass',
 });
 
@@ -489,6 +575,11 @@ const INFRASTRUCTURE_PROFILE = {
   lasvegas:    { mode: 'street',    paddock: 'compact', carParks: 0, surface: 'none',   camping: false, banks: 0, fence: 'hoarding', fenceRadius: 112, staging: 1 },
   lusail:      { mode: 'permanent', paddock: 'large',   carParks: 3, surface: 'gravel', camping: false, banks: 3, fence: 'mesh',     fenceRadius: 290 },
   yasmarina:   { mode: 'permanent', paddock: 'large',   carParks: 3, surface: 'gravel', camping: false, banks: 3, fence: 'mesh',     fenceRadius: 250 },
+  tokyo:       { mode: 'street',    paddock: 'compact', carParks: 0, surface: 'none',   camping: false, banks: 0, fence: 'hoarding', fenceRadius: 100, staging: 1 },
+  rio:         { mode: 'street',    paddock: 'compact', carParks: 0, surface: 'none',   camping: false, banks: 1, fence: 'hoarding', fenceRadius: 94,  staging: 1 },
+  kalahari:    { mode: 'permanent', paddock: 'small',   carParks: 2, surface: 'gravel', camping: true,  banks: 2, fence: 'mesh',     fenceRadius: 180 },
+  highland:    { mode: 'permanent', paddock: 'small',   carParks: 2, surface: 'grass',  camping: true,  banks: 3, fence: 'mesh',     fenceRadius: 160 },
+  canyon:      { mode: 'permanent', paddock: 'medium',  carParks: 3, surface: 'gravel', camping: true,  banks: 3, fence: 'mesh',     fenceRadius: 210 },
 };
 const INFRASTRUCTURE_PROFILE_DEFAULT = {
   mode: 'permanent', paddock: 'medium', carParks: 2, surface: 'gravel',
@@ -586,6 +677,12 @@ const ELEV = {
   singapore:   { amp: 3, waves: [[1, 1, 0.18], [3, 0.22, 0.62]] },
   lasvegas:    { amp: 3, waves: [[1, 1, 0.07], [2, 0.24, 0.52]] },
   madrid:      { amp: 3, waves: [[1, 1, 0.50], [2, 0.32, 0.09]] },
+  tokyo:       { amp: 3, waves: [[1, 1, 0.37], [2, 0.30, 0.83]] },
+  rio:         { amp: 4, waves: [[1, 1, 0.12], [2, 0.26, 0.47]] },
+  // --- dirt and offroad: the terrain is the point --------------------------
+  kalahari:    { amp: 7,  waves: [[1, 1, 0.20], [2, 0.45, 0.66], [5, 0.12, 0.31]] },
+  highland:    { amp: 18, waves: [[1, 0.55, 0.42], [2, 0.36, 0.05], [3, 0.20, 0.71], [5, 0.08, 0.18]] },
+  canyon:      { amp: 16, waves: [[1, 0.60, 0.77], [2, 0.32, 0.33], [4, 0.14, 0.58]] },
 };
 // A circuit with no entry still gets a gentle roll rather than a dead-flat lap.
 const ELEV_DEFAULT = { amp: 5, waves: [[1, 1, 0.25], [2, 0.35, 0.7]] };
@@ -6280,6 +6377,8 @@ float apexGroundNoise(vec2 worldXZ, float wavelength, float seed) {
     line,
     seed: scenerySeed,
     weatherSeed: options.weatherSeed ?? scenerySeed,
+    roadSurface: def.surface,
+    offroad: !!def.offroad,
   });
   trackState.setVisualHook((state) => {
     // Wet asphalt loses diffuse roughness and gains environment response. No
@@ -6290,6 +6389,20 @@ float apexGroundNoise(vec2 worldXZ, float wavelength, float seed) {
     road.material.userData.wetReflectionStrength = state.reflectionStrength;
     if (racingGroove) racingGroove.material.opacity = state.racingLineOpacity;
   });
+
+  // ---- dirt roads: the dirt and offroad venues (def.surface === 'dirt') ----
+  // The road takes the loose gravel scan, tinted to packed earth, and loses
+  // what only a paved circuit has: painted lines, kerbs, the rubbered groove,
+  // braking rubber, the painted wordmark and painted run-off. Barriers stay
+  // (they are the physical walls); the start line stays too.
+  if (def.surface === 'dirt') {
+    const earth = surfaceSet('gravel', { aniso: 8 });
+    Object.assign(road.material, surfaceProps(earth));
+    road.material.color = new THREE.Color(def.offroad ? 0xb98a63 : 0xa88565);
+    road.material.needsUpdate = true;
+    const paved = new Set(['edge-line', 'kerbs', 'racing-groove', 'rubber-patches', 'track-paint', 'runoff-paint']);
+    group.traverse((o) => { if (paved.has(o.name)) o.visible = false; });
+  }
 
   const circuit = {
     id: trackId, def, theme, isStreet, group,
