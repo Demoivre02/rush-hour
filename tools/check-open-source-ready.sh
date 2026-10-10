@@ -28,7 +28,9 @@ if ! grep -q 'Copyright 2026 Avi Hacker, J.D.' NOTICE; then
   exit 1
 fi
 
-forbidden='(^|/)(\.env($|\.)|\.vercel($|/)|\.vercel-dist($|/)|data-real\.js$|__pycache__($|/)|[^/]+\.pyc$|[^/]+\.mp3$)'
+# (generated voice/sample MP3s live in sounds/ and must stay local; the CC0
+# music in assets/music is documented in ASSET_PROVENANCE.md)
+forbidden='(^|/)(\.env($|\.)|\.vercel($|/)|\.vercel-dist($|/)|data-real\.js$|__pycache__($|/)|[^/]+\.pyc$|^sounds/.*\.mp3$)'
 tracked_forbidden="$(git ls-files | grep -E "$forbidden" || true)"
 if [[ -n "$tracked_forbidden" ]]; then
   echo 'FATAL: private, generated, or release-incompatible files are tracked:' >&2
