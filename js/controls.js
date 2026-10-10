@@ -123,6 +123,7 @@ export const DRIVING_BINDS = Object.freeze([
   Object.freeze({ control: 'l2', action: 'Brake / reverse · tap while steering to drift', key: '↓' }),
   Object.freeze({ control: 'r1', action: 'Shift up', key: 'E' }),
   Object.freeze({ control: 'l1', action: 'Shift down', key: 'Q' }),
+  Object.freeze({ control: 'Right stick ↑', names: null, action: 'Nitro (hold)', key: 'Space' }),
   Object.freeze({ control: 'south', action: 'Nitro (hold) · override in Formula', key: 'Space' }),
   Object.freeze({ control: 'north', action: 'Change camera', key: 'C' }),
   Object.freeze({ control: 'west', action: 'ERS mode', key: 'V' }),

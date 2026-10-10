@@ -1993,7 +1993,9 @@ class Game {
       const ax = gp.axes[AXES.leftX] || 0;
       const axisMagnitude = Math.abs(ax);
       const rt = gp.buttons[PAD.r2]?.value || 0, lt = gp.buttons[PAD.l2]?.value || 0;
-      const gamepadBoost = !!gp.buttons[PAD.south]?.pressed;
+      // nitro: right stick pushed up (past half, so stick drift cannot fire
+      // it) or the south face button
+      const gamepadBoost = !!gp.buttons[PAD.south]?.pressed || (gp.axes[AXES.rightY] || 0) < -0.55;
       const gamepadUp = !!gp.buttons[PAD.r1]?.pressed;
       const gamepadDown = !!gp.buttons[PAD.l1]?.pressed;
       this._padId = gp.id || this._padId;
