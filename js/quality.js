@@ -86,7 +86,7 @@ export class QualityController {
     this._appliedPixelRatio = null;
     this._appliedWidth = null;
     this._appliedHeight = null;
-    // Dynamic resolution: a 0.6-1 factor on the render resolution, steered by
+    // Dynamic resolution: a 0.75-1 factor on the render resolution, steered by
     // measured frame time in every mode, so a big window (a 3440x1440
     // ultrawide is 5 megapixels) stays smooth instead of lagging.
     this.renderScale = 1;
@@ -100,8 +100,9 @@ export class QualityController {
 
   get tier() { return this.mode === 'auto' ? this.autoTier : this.mode; }
 
-  bind({ composer = null, gtao = null, bloom = null, fxaa = null, sun = null } = {}) {
+  bind({ composer = null, gtao = null, bloom = null, fxaa = null, sun = null, grade = null } = {}) {
     this.composer = composer;
+    this.grade = grade;
     this.gtao = gtao;
     this.bloom = bloom;
     this.fxaa = fxaa;
@@ -127,7 +128,7 @@ export class QualityController {
 
   /**
    * Dynamic resolution, once a second: below ~55 fps the render scale steps
-   * down 8%; after six comfortable seconds (above ~70 fps), and not within
+   * down 6% (never under 75%); after six comfortable seconds (above ~70 fps), and not within
    * 20 s of a step down, it creeps back up 4%.
    */
   _dynamicResolution(rawDt) {
@@ -162,7 +163,7 @@ export class QualityController {
     // needs six comfortable seconds in a row.
     if (this._drsUpBlock > 0) this._drsUpBlock -= 1;
     let next = this.renderScale;
-    if (this._drsSlow >= 1) next = Math.max(0.6, this.renderScale - 0.08);
+    if (this._drsSlow >= 1) next = Math.max(0.75, this.renderScale - 0.06);
     else if (this._drsFast >= 6 && !(this._drsUpBlock > 0)) next = Math.min(1, this.renderScale + 0.04);
     if (Math.abs(next - this.renderScale) > 0.001) {
       if (next < this.renderScale) {
@@ -228,7 +229,16 @@ export class QualityController {
     const pixelRatio = Math.max(0.35, Math.min(dpr * (p.supersample || 1), p.pixelRatio, budgetRatio) * this.renderScale);
     const pixelRatioChanged = pixelRatio !== this._appliedPixelRatio;
     const sizeChanged = this.width !== this._appliedWidth || this.height !== this._appliedHeight;
-    this.renderer.setPixelRatio(pixelRatio);
+    // The canvas always runs at the display's native resolution; only the 3D
+    // render (the composer's targets) uses `pixelRatio`. The last pass then
+    // upscales with sharpening at native resolution, instead of the browser
+    // stretching a small canvas (which blurred big screens). Low keeps the
+    // old path: a smaller canvas is cheaper on weak devices.
+    // (capped at 4K, 8.3 MP: a Retina-scaled ultrawide would otherwise be an
+    // 18 MP canvas whose extra pixels cost memory and cannot be seen)
+    const outputRatio = tier === 'low' ? pixelRatio
+      : Math.max(pixelRatio, Math.min(dpr, 2, Math.sqrt(8_300_000 / Math.max(1, this.width * this.height))));
+    this.renderer.setPixelRatio(outputRatio);
     this.renderer.shadowMap.enabled = p.shadows;
     this.renderer.setSize(this.width, this.height);
     if (this.gtao?.setResolutionScale) this.gtao.setResolutionScale(p.gtaoScale);
@@ -240,6 +250,8 @@ export class QualityController {
       if (composerChanged || pixelRatioChanged || sizeChanged || force) this.composer.setSize(this.width, this.height);
       this._composerSynced = this.composer;
     }
+    // a little more sharpening the further the render is upscaled
+    if (this.grade?.uniforms?.upscale) this.grade.uniforms.upscale.value = Math.max(0, Math.min(1, 1 - pixelRatio / outputRatio));
     if (this.gtao) this.gtao.enabled = p.gtao;
     if (this.bloom) this.bloom.enabled = p.bloom;
     if (this.fxaa) this.fxaa.enabled = p.fxaa;

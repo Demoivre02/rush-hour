@@ -1595,6 +1595,7 @@ class Game {
     this.composer.addPass(this.fxaa);
     this.quality.bind({
       composer: this.composer, gtao: this.gtao, bloom: this.bloom, fxaa: this.fxaa, sun: this.sun,
+      grade: this.grade,
     });
     // Full anisotropic filtering on every track texture: roads, kerbs and
     // hoardings are seen at grazing angles, where lower settings smear them.

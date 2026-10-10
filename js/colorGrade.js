@@ -1,5 +1,7 @@
 // Final colour grade and sharpening, run on the display-ready (sRGB) image
-// after OutputPass.
+// after OutputPass. It is also the upscaler: the 3D render can be smaller than
+// the native-resolution canvas (js/quality.js), and this pass draws it to the
+// screen with sharpening.
 //
 // ACES tone mapping alone leaves daylight scenes flat and milky: the sky,
 // asphalt and concrete all crowd the middle of the range. This pass
@@ -27,6 +29,7 @@ const GradeShader = {
     contrast: { value: GRADE_LOOKS.day.contrast },
     vibrance: { value: GRADE_LOOKS.day.vibrance },
     vignette: { value: GRADE_LOOKS.day.vignette },
+    upscale: { value: 0 },          // 0 = native render, 1 = heavily upscaled
   },
   vertexShader: /* glsl */`
     varying vec2 vUv;
@@ -40,6 +43,7 @@ const GradeShader = {
     uniform float contrast;
     uniform float vibrance;
     uniform float vignette;
+    uniform float upscale;
     varying vec2 vUv;
 
     float luma(vec3 c) { return dot(c, vec3(0.2126, 0.7152, 0.0722)); }
@@ -56,7 +60,10 @@ const GradeShader = {
       vec3 w = texture2D(tDiffuse, vUv - vec2(texel.x, 0.0)).rgb;
       vec3 blur = (n + s + e + w) * 0.25;
       float edge = max(max(luma(abs(n - s)), luma(abs(e - w))), 0.0);
-      float amount = sharpen * (1.0 - smoothstep(0.08, 0.35, edge));
+      // This pass also upscales a reduced-resolution render to the screen:
+      // the neighbours are one *source* texel away, and the sharpening rises
+      // with the upscale factor to restore the detail bilinear filtering softens.
+      float amount = sharpen * (1.0 + upscale * 0.9) * (1.0 - smoothstep(0.08, 0.35, edge));
       c = clamp(c + (c - blur) * amount * 2.0, 0.0, 1.0);
 
       // S-curve contrast around mid-grey; 0 and 1 stay put
