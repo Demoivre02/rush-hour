@@ -918,6 +918,10 @@ export class RaceSession {
       // go out, so a jump start cannot happen (`jumpStart` stays false).
       if (this.lightsOn >= total && this.phaseT > total * step + this.lightsHold) {
         this.phase = 'racing'; this.phaseT = 0; this.lightsOut = true;
+        // sprint: a flying start, the whole field already rolling
+        if (this.event.flyingStart) {
+          for (const e of this.entries) e.phys.v = Math.max(e.phys.v, this.event.flyingStart);
+        }
         this.raceTime = 0;
         for (const e of this.entries) e.lapStart = 0;
       }
@@ -1761,7 +1765,8 @@ export class RaceSession {
   /** Per-tick rules of the selected arcade event (see js/events.js). */
   _eventTick(dt) {
     const ev = this.event, st = this.eventState, p = this.player;
-    if (ev.id === 'race' || st.done || !p) return;
+    // plain races and sprints are won at the flag; only the others have rules here
+    if (!(ev.interval || ev.timeLimit) || st.done || !p) return;
     if (ev.id === 'elimination') {
       st.timer -= dt;
       const alive = this.entries.filter((e) => !e.dnf && !e.finished)

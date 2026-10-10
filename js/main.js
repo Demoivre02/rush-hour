@@ -170,7 +170,7 @@ import { FixedStepAccumulator } from './fixedStep.js';
 /** Results-screen summary of an arcade event, or null for a plain race. */
 function eventOutcome(s) {
   const ev = s.event;
-  if (!ev || ev.id === 'race') return null;
+  if (!ev || !(ev.interval || ev.timeLimit)) return null;   // races and sprints
   const st = s.eventState;
   const pl = s.player;
   if (ev.id === 'elimination') {

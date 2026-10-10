@@ -22,18 +22,18 @@ export const TIERS = Object.freeze([
 const ev = (id, tier, title, trackId, event, laps, reward) =>
   Object.freeze({ id, tier, title, trackId, event, laps, reward });
 
-// Four events per class. `laps` applies to plain races; the timed events end
-// on their own clock (js/events.js).
+// Four events per class. `laps` applies to plain races (a sprint is one lap);
+// the timed events end on their own clock (js/events.js).
 export const CAREER_EVENTS = Object.freeze([
   ev('d1', 'D', 'First Night Out', 'miami', 'race', 2, 3000),
   ev('d2', 'D', 'Last One Standing', 'melbourne', 'elimination', 0, 3500),
-  ev('d3', 'D', 'Harbour Sprint', 'monaco', 'race', 2, 4000),
+  ev('d3', 'D', 'Harbour Sprint', 'monaco', 'sprint', 1, 4000),
   ev('d4', 'D', 'Sideways in Miami', 'miami', 'drift', 0, 4500),
   ev('c1', 'C', 'Marina Bay Run', 'singapore', 'race', 3, 6000),
   ev('c2', 'C', 'Wreck Them All', 'jeddah', 'takedown', 0, 6500),
   ev('c3', 'C', 'Old Town Knockout', 'baku', 'elimination', 0, 7000),
   ev('c4', 'C', 'Strip Showdown', 'lasvegas', 'race', 3, 8000),
-  ev('b1', 'B', 'Corniche Dash', 'jeddah', 'race', 3, 11000),
+  ev('b1', 'B', 'Corniche Dash', 'jeddah', 'sprint', 1, 11000),
   ev('b2', 'B', 'Neon Drift', 'lasvegas', 'drift', 0, 12000),
   ev('b3', 'B', 'Castle Walls', 'baku', 'takedown', 0, 13000),
   ev('b4', 'B', 'Principality GP', 'monaco', 'race', 4, 15000),
@@ -137,7 +137,7 @@ export function buyUpgrade(state, car, part) {
  */
 export function scoreResult(event, result) {
   let stars = 0;
-  if (event.event === 'race' || event.event === 'elimination') {
+  if (event.event === 'race' || event.event === 'sprint' || event.event === 'elimination') {
     if (result.finished !== false) stars = result.pos === 1 ? 3 : result.pos <= 3 ? 2 : result.pos <= 6 ? 1 : 0;
   } else {
     stars = result.success ? 3 : 0;

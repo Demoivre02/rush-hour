@@ -61,7 +61,7 @@ function runUntil(s, cond, maxS) {
 const racing = (s) => runUntil(s, () => s.phase === 'racing', 30);
 
 console.log('[events] registry');
-check(EVENTS.length === 4 && eventSpec('nope').id === 'race', 'four events, unknown ids fall back to a plain race');
+check(EVENTS.length === 5 && eventSpec('nope').id === 'race', 'five events, unknown ids fall back to a plain race');
 
 console.log('[events] plain race and Formula');
 {
@@ -69,6 +69,16 @@ console.log('[events] plain race and Formula');
   check(s.event.id === 'race' && s.laps === 3, 'a plain race keeps its lap count');
   const f = session('elimination', 'formula');
   check(f.event.id === 'race' && f.laps === 3, 'Formula ignores arcade events');
+}
+
+console.log('[events] sprint');
+{
+  const s = session('sprint');
+  check(s.laps === 1, 'a sprint is one lap');
+  racing(s);
+  check(s.entries.every((e) => e.phys.v >= 21.9), 'flying start: the whole field is rolling at lights out');
+  for (let t = 0; t < 5; t += DT) s.update(DT, drive);
+  check(!s.eventState.done && s.phase === 'racing', 'a sprint runs to the flag (no clock, no score)');
 }
 
 console.log('[events] elimination');

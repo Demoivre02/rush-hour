@@ -539,7 +539,7 @@ export class UI {
         data-t="${t.id}" ${open ? '' : 'disabled'} aria-pressed="${t.id === tier}">
         <b>${t.id}</b><span>${t.label}</span><i>${open ? '' : `★ ${t.stars}`}</i></button>`;
     }).join('');
-    const typeLabel = { race: 'RACE', elimination: 'ELIMINATION', takedown: 'TAKEDOWN RUSH', drift: 'DRIFT' };
+    const typeLabel = { race: 'RACE', sprint: 'SPRINT', elimination: 'ELIMINATION', takedown: 'TAKEDOWN RUSH', drift: 'DRIFT' };
     const events = C.CAREER_EVENTS.filter((e) => e.tier === tier).map((e) => {
       const got = state.stars[e.id] || 0;
       const t = TRACKS[e.trackId];

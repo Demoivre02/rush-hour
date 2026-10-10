@@ -488,7 +488,7 @@ export class HUD {
     const el = this.$('event-badge');
     if (!el) return;
     const ev = s.event;
-    const on = !!ev && ev.id !== 'race' && (s.phase === 'racing' || s.phase === 'finished');
+    const on = !!ev && !!(ev.interval || ev.timeLimit) && (s.phase === 'racing' || s.phase === 'finished');
     el.classList.toggle('on', on);
     if (!on) return;
     const st = s.eventState;
