@@ -69,6 +69,10 @@ class EngineProcessor extends AudioWorkletProcessor {
     this.dcPrev = 0;
     this.intakeLp = 0;
     this.outLp = 0;
+    this.wobble = 0;         // slow wander of crank speed (idle is never steady)
+    this.wobbleTarget = 0;
+    this.tick = 0;           // valvetrain tick envelope
+    this.tickLp = 0;
     this.pulseNoise = 0;
     this.intakeBp = 0;
     this.whinePhase = 0;
@@ -135,13 +139,15 @@ class EngineProcessor extends AudioWorkletProcessor {
     if (this.cutT > 0) return;
     if (rpm >= s.redline * 0.995 && this.fireT <= 0) { this.cutT = 0.045; return; }
     const idleness = Math.max(0, 1 - (rpm - s.idle) / (s.idle * 2.5));
-    const lump = 1 + s.rough * idleness * this.rand() * 1.6;     // cam lope at idle
+    // no two combustions are alike, least of all at idle; big cams lope more
+    const lump = 1 + (0.32 + s.rough * 1.4) * idleness * this.rand();
     // Off throttle the engine still fires at idle (it has to, to keep running)
     // but only pumps when the car's momentum spins it faster: engine braking.
-    const offAmp = 0.42 * idleness + 0.13 * (1 - idleness);
+    const offAmp = 0.33 * idleness + 0.13 * (1 - idleness);
     let amp = load > 0.04 ? (0.42 + 0.58 * load) * lump : offAmp * lump;
     bank.env = Math.max(bank.env, amp);
     bank.ph = 0;                       // each firing starts its thump afresh
+    if (Math.random() < 0.6) this.tick = Math.max(this.tick, 0.05 + Math.random() * 0.04);   // valvetrain
   }
 
   /**
@@ -171,14 +177,23 @@ class EngineProcessor extends AudioWorkletProcessor {
     const load = Math.max(0, Math.min(1, parameters.load[0]));
     const boost = Math.max(0, Math.min(1, parameters.boost[0]));
     const sr = this.sr;
-    const degPerSample = 6 * rpm / sr;
     const revs = Math.min(1, rpm / s.redline);
-    // pulse length shortens at high rpm (less time between firings)
-    const pulseDecay = Math.exp(-1 / (sr * (s.pulseMs / 1000) * (1.25 - 0.55 * revs)));
+    const idleness = Math.max(0, 1 - (rpm - s.idle) / (s.idle * 2.5)) * (1 - load);
+    // the crank never turns perfectly steadily at idle: a slow random wander
+    // of a few percent (more with a lumpy cam) breaks up the machine-like hum
+    if (Math.random() < 0.02) this.wobbleTarget = this.rand() * (0.025 + s.rough * 0.05);
+    this.wobble += (this.wobbleTarget * idleness - this.wobble) * 0.05;
+    const degPerSample = 6 * rpm * (1 + this.wobble) / sr;
+    // pulse length shortens at high rpm (less time between firings) and is
+    // long and soft at idle: puffs, not clicks
+    const pulseDecay = Math.exp(-1 / (sr * (s.pulseMs / 1000) * (1.25 - 0.55 * revs) * (1 + idleness * 1.4)));
+    // exhaust pipes ring less at idle (the steady ring reads as a hum)
+    const fbNow = s.fb * (0.55 + 0.45 * Math.min(1, load + revs * 1.5));
+    for (const bank of this.bankList) bank.fb = fbNow;
     const thumpW = TWO_PI * s.thumpHz / sr;
     const vtec = s.vtecRpm && rpm > s.vtecRpm ? 1 : 0;
     // muffler opens with load and revs (and VTEC's second cam)
-    const cut = Math.min(3800, s.muffler + (s.mufflerOpen - s.muffler) * Math.min(1, load * 0.7 + revs * 0.5 + vtec * 0.3));
+    const cut = Math.min(3800, s.muffler * (1 - 0.45 * idleness) + (s.mufflerOpen - s.muffler) * Math.min(1, load * 0.7 + revs * 0.5 + vtec * 0.3));
     const mufA = 1 - Math.exp(-TWO_PI * cut / sr);
     const intakeAmt = s.intake * load * (0.3 + 0.7 * revs) * (1 + vtec * 1.2);
     // turbo spools with boost demand and revs; whistle rises with spool
@@ -255,6 +270,12 @@ class EngineProcessor extends AudioWorkletProcessor {
       this.dcPrev = y;
       this.dc = hp;
       y = hp + boom;
+      // valvetrain tick: a faint bright click, heard mainly at idle
+      if (this.tick > 0.0005) {
+        this.tickLp += (this.rand() - this.tickLp) * 0.5;
+        y += this.tickLp * this.tick * idleness;
+        this.tick *= 0.92;
+      }
       // intake roar: band-limited noise
       if (intakeAmt > 0) {
         const n = this.rand();
