@@ -39,12 +39,17 @@ const SpeedBlurShader = {
       float car = smoothstep(0.32, 0.55, length(c));
       float amount = strength * edge * car;
       if (amount < 0.002) { gl_FragColor = src; return; }
-      vec2 stepUv = toFocus * amount * 0.085 / 9.0;
+      // 14 taps, each pixel's set offset by a per-pixel jitter (interleaved
+      // gradient noise) so the samples blend into one continuous streak; a
+      // few widely spaced taps read as ghost copies, which looked like lag.
+      float jitter = fract(52.9829189 * fract(dot(gl_FragCoord.xy, vec2(0.06711056, 0.00583715))));
+      vec2 stepUv = toFocus * amount * 0.06 / 14.0;
       vec3 sum = src.rgb;
       float w = 1.0;
-      for (int i = 1; i <= 9; i++) {
-        float fi = float(i);
-        float wi = 1.0 - fi / 11.0;
+      for (int i = 1; i <= 14; i++) {
+        float fi = float(i) - jitter;
+        float wi = 1.0 - fi / 15.0;
+        wi *= wi;                                   // most weight near the pixel
         sum += texture2D(tDiffuse, vUv + stepUv * fi).rgb * wi;
         w += wi;
       }

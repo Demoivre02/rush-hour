@@ -127,8 +127,8 @@ export class QualityController {
 
   /**
    * Dynamic resolution, once a second: below ~55 fps the render scale steps
-   * down 8%; after four comfortable seconds (above ~70 fps) it creeps back up
-   * 4%. Small, rare steps: each one reallocates the render targets.
+   * down 8%; after six comfortable seconds (above ~70 fps), and not within
+   * 20 s of a step down, it creeps back up 4%.
    */
   _dynamicResolution(rawDt) {
     if (!Number.isFinite(rawDt) || rawDt <= 0 || rawDt > 0.25) return;
@@ -157,11 +157,18 @@ export class QualityController {
     }
     this._drsSlow = frameMs > 18.2 ? this._drsSlow + 1 : 0;
     this._drsFast = frameMs < 14.2 ? this._drsFast + 1 : 0;
+    // Every change reallocates the render targets (a one-frame hitch), so the
+    // scale settles: no step up within 20 s of a step down, and a step up
+    // needs six comfortable seconds in a row.
+    if (this._drsUpBlock > 0) this._drsUpBlock -= 1;
     let next = this.renderScale;
     if (this._drsSlow >= 1) next = Math.max(0.6, this.renderScale - 0.08);
-    else if (this._drsFast >= 4) next = Math.min(1, this.renderScale + 0.04);
+    else if (this._drsFast >= 6 && !(this._drsUpBlock > 0)) next = Math.min(1, this.renderScale + 0.04);
     if (Math.abs(next - this.renderScale) > 0.001) {
-      if (next < this.renderScale) this._drsProbe = { from: this.renderScale, before: frameMs };
+      if (next < this.renderScale) {
+        this._drsProbe = { from: this.renderScale, before: frameMs };
+        this._drsUpBlock = 20;                      // seconds (one tick per window)
+      }
       this.renderScale = next;
       this._drsSlow = 0;
       this._drsFast = 0;
