@@ -504,6 +504,7 @@ export class RaceSession {
     this.crashEvents = [];   // impacts for the sparks/debris bursts; main.js drains it
     // civilian traffic on the city venues (arcade races only; not Drift, which
     // needs the road clear)
+    this._aggressorsPending = this.arcade && this.mode === 'race';
     this.traffic = this.arcade && this.mode === 'race' && this.event.id !== 'drift' &&
       cityStyleFor(this.circuit?.id) && opts.traffic !== false
       ? new Traffic(this.circuit, { count: 10, random: this.random })
@@ -945,7 +946,10 @@ export class RaceSession {
 
     // ---- step cars ----
     const liveDrive = this.phase === 'racing' || this.phase === 'finished' || this.phase === 'formation';
-    const allPhys = this.entries.map(x => x.phys);
+    // traffic joins the AI's picture of the road (it is overtaken like any slow car)
+    const allPhys = this.traffic
+      ? [...this.entries.map(x => x.phys), ...this.traffic.proxies()]
+      : this.entries.map(x => x.phys);
     let formationCompleteAfterStep = false;
     for (const e of this.entries) {
       if (e.dnf) continue;
@@ -1813,6 +1817,11 @@ export class RaceSession {
   _arcadeEvents(dt) {
     const p = this.player;
     if (!p || p.dnf || p.finished) return;
+    if (this._aggressorsPending) {
+      // about a quarter of the field races dirty: they try to take you down
+      this._aggressorsPending = false;
+      for (const e of this.entries) if (e.ai && this.random() < 0.25) e.ai.aggressive = true;
+    }
     const pp = p.phys;
     const N = this.circuit.N;
     const progress = (e) => (Math.max(0, e.lap) * N + e.phys.sampleIdx) * this.circuit.ds;
@@ -1940,8 +1949,16 @@ export class RaceSession {
 
       const newImpact = !impactingBefore.has(key);
       if (newImpact && this.arcade && closing > 7 && (A.isPlayer || B.isPlayer)) {
-        const victim = A.isPlayer ? B : A;
-        if (!victim.isPlayer && !victim.wreckT) this._takedown(victim);
+        const player = A.isPlayer ? A : B;
+        const rival = A.isPlayer ? B : A;
+        // An aggressive rival ramming you as the faster car takes YOU down
+        // (unless you are on nitro); otherwise the rival is the one wrecked.
+        if (rival.ai?.aggressive && rival.phys.v > player.phys.v + 3 && !player.phys.boosting
+            && !player.wreckT && this.phase === 'racing') {
+          this._wreck(player);
+          this.playerWrecks = (this.playerWrecks || 0) + 1;
+          this.onMessage(`TAKEN DOWN BY ${rival.driver?.code || 'A RIVAL'}`, 'red');
+        } else if (!rival.wreckT) this._takedown(rival);
       }
       if (newImpact) {
         impactingNow.add(key);

@@ -162,7 +162,7 @@ export class AIDriver {
     const straight = Math.abs(c.line[idx].curv) < 1 / 650;
 
     // ---- avoidance / overtaking / defending / battle awareness ----
-    let targetAvoid = 0, avoidDist = 1e9, chase = null, chaseDist = 1e9;
+    let targetAvoid = 0, avoidDist = 1e9, chase = null, chaseDist = 1e9, avoidingTraffic = false;
     let follow = null, followDist = 1e9;
     let brakeLead = null, brakeLeadDist = 1e9;
     let attacker = null, attackerDist = 1e9, nearestGapT = 1e9;
@@ -195,7 +195,10 @@ export class AIDriver {
       if (dAhead < -5.8 && dAhead > -22 && o.v > car.v + 0.5 && Math.abs(o.lat - car.lat) < 4.5) {
         if (absD < attackerDist) { attackerDist = absD; attacker = o; }
       }
-      if (dAhead < -4 || dAhead > 42) continue;
+      // slow traffic is seen from further out: at 200+ km/h a 30 m warning is
+      // under a second, too late to change lanes
+      const reach = o.isTraffic ? Math.max(30, car.v * 1.6) : 30;
+      if (dAhead < -4 || dAhead > Math.max(42, reach)) continue;
       const latDiff = o.lat - car.lat;
       if (dAhead < chaseDist && dAhead > 0.35) { chaseDist = dAhead; chase = o; }
       if (dAhead < followDist && dAhead > 0.35 && Math.abs(latDiff) < 2.55) {
@@ -207,17 +210,36 @@ export class AIDriver {
         brakeLead = o;
       }
       // under the VSC nobody may improve position: no avoidance-based passes
-      if (!this.noOvertake && Math.abs(latDiff) < 3.6 && dAhead > 0 && dAhead < 30 &&
-          dAhead < avoidDist && o.v < car.v + 4) {
+      if (!this.noOvertake && Math.abs(latDiff) < 3.6 && dAhead > 0 &&
+          dAhead < reach && dAhead < avoidDist && o.v < car.v + 4) {
         const room = c.halfWidth - 1.8;
         const side = o.lat > 0 ? -1 : 1;
-        targetAvoid = Math.max(-room, Math.min(room, o.lat + side * 3.7)) - lineLat(c, li);
+        // traffic gets a wider berth: it does not move over for you
+        targetAvoid = Math.max(-room, Math.min(room, o.lat + side * (o.isTraffic ? 4.4 : 3.7))) - lineLat(c, li);
         avoidDist = dAhead;
+        avoidingTraffic = !!o.isTraffic;
+      }
+    }
+    // Arcade aggressors (race.js marks about a quarter of the field) steer at
+    // the player when close alongside or just ahead, trying a takedown.
+    if (this.aggressive && !this.noOvertake && !avoidingTraffic) {
+      for (const o of others) {
+        if (!o.isPlayer || o.disabled) continue;
+        let ahead = o.sampleIdx - idx;
+        if (ahead > N / 2) ahead -= N;
+        if (ahead < -N / 2) ahead += N;
+        const dAhead = ahead * ds;
+        if (dAhead > -3 && dAhead < 14 && Math.abs(o.lat - car.lat) < 5 && car.v > 25) {
+          const room = c.halfWidth - 1.2;
+          targetAvoid = Math.max(-room, Math.min(room, o.lat)) - lineLat(c, li);
+          avoidDist = Math.max(0.5, dAhead);
+        }
+        break;
       }
     }
     // Turn into a pass promptly, then blend back more gently. The physical
     // lateral separation (not this target) controls headway release below.
-    const avoidRate = targetAvoid !== 0 ? 3.4 : 2.6;
+    const avoidRate = avoidingTraffic ? 7 : targetAvoid !== 0 ? 3.4 : 2.6;
     this.avoidOffset += (targetAvoid - this.avoidOffset) * Math.min(1, dt * avoidRate);
 
     // ---- defending: one legal line change per straight ----

@@ -33,6 +33,9 @@ export class Traffic {
         x: 0, y: 0, z: 0, heading: 0,
         px: 0, py: 0, pz: 0, pheading: 0,
       };
+      // What the AI drivers see (the fields js/ai.js reads from another car),
+      // so they overtake traffic, or queue behind it, like any slower car.
+      car.proxy = { isTraffic: true, pos: { x: 0, z: 0 }, sampleIdx: 0, lat: car.lane, v: car.v, disabled: false };
       this._place(car);
       this._snapPrev(car);
       this.cars.push(car);
@@ -53,6 +56,19 @@ export class Traffic {
     car.z = pz + a.n.z * car.lane;
     car.y = this.circuit.heightAt?.(i) ?? 0;
     car.heading = Math.atan2(a.t.x + (b.t.x - a.t.x) * u, a.t.z + (b.t.z - a.t.z) * u);
+    if (car.proxy) {
+      car.proxy.pos.x = car.x;
+      car.proxy.pos.z = car.z;
+      car.proxy.sampleIdx = Math.floor(i) % this.circuit.N;
+      car.proxy.lat = car.lane;
+      car.proxy.v = car.v;
+      car.proxy.disabled = car.hit > 0;
+    }
+  }
+
+  /** The AI-visible stand-ins for the cars still on the road. */
+  proxies() {
+    return this.cars.filter((c) => c.hit <= 0).map((c) => c.proxy);
   }
 
   _snapPrev(car) {
@@ -114,6 +130,7 @@ export class Traffic {
         const hx = Math.sin(p.heading), hz = Math.cos(p.heading);
         const side = this.random() < 0.5 ? -1 : 1;
         car.hit = KNOCK_S;
+        car.proxy.disabled = true;
         car.kx = hx * p.v * 0.85 + hz * side * 5;
         car.kz = hz * p.v * 0.85 - hx * side * 5;
         car.spinRate = side * (3 + this.random() * 4);
