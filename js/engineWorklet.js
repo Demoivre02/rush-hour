@@ -68,6 +68,7 @@ class EngineProcessor extends AudioWorkletProcessor {
     this.dc = 0;
     this.dcPrev = 0;
     this.intakeLp = 0;
+    this.outLp = 0;
     this.pulseNoise = 0;
     this.intakeBp = 0;
     this.whinePhase = 0;
@@ -177,7 +178,7 @@ class EngineProcessor extends AudioWorkletProcessor {
     const thumpW = TWO_PI * s.thumpHz / sr;
     const vtec = s.vtecRpm && rpm > s.vtecRpm ? 1 : 0;
     // muffler opens with load and revs (and VTEC's second cam)
-    const cut = Math.min(5200, s.muffler + (s.mufflerOpen - s.muffler) * Math.min(1, load * 0.7 + revs * 0.5 + vtec * 0.3));
+    const cut = Math.min(3800, s.muffler + (s.mufflerOpen - s.muffler) * Math.min(1, load * 0.7 + revs * 0.5 + vtec * 0.3));
     const mufA = 1 - Math.exp(-TWO_PI * cut / sr);
     const intakeAmt = s.intake * load * (0.3 + 0.7 * revs) * (1 + vtec * 1.2);
     // turbo spools with boost demand and revs; whistle rises with spool
@@ -224,11 +225,11 @@ class EngineProcessor extends AudioWorkletProcessor {
       // exhaust banks
       let ex = 0;
       // texture noise for the pulses, low-passed (a pressure wave, not hiss)
-      this.pulseNoise += (this.rand() - this.pulseNoise) * 0.18;
+      this.pulseNoise += (this.rand() - this.pulseNoise) * 0.06;     // ~460 Hz: grit, not hiss
       for (const bank of this.bankList) {
         // a pressure bump (the decaying envelope itself), a little textured
         // noise, and the low combustion thump
-        const pulse = bank.env * (0.75 + s.noise * 0.6 * this.pulseNoise) + bank.env * 0.35 * Math.sin(bank.ph);
+        const pulse = bank.env * (0.8 + s.noise * 0.35 * this.pulseNoise) + bank.env * 0.35 * Math.sin(bank.ph);
         bank.ph += thumpW;
         bank.env *= pulseDecay;
         ex += bank.step(pulse);
@@ -257,9 +258,10 @@ class EngineProcessor extends AudioWorkletProcessor {
       // intake roar: band-limited noise
       if (intakeAmt > 0) {
         const n = this.rand();
-        this.intakeLp += (n - this.intakeLp) * 0.25;
-        this.intakeBp += (this.intakeLp - this.intakeBp) * 0.05;
-        y += (this.intakeLp - this.intakeBp) * intakeAmt * cutGain;
+        // intake roar is a low rush (~100-650 Hz), not a hiss
+        this.intakeLp += (n - this.intakeLp) * 0.08;
+        this.intakeBp += (this.intakeLp - this.intakeBp) * 0.013;
+        y += (this.intakeLp - this.intakeBp) * intakeAmt * 0.9 * cutGain;
       }
       // supercharger whine and turbo whistle
       if (s.whine) {
@@ -276,8 +278,11 @@ class EngineProcessor extends AudioWorkletProcessor {
         if (this.turboPhase > TWO_PI) this.turboPhase -= TWO_PI;
         y += Math.sin(this.turboPhase) * s.turbo * this.spool * 0.05;
       }
-      // soft clip: the exhaust's growl at full load
-      L[i] = Math.tanh(y * s.drive) * level;
+      // soft clip: the exhaust's growl at full load; then a gentle low-pass
+      // (~7 kHz) so no fizz rides on top of the note
+      const clipped = Math.tanh(y * s.drive) * level;
+      this.outLp += (clipped - this.outLp) * 0.6;
+      L[i] = this.outLp;
     }
     for (let c = 1; c < out.length; c++) out[c].set(L);
     return true;
