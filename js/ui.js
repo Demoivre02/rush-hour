@@ -822,6 +822,49 @@ export class UI {
     this._enter(el);
   }
 
+  // ============ CREDITS ============
+  // Attribution the asset licences ask for: every car model's author, licence
+  // and source (assets/cars/credits.json, from tools/car-credits.mjs), the
+  // music, and the other third-party assets.
+  async showCredits(returnTo = 'main') {
+    let cars = {};
+    try { cars = await (await fetch('assets/cars/credits.json')).json(); } catch { /* none */ }
+    // only the models this build actually races (the public build has fewer)
+    const D = await this.loadDisciplines();
+    const shown = new Set(['street', 'gt', 'hypercar'].flatMap((d) => D.carsForDiscipline(d)).map((c) => c.modelFile).filter(Boolean));
+    const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const link = (url, text) => (url ? `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(text)}</a>` : esc(text));
+    const carRows = Object.entries(cars).filter(([f, c]) => c.publish && shown.has(f)).map(([, c]) =>
+      `<li>${link(c.source, c.title || 'Car model')} by ${link(c.authorUrl, c.author || 'unknown')} · ${link(c.licenseUrl, c.license)}</li>`).join('');
+    const other = [
+      ['Music: "Synth Wave"', 'Pro Sensory (Alex McCulloch)', 'https://opengameart.org/content/synth-wave', 'CC0'],
+      ['Music: "Diamond Race"', 'iamoneabe', 'https://opengameart.org/node/150386', 'CC0'],
+      ['Music: "Drum and bass"', 'bertsz', 'https://opengameart.org/content/drum-and-bass', 'CC0'],
+      ['Music: "synthwave_type"', 'G_P', 'https://opengameart.org/content/synthwavetype', 'CC0'],
+      ['City Kit (Commercial, Suburban), Mini Characters', 'Kenney', 'https://kenney.nl', 'CC0'],
+      ['Road, gravel and grass scans', 'Poly Haven, ambientCG', 'https://polyhaven.com', 'CC0'],
+      ['three.js', 'the three.js authors', 'https://threejs.org', 'MIT'],
+      ['Based on APEX FORMULA 2026', 'Avi Hacker', 'https://github.com/ahacker-1/apex-formula-2026', 'Apache-2.0'],
+    ].map(([what, who, url, lic]) => `<li>${link(url, what)} by ${esc(who)} · ${esc(lic)}</li>`).join('');
+    this.hideAll();
+    const el = this.screens.settings;
+    el.className = 'screen active menu-screen';
+    el.innerHTML = `
+      ${header('CREDITS')}
+      <div class="menu-body credits">
+        <h3>Car models</h3>
+        <p class="credits-note">Creative Commons licensed models from Sketchfab, optimised for the game
+          (the NC/SA models: free, non-commercial use; adaptations shared under the same licence).
+          Car names and brands belong to their owners; this is an unofficial fan project.</p>
+        <ul>${carRows || '<li>None in this build.</li>'}</ul>
+        <h3>Music and assets</h3>
+        <ul>${other}</ul>
+        <div class="btn-row"><button class="f1-btn ghost" id="btn-back"><span>← BACK</span></button></div>
+      </div>`;
+    el.querySelector('#btn-back').addEventListener('click', () => this.showSettings(returnTo));
+    this._enter(el);
+  }
+
   // ---- personal records: best lap per venue, saved in the browser ----
   _records() {
     try { return JSON.parse(localStorage.getItem('rushhour_records_v1') || '{}') || {}; } catch { return {}; }
@@ -983,6 +1026,7 @@ export class UI {
       </div>
       <div class="btn-row">
         <button class="f1-btn ghost" id="btn-back"><span>← BACK</span></button>
+        <button class="f1-btn ghost" id="btn-credits"><span>CREDITS</span></button>
         <button class="f1-btn ghost danger" id="btn-reset"><span>RESET TO DEFAULTS</span></button>
       </div>
       </div>
@@ -1012,6 +1056,7 @@ export class UI {
       });
     });
     el.querySelector('#btn-back').addEventListener('click', () => this.cb('back', returnTo));
+    el.querySelector('#btn-credits').addEventListener('click', () => this.showCredits(returnTo));
     el.querySelector('#btn-reset').addEventListener('click', () => {
       this.settings = { ...DEFAULT_SETTINGS };
       this.saveSettings();

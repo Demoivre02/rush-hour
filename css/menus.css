@@ -758,3 +758,7 @@
 .record-banner b { font-family: ui-monospace, monospace; font-size: 20px; margin-left: 8px; }
 .record-banner i { color: #7cdc1e; margin-left: 8px; font-style: normal; }
 .career-reward .cr-rival { color: #ff8a1a; font-weight: 900; letter-spacing: .06em; }
+.credits h3 { margin: 18px 0 6px; font-style: italic; letter-spacing: .06em; }
+.credits ul { margin: 0; padding-left: 18px; line-height: 1.7; font-size: 13px; opacity: .9; }
+.credits a { color: #2ec8ff; }
+.credits-note { font-size: 12px; opacity: .7; max-width: 900px; }

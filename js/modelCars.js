@@ -33,6 +33,10 @@ import * as THREE from 'three';
 // assets/cars/local-only/ is git-ignored and stripped from the public build:
 // models there are licensed for in-house use only.
 const LOCAL = 'assets/cars/local-only/';
+// The public build (tools/make-public-build.sh) replaces this with the files
+// whose licence allows publishing (assets/cars/credits.json); the others stay
+// in-house and are left out of the roster there. null = every model (local).
+const PUBLIC_CARS = null;
 
 // Which cars wear which models. When several models match a car, it gets one
 // by a stable hash of its id, so a grid mixes them and a car keeps the same
@@ -222,6 +226,7 @@ export function modelRoster(rosterCars, { race = false } = {}) {
   const out = [];
   for (const [id, spec] of Object.entries(MODEL_CARS)) {
     if (!!spec.race !== race) continue;
+    if (PUBLIC_CARS && !PUBLIC_CARS.includes(spec.file)) continue;
     const candidates = rosterCars.filter((car) => spec.match(car));
     if (!candidates.length) continue;
     const base = candidates.find((car) => !used.has(car.id)) || candidates[0];
@@ -237,6 +242,7 @@ export function modelRoster(rosterCars, { race = false } = {}) {
       soundFamily: soundFamilyFor(spec) || base.soundFamily,
       name: `${spec.make} ${spec.model}`,
       modelId: id,
+      modelFile: spec.file,
       thumb: `${LOCAL}thumbs/${id}.png`,
       lengthM: spec.lengthM,
       widthM: spec.widthM || null,
