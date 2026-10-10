@@ -2645,6 +2645,7 @@ class Game {
           this.state = 'results';
           this.ui.eventOutcome = eventOutcome(s);
           this.ui.careerReward = this.raceConfig.career ? this.careerPayout(s, results) : null;
+          this.ui.recordBestLap?.(this.raceConfig.race.trackId, s.player);
           this.ui.showResults(results, s.fastestLap, this.raceConfig.race, 'race', !!this.raceConfig.champRound);
         }, 900);
       }

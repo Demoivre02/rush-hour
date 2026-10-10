@@ -822,6 +822,25 @@ export class UI {
     this._enter(el);
   }
 
+  // ---- personal records: best lap per venue, saved in the browser ----
+  _records() {
+    try { return JSON.parse(localStorage.getItem('rushhour_records_v1') || '{}') || {}; } catch { return {}; }
+  }
+
+  /** After a race: keep the player's best lap at this venue if it is a record. */
+  recordBestLap(trackId, player) {
+    const lap = player?.bestLap;
+    if (!trackId || !(lap > 0)) return false;
+    const all = this._records();
+    const prev = all[trackId]?.lap;
+    if (prev && prev <= lap) return false;
+    const car = player.rosterCar?.name || player.rosterCar?.model || player.team?.name || '';
+    all[trackId] = { lap, car, at: Date.now() };
+    try { localStorage.setItem('rushhour_records_v1', JSON.stringify(all)); } catch { /* private mode */ }
+    this.newRecord = { trackId, lap, prev: prev || null };
+    return true;
+  }
+
   showTrackSelect(champ = null) {
     this.hideAll();
     const el = this.screens.track;
@@ -864,6 +883,7 @@ export class UI {
       });
     }
     const grid = el.querySelector('#track-grid');
+    const records = this._records();
     let nextCard = null;
     for (const race of rounds) {
       const t = TRACKS[race.trackId];
@@ -887,6 +907,7 @@ export class UI {
             <span class="tstat"><b>${cornerCount(t.points)}</b><i>CORNERS</i></span>
           </div>
           <div class="meta"><span>${race.date ? race.date.slice(5).replace('-', '/') : (TRACKS[race.trackId]?.location || '')}</span><span class="track-badges">${trackBadges(race.trackId)}</span></div>
+          ${records[race.trackId] ? `<div class="track-record" title="Your best lap here">★ BEST LAP <b>${fmtTime(records[race.trackId].lap)}</b>${records[race.trackId].car ? ` · ${records[race.trackId].car}` : ''}</div>` : ''}
         </div>`;
       grid.appendChild(card);
       drawTrackPreview(card.querySelector('canvas'), t.points);
@@ -1152,11 +1173,14 @@ export class UI {
     this.eventOutcome = null;
     const reward = this.careerReward;          // set by main.js for career events
     this.careerReward = null;
+    const record = this.newRecord?.trackId === race?.trackId ? this.newRecord : null;
+    this.newRecord = null;
     el.innerHTML = `
       ${header('RACE <small>CLASSIFICATION</small>')}
       <div class="menu-body">
         ${outcome ? `<div class="event-outcome ${outcome.success ? 'win' : 'lose'}">
           <b>${outcome.label}</b><span>${outcome.success ? 'SUCCESS' : 'FAILED'}</span><i>${outcome.detail}</i></div>` : ''}
+        ${record ? `<div class="record-banner">★ NEW BEST LAP <b>${fmtTime(record.lap)}</b>${record.prev ? ` <i>−${(record.prev - record.lap).toFixed(3)}s</i>` : ''}</div>` : ''}
         ${reward ? `<div class="career-reward">
           <b>${reward.title}</b>
           <span class="cr-stars">${[1, 2, 3].map((n) => `<i class="${n <= reward.stars ? 'on' : ''}">★</i>`).join('')}</span>

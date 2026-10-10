@@ -751,3 +751,9 @@
 .career-daily .cd-reward { grid-column: 2; grid-row: 2 / span 2; align-self: center; color: #ffcf3a; font-weight: 900; font-style: italic; }
 .career-daily.done { opacity: .6; border-color: rgba(124,220,30,.5); }
 .career-daily.done .cd-reward { color: #7cdc1e; }
+.track-record { margin-top: 6px; font-size: 11px; letter-spacing: .06em; color: #ffcf3a; }
+.track-record b { font-family: ui-monospace, monospace; }
+.record-banner { margin: 0 0 12px; padding: 10px 16px; border-left: 4px solid #ffcf3a; background: rgba(255,207,58,.1);
+  border-radius: 4px; font-style: italic; font-weight: 800; letter-spacing: .06em; }
+.record-banner b { font-family: ui-monospace, monospace; font-size: 20px; margin-left: 8px; }
+.record-banner i { color: #7cdc1e; margin-left: 8px; font-style: normal; }
