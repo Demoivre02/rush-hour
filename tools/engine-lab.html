@@ -30,10 +30,30 @@
   <button id="limiter">Hold on the limiter</button>
   <button id="stop">Stop</button>
 </div>
+<p style="margin-top:18px">Effects (the game's own sound system):</p>
+<div class="row act" id="fx">
+  <button data-fx="takedown">Takedown</button>
+  <button data-fx="crashHeavy">Crash</button>
+  <button data-fx="crashMedium">Medium hit</button>
+  <button data-fx="crashLight">Knock</button>
+  <button data-fx="traffic">Traffic hit</button>
+  <button data-fx="nitroOn">Nitro</button>
+  <button data-fx="hornA">Horn</button>
+  <button data-fx="blowoff">Blow-off</button>
+  <button data-fx="backfire">Pop</button>
+</div>
 <div class="row"><label>RPM <input id="rpm" type="range" min="0" max="1" step="0.001" value="0"><span class="read" id="rpmRead"></span></label></div>
 <div class="row"><label>Throttle <input id="load" type="range" min="0" max="1" step="0.01" value="0"><span class="read" id="loadRead"></span></label></div>
 <script type="module">
-import { ENGINE_CARS, engineSpecFor } from '../js/gameAudio.js';
+import { ENGINE_CARS, engineSpecFor, GameAudio } from '../js/gameAudio.js';
+let fx = null;
+document.getElementById('fx').onclick = async (e) => {
+  const name = e.target.dataset?.fx;
+  if (!name) return;
+  if (!fx) { fx = new GameAudio(); fx.assetBase = '../'; fx._packBase = '../assets/racing-pack/audio/'; fx.init(); await fx.loadArcadeSfx(); }
+  if (name === 'traffic') fx.trafficHit(false);
+  else { fx._cool = {}; fx._play(name); }
+};
 let ctx = null, node = null, gain = null, spec = engineSpecFor(ENGINE_CARS[0], ''), anim = null;
 const $ = (id) => document.getElementById(id);
 const carsEl = $('cars');

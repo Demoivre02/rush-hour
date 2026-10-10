@@ -40,10 +40,11 @@ const BANDS = ['idle', 'low', 'mid', 'high', 'redline'];
 const v3 = (name) => [0, 1, 2].map((i) => `k:${name}_00${i}`);
 const SFX = Object.freeze({
   nitroOn: { layers: [['g:nitroOn']], gain: 0.5, cool: 0.6 },
-  takedown: { layers: [v3('impactMetal_heavy'), v3('impactGlass_heavy'), v3('impactPunch_heavy')], gain: 0.75, cool: 0.3 },
-  crashHeavy: { layers: [v3('impactMetal_heavy'), v3('impactPlate_heavy')], gain: 0.62, cool: 0.35 },
-  crashMedium: { layers: [v3('impactMetal_medium'), v3('impactGlass_medium')], gain: 0.5, cool: 0.25 },
-  crashLight: { layers: [v3('impactMetal_light')], gain: 0.42, cool: 0.18 },
+  // crashes are synthesized crunches (the metal-impact recordings rang like bells)
+  takedown: { layers: [['g:crunch1', 'g:crunch2', 'g:crunch3'], ['g:shatter1', 'g:shatter2'], v3('impactPunch_heavy')], gain: 0.85, cool: 0.3 },
+  crashHeavy: { layers: [['g:crunch1', 'g:crunch2', 'g:crunch3'], v3('impactPunch_heavy')], gain: 0.75, cool: 0.35 },
+  crashMedium: { layers: [['g:crunchMed1', 'g:crunchMed2', 'g:crunchMed3']], gain: 0.6, cool: 0.25 },
+  crashLight: { layers: [['g:bump1', 'g:bump2']], gain: 0.5, cool: 0.18 },
   blowoff: { layers: [['g:blowoff']], gain: 0.3, cool: 1.2 },
   backfire: { layers: [['g:pop1', 'g:pop2']], gain: 0.36, cool: 0.35 },
   hornA: { layers: [['g:hornA']], gain: 0.26, cool: 1.5 },
@@ -62,81 +63,123 @@ const LOOPS = Object.freeze({ nitro: 'g:nitroLoop', screech: 'g:screech', scrape
 // ---- synthesized effects ------------------------------------------------------
 // Rendered once into buffers when audio starts: small, licence-free, and
 // shaped for this game rather than borrowed.
-function synthEffects(ctx) {
+export function* synthEffects(ctx) {
   const sr = ctx.sampleRate;
   let seed = 12345;
   const rnd = () => { seed ^= seed << 13; seed ^= seed >>> 17; seed ^= seed << 5; return ((seed >>> 0) / 4294967296) * 2 - 1; };
-  const make = (secs, fn) => {
-    const n = Math.round(secs * sr);
-    const buf = ctx.createBuffer(1, n, sr);
-    const d = buf.getChannelData(0);
-    const st = {};
-    for (let i = 0; i < n; i++) d[i] = fn(i / sr, i, st, n);
-    // normalise to a sane peak
+  // filters as small closures with their own state (fast in a tight loop)
+  const BP = () => {
+    let x1 = 0, x2 = 0, y1 = 0, y2 = 0, lf = -1, b0 = 0, a1 = 0, a2 = 0;
+    return (x, f, q) => {
+      if (f !== lf) {
+        lf = f;
+        const w = 2 * Math.PI * f / sr, al = Math.sin(w) / (2 * q), c = Math.cos(w);
+        b0 = al / (1 + al); a1 = -2 * c / (1 + al); a2 = (1 - al) / (1 + al);
+      }
+      const y = b0 * x - b0 * x2 - a1 * y1 - a2 * y2;
+      x2 = x1; x1 = x; y2 = y1; y1 = y;
+      return y;
+    };
+  };
+  const LP = (f) => { const a = 1 - Math.exp(-2 * Math.PI * f / sr); let y = 0; return (x) => (y += (x - y) * a); };
+  const finish = (d) => {
     let peak = 0;
-    for (let i = 0; i < n; i++) peak = Math.max(peak, Math.abs(d[i]));
-    if (peak > 0) for (let i = 0; i < n; i++) d[i] *= 0.85 / peak;
+    for (let i = 0; i < d.length; i++) peak = Math.max(peak, Math.abs(d[i]));
+    if (peak > 0) for (let i = 0; i < d.length; i++) d[i] *= 0.85 / peak;
+    const buf = ctx.createBuffer(1, d.length, sr);
+    buf.getChannelData(0).set(d);
     return buf;
   };
-  // a two-pole resonant band-pass, per call state in `st`
-  const bp = (st, k, x, f, q) => {
-    const w = 2 * Math.PI * f / sr, a = Math.sin(w) / (2 * q), c = Math.cos(w);
-    const b0 = a / (1 + a), a1 = -2 * c / (1 + a), a2 = (1 - a) / (1 + a);
-    const z1 = st[k + '1'] || 0, z2 = st[k + '2'] || 0, y1 = st[k + 'y1'] || 0, y2 = st[k + 'y2'] || 0;
-    const y = b0 * x - b0 * z2 - a1 * y1 - a2 * y2;
-    st[k + '2'] = z1; st[k + '1'] = x; st[k + 'y2'] = y1; st[k + 'y1'] = y;
-    return y;
+  const make = (secs, fn) => {
+    const n = Math.round(secs * sr), d = new Float32Array(n);
+    for (let i = 0; i < n; i++) d[i] = fn(i / sr, i);
+    return finish(d);
   };
-  const lp = (st, k, x, f) => { const a = 1 - Math.exp(-2 * Math.PI * f / sr); st[k] = (st[k] || 0) + (x - (st[k] || 0)) * a; return st[k]; };
-  const loopFade = (t, n, secs) => Math.min(1, t / 0.05, (secs - t) / 0.05);   // soft ends so loops do not click
-  const out = {};
-  // tyre squeal: rubber stick-slip, a resonant band of noise that wanders in pitch
-  out.screech = make(2, (t, i, st) => {
-    const f = 1500 + 260 * Math.sin(t * 2 * Math.PI * 3.1) + 120 * Math.sin(t * 2 * Math.PI * 7.7);
-    return (bp(st, 'a', rnd(), f, 14) * 0.9 + bp(st, 'b', rnd(), f * 2.03, 18) * 0.35) * loopFade(t, 0, 2);
-  });
+  const ends = (t, secs) => Math.min(1, t / 0.05, (secs - t) / 0.05);   // soft ends so loops do not click
+  // tyre squeal: rubber stick-slip, a resonant band of noise wandering in pitch
+  { const a = BP(), b = BP();
+    yield ['screech', make(2, (t) => {
+      const f = Math.round(1500 + 260 * Math.sin(t * 2 * Math.PI * 3.1) + 120 * Math.sin(t * 2 * Math.PI * 7.7));
+      return (a(rnd(), f, 14) * 0.9 + b(rnd(), f * 2, 18) * 0.35) * ends(t, 2);
+    })]; }
   // nitro: rushing gas, low roar plus hiss, with a slight flutter
-  out.nitroLoop = make(2, (t, i, st) => {
-    const flutter = 0.85 + 0.15 * Math.sin(t * 2 * Math.PI * 9);
-    return (lp(st, 'l', rnd(), 700) * 1.6 + bp(st, 'h', rnd(), 4200, 0.8) * 0.5) * flutter * loopFade(t, 0, 2);
-  });
-  out.nitroOn = make(0.9, (t, i, st) => {
-    const env = Math.min(1, t / 0.06) * Math.exp(-t * 3.2);
-    const f = 300 + 3000 * Math.min(1, t / 0.5);
-    return (bp(st, 's', rnd(), f, 1.4) * 1.2 + lp(st, 'l', rnd(), 500)) * env;
-  });
+  { const l = LP(700), h = BP();
+    yield ['nitroLoop', make(2, (t) => (l(rnd()) * 1.6 + h(rnd(), 4200, 0.8) * 0.5) * (0.85 + 0.15 * Math.sin(t * 2 * Math.PI * 9)) * ends(t, 2))]; }
+  { const sw = BP(), l = LP(500);
+    yield ['nitroOn', make(0.9, (t) => (sw(rnd(), Math.round(300 + 3000 * Math.min(1, t / 0.5)), 1.4) * 1.2 + l(rnd())) * Math.min(1, t / 0.06) * Math.exp(-t * 3.2))]; }
   // metal scraping along a wall: grinding band noise with crackles
-  out.scrape = make(2, (t, i, st) => {
-    const crack = rnd() > 0.995 ? rnd() * 4 : 0;
-    return (bp(st, 'a', rnd(), 2300 + 400 * Math.sin(t * 13), 3) + bp(st, 'b', rnd(), 900, 2) * 0.6 + crack) * loopFade(t, 0, 2);
-  });
+  { const a = BP(), b = BP();
+    yield ['scrape', make(2, (t) => (a(rnd(), Math.round(2300 + 400 * Math.sin(t * 13)), 3) + b(rnd(), 900, 2) * 0.6 + (rnd() > 0.99 ? rnd() * 4 : 0)) * ends(t, 2))]; }
   // turbo blow-off valve: a hiss falling in pitch
-  out.blowoff = make(0.45, (t, i, st) => bp(st, 'a', rnd(), 3600 - 2600 * (t / 0.45), 2.2) * Math.exp(-t * 7) * Math.min(1, t / 0.01));
+  { const a = BP(); yield ['blowoff', make(0.45, (t) => a(rnd(), Math.round(3600 - 2600 * (t / 0.45)), 2.2) * Math.exp(-t * 7) * Math.min(1, t / 0.01))]; }
   // exhaust pops: a low thump and a sharp crack
-  const pop = (pitch) => make(0.16, (t, i, st) => (Math.sin(2 * Math.PI * pitch * t) * Math.exp(-t * 40) + lp(st, 'n', rnd(), 2500) * Math.exp(-t * 60) * 1.4));
-  out.pop1 = pop(70); out.pop2 = pop(95);
+  const pop = (pitch) => { const l = LP(2500); return make(0.16, (t) => Math.sin(2 * Math.PI * pitch * t) * Math.exp(-t * 40) + l(rnd()) * Math.exp(-t * 60) * 1.4); };
+  yield ['pop1', pop(70)]; yield ['pop2', pop(95)];
   // car horns: two notes together, a little buzzy, as real horns are
-  const horn = (f1, f2) => make(0.55, (t, i, st) => {
-    const env = Math.min(1, t / 0.02) * Math.min(1, (0.55 - t) / 0.06);
+  const horn = (f1, f2) => { const l = LP(2600); return make(0.55, (t) => {
     const sq = (f) => Math.tanh(Math.sin(2 * Math.PI * f * t) * 4);
-    return lp(st, 'h', (sq(f1) + sq(f2)) * 0.5, 2600) * env;
-  });
-  out.hornA = horn(415, 520); out.hornB = horn(350, 440);
+    return l((sq(f1) + sq(f2)) * 0.5) * Math.min(1, t / 0.02) * Math.min(1, (0.55 - t) / 0.06);
+  }); };
+  yield ['hornA', horn(415, 520)]; yield ['hornB', horn(350, 440)];
   // gear change: a short mechanical clunk
-  out.shift = make(0.09, (t, i, st) => (Math.sin(2 * Math.PI * 140 * t) * 0.8 + lp(st, 'n', rnd(), 1800) * 0.7) * Math.exp(-t * 55));
+  { const l = LP(1800); yield ['shift', make(0.09, (t) => (Math.sin(2 * Math.PI * 140 * t) * 0.8 + l(rnd()) * 0.7) * Math.exp(-t * 55))]; }
   // near-miss: air ripped past the car, sweeping down
-  out.whoosh = make(0.6, (t, i, st) => bp(st, 'a', rnd(), 2400 - 1800 * (t / 0.6), 1.2) * Math.sin(Math.PI * Math.min(1, t / 0.6)) ** 2);
+  { const a = BP(); yield ['whoosh', make(0.6, (t) => a(rnd(), Math.round(2400 - 1800 * (t / 0.6)), 1.2) * Math.sin(Math.PI * Math.min(1, t / 0.6)) ** 2)]; }
+
+  // Crashes: a car hitting something is a crunch, not a ring. A deep body
+  // thud, a dense cluster of short gritty bursts as panels crumple, and a
+  // dying scrape of debris; big hits add shattering glass. Each fragment is
+  // rendered only over its own few milliseconds.
+  const grains = (d, list, q, gain) => {
+    for (const g of list) {
+      const bp = BP(), start = Math.round(g.t * sr), len = Math.min(d.length - start, Math.round(g.d * 6 * sr));
+      for (let i = 0; i < len; i++) d[start + i] += bp(rnd(), g.f, q) * g.a * gain * Math.exp(-(i / sr) / g.d);
+    }
+  };
+  const crunch = (secs, weight, count, n) => {
+    seed = 9000 + n * 7919;
+    const d = new Float32Array(Math.round(secs * sr));
+    const deb = LP(1400);
+    for (let i = 0; i < d.length; i++) {
+      const t = i / sr;
+      d[i] = (Math.sin(2 * Math.PI * 52 * t) * 1.2 + Math.sin(2 * Math.PI * 87 * t) * 0.7) * Math.exp(-t * 11) * weight
+        + deb(rnd()) * Math.exp(-t * 4.5) * 0.35;
+    }
+    const list = Array.from({ length: count }, () => ({
+      t: Math.pow(Math.abs(rnd()), 1.8) * secs * 0.4, f: Math.round(250 + Math.abs(rnd()) * 2600),
+      d: 0.006 + Math.abs(rnd()) * 0.03, a: 0.3 + Math.abs(rnd()) * 0.9,
+    }));
+    grains(d, list, 1.3, 1.4);
+    return finish(d);
+  };
+  yield ['crunch1', crunch(0.9, 1, 46, 1)]; yield ['crunch2', crunch(0.9, 1, 46, 2)]; yield ['crunch3', crunch(0.9, 1, 46, 3)];
+  yield ['crunchMed1', crunch(0.55, 0.7, 24, 4)]; yield ['crunchMed2', crunch(0.55, 0.7, 24, 5)]; yield ['crunchMed3', crunch(0.55, 0.7, 24, 6)];
+  // a light knock: short dull bump and a scuff
+  const bump = (n) => { seed = 4000 + n * 131; const l = LP(1100); return make(0.25, (t) => Math.sin(2 * Math.PI * (75 + n * 9) * t) * Math.exp(-t * 26) + l(rnd()) * Math.exp(-t * 30) * 0.7); };
+  yield ['bump1', bump(1)]; yield ['bump2', bump(2)];
+  // glass shattering: many tiny bright tinkles over half a second, a crack first
+  const shatter = (n) => {
+    seed = 7000 + n * 977;
+    const d = new Float32Array(Math.round(0.75 * sr));
+    const crack = BP(), crackLen = Math.round(0.02 * sr);
+    for (let i = 0; i < crackLen; i++) d[i] = crack(rnd(), 2500, 0.8) * (1 - i / crackLen) * 1.5;
+    grains(d, Array.from({ length: 70 }, () => ({
+      t: 0.01 + Math.pow(Math.abs(rnd()), 1.4) * 0.6, f: Math.round(3000 + Math.abs(rnd()) * 6000),
+      d: 0.004 + Math.abs(rnd()) * 0.012, a: 0.8,
+    })), 8, 1);
+    return finish(d);
+  };
+  yield ['shatter1', shatter(1)]; yield ['shatter2', shatter(2)];
   // start lights and the flag
   const tone = (f, secs, harm = 0.3) => make(secs, (t) => (Math.sin(2 * Math.PI * f * t) + harm * Math.sin(4 * Math.PI * f * t)) * Math.min(1, t / 0.005) * Math.exp(-t * (3 / secs)));
-  out.beep = tone(880, 0.18);
-  out.go = tone(1320, 0.5, 0.45);
-  out.finish = make(1.4, (t) => {
+  yield ['beep', tone(880, 0.18)];
+  yield ['go', tone(1320, 0.5, 0.45)];
+  yield ['finish', make(1.4, (t) => {
     const notes = [523.25, 659.25, 783.99, 1046.5];
     let y = 0;
     notes.forEach((f, k) => { const s0 = k * 0.12; if (t > s0) y += Math.sin(2 * Math.PI * f * (t - s0)) * Math.exp(-(t - s0) * 2.2); });
     return y * 0.4;
-  });
-  return out;
+  })];
 }
 
 const MAX_VOICES = 8;
@@ -166,7 +209,7 @@ const eng = (layout, o) => Object.freeze({ ...LAYOUT[layout], ...o });
 // Per car, from the real engine: layout, rev range, exhaust pipe resonance
 // (pipeMs), how open the exhaust is (muffler / mufflerOpen Hz), induction
 // (intake), forced induction (turbo / whine), cam lope (rough), pops.
-const ENGINE_SPECS = Object.freeze({
+const ENGINE_SPECS = {
   // Honda B18C / K20A: high-revving VTEC fours, the cam change at the top
   integra: eng('i4', { idle: 850, redline: 8400, vtecRpm: 5800, pipeMs: [2.3], fb: 0.5, damp: 0.45, muffler: 2100, mufflerOpen: 7200, intake: 0.55, noise: 0.62, pops: 0.15, rough: 0.05, drive: 1.8 }),
   rsx: eng('i4', { idle: 800, redline: 8100, vtecRpm: 6000, pipeMs: [2.5], fb: 0.52, damp: 0.42, muffler: 1900, mufflerOpen: 6600, intake: 0.5, noise: 0.6, pops: 0.15, rough: 0.05, drive: 1.8 }),
@@ -178,8 +221,9 @@ const ENGINE_SPECS = Object.freeze({
   grsupraveilside: eng('i6', { idle: 750, redline: 7000, pipeMs: [3.3], fb: 0.55, muffler: 1300, mufflerOpen: 4800, intake: 0.25, turbo: 0.6, turboHz: 3800, pops: 0.9, drive: 2 }),
   fairladyz: eng('i6twin', { idle: 900, redline: 7000, pipeMs: [3.1, 3.3], fb: 0.5, muffler: 1800, mufflerOpen: 5200, noise: 0.7, intake: 0.4, turbo: 0.8, turboHz: 3300, rough: 0.25, pops: 0.6, drive: 2.1 }),
   // American V8s: crossplane burble, lumpy cams, the Charger's blower whine
-  charger: eng('v8cross', { idle: 700, redline: 6500, pipeMs: [4.2, 4.4], fb: 0.6, damp: 0.3, thumpHz: 55, muffler: 1100, mufflerOpen: 3700, intake: 0.3, whine: 1, whineRatio: 2.6, rough: 0.6, pops: 0.5, drive: 2.4 }),
-  cuda: eng('v8cross', { idle: 700, redline: 6800, pipeMs: [4.0, 4.3], fb: 0.62, damp: 0.3, thumpHz: 52, muffler: 1200, mufflerOpen: 3900, intake: 0.35, rough: 0.7, pops: 0.5, drive: 2.4 }),
+  charger: eng('v8cross', { idle: 700, redline: 6500, pipeMs: [4.2, 4.4], fb: 0.6, damp: 0.3, thumpHz: 55, muffler: 1100, mufflerOpen: 3700, intake: 0.3, whine: 2.4, whineRatio: 3.2, rough: 0.6, pops: 0.6, drive: 2.4 }),
+  // (the 'Cuda gets the Hellcat-style blower too, as asked)
+  cuda: eng('v8cross', { idle: 700, redline: 6800, pipeMs: [4.0, 4.3], fb: 0.62, damp: 0.3, thumpHz: 52, muffler: 1200, mufflerOpen: 3900, intake: 0.35, whine: 2.1, whineRatio: 3.0, rough: 0.7, pops: 0.6, drive: 2.4 }),
   slsamg: eng('v8cross', { idle: 750, redline: 7200, pipeMs: [3.6, 3.8], fb: 0.62, damp: 0.32, thumpHz: 60, muffler: 1300, mufflerOpen: 4800, intake: 0.35, rough: 0.25, pops: 0.75, drive: 2.4 }),
   // flat-plane V8s: high and shrieking
   jesko: eng('v8flat', { idle: 1000, redline: 8500, pipeMs: [2.6, 2.6], fb: 0.55, muffler: 2000, mufflerOpen: 7500, intake: 0.4, turbo: 0.8, turboHz: 3800, noise: 0.65, pops: 0.6, drive: 2.2 }),
@@ -199,7 +243,24 @@ const ENGINE_SPECS = Object.freeze({
   porsche996gt300: eng('flat6', { idle: 1100, redline: 8800, pipeMs: [2.4, 2.6], fb: 0.56, muffler: 2600, mufflerOpen: 8500, intake: 0.45, noise: 0.62, pops: 0.6, drive: 2.6 }),
   porsche992gt3r: eng('flat6', { idle: 1100, redline: 9400, pipeMs: [2.5, 2.7], fb: 0.56, muffler: 2500, mufflerOpen: 8800, intake: 0.5, noise: 0.62, pops: 0.6, drive: 2.6 }),
   brzgt300: eng('boxer4', { idle: 1000, redline: 8000, pipeMs: [2.6, 4.0], fb: 0.58, muffler: 2200, mufflerOpen: 7000, intake: 0.4, turbo: 0.8, turboHz: 3700, pops: 0.9, rough: 0.2, drive: 2.4 }),
-});
+};
+
+// Pops and bangs per car: boom pitch (popHz; lower = deeper) and whether it
+// bangs on full-throttle upshifts. The muscle V8s boom deep; flat-plane V8s,
+// race cars and small fours crack sharper.
+const POP_TUNING = {
+  charger: { popHz: 68 }, cuda: { popHz: 66 }, slsamg: { popHz: 74, bangs: true },
+  r34: { popHz: 98, bangs: true }, supramk4: { popHz: 92, bangs: true }, grsupraveilside: { popHz: 96, bangs: true },
+  fairladyz: { popHz: 104 }, jesko: { popHz: 118, bangs: true }, sf90xx: { popHz: 112 },
+  mclaren720gt3: { popHz: 120, bangs: true }, audia4dtm: { popHz: 110, bangs: true },
+  mercedesccoupedtm: { popHz: 104, bangs: true }, mercedesclkdtm: { popHz: 96, bangs: true },
+  ferrari296gt3: { popHz: 125, bangs: true }, opelcalibradtm: { popHz: 135, bangs: true },
+  acuransx: { popHz: 118 }, eb110: { popHz: 108 }, db11: { popHz: 90 },
+  porsche996gt300: { popHz: 120, bangs: true }, porsche992gt3r: { popHz: 116, bangs: true },
+  brzgt300: { popHz: 112, bangs: true }, integra: { popHz: 135 }, rsx: { popHz: 130 },
+  giulietta: { popHz: 125 }, crv: { popHz: 120 },
+};
+for (const [id, t] of Object.entries(POP_TUNING)) ENGINE_SPECS[id] = Object.freeze({ ...ENGINE_SPECS[id], ...t });
 
 // Cars without a model of their own (spec class cars, the open-wheel car)
 // by the racing pack's engine family.
@@ -236,6 +297,7 @@ export class GameAudio {
     this._wantMusic = null;
     this._music = null;               // { kind, el, node, gain, index }
     this._packBase = 'assets/racing-pack/audio/';
+    this.assetBase = '';               // path prefix to the game root (tools pages set '../')
   }
 
   get ready() { return this._ready; }
@@ -291,7 +353,7 @@ export class GameAudio {
     this._ready = true;
     // the modelled engines run on the audio thread; until (or unless) the
     // worklet loads, the recorded loops are the fallback
-    ctx.audioWorklet?.addModule('js/engineWorklet.js')
+    ctx.audioWorklet?.addModule(`${this.assetBase}js/engineWorklet.js`)
       .then(() => this._buildVoices())
       .catch(() => {});
     this.loadArcadeSfx(this._packBase);
@@ -614,10 +676,17 @@ export class GameAudio {
     this._packBase = base || this._packBase;
     if (!this._ready || this._sfxLoading) return;
     this._sfxLoading = true;
-    for (const [name, buf] of Object.entries(synthEffects(this.ctx))) this._sfx[`g:${name}`] = buf;
+    // Synthesized effects are built one at a time with a pause between, so
+    // the work never stalls a frame (they are not needed before a race).
+    (async () => {
+      for (const [name, buf] of synthEffects(this.ctx)) {
+        this._sfx[`g:${name}`] = buf;
+        await new Promise((r) => setTimeout(r, 0));
+      }
+    })();
     const files = new Set(Object.values(SFX).flatMap((d) => d.layers.flat()).filter((n) => n.startsWith('k:')));
     await Promise.allSettled([...files].map(async (n) => {
-      this._sfx[n] = await this._load(`assets/sfx/${n.slice(2)}.mp3`);
+      this._sfx[n] = await this._load(`${this.assetBase}assets/sfx/${n.slice(2)}.mp3`);
     }));
   }
 
@@ -701,7 +770,11 @@ export class GameAudio {
   }
   trafficHorn(pan = 0) { this._play(Math.random() < 0.5 ? 'hornA' : 'hornB', { pan, gain: 0.7 }); }
 
-  shift(dir) { this._play(dir > 0 ? 'shiftUp' : 'shiftDown', { rate: dir > 0 ? 1 : 0.85 }); }
+  shift(dir) {
+    this._play(dir > 0 ? 'shiftUp' : 'shiftDown', { rate: dir > 0 ? 1 : 0.85 });
+    // a flat-out upshift bangs on the cars that do it (js/engineWorklet.js)
+    if (dir > 0 && (this._load01 || 0) > 0.7) this._voice?.port.postMessage({ bang: 1 });
+  }
 
   wallImpact(event) {
     const i = clamp(typeof event === 'number' ? event : (event?.intensity ?? 1), 0, 1);

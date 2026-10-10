@@ -92,17 +92,19 @@ check(!a._loops.screech || a._loops.screech.gain.gain.value === 0, 'hard braking
 
 console.log('[game-audio] effects');
 await a.loadArcadeSfx();
-await new Promise((r) => setTimeout(r, 0));
+// the synthesized effects are built one per tick in the background
+for (let i = 0; i < 200 && !a._sfx['g:finish']; i++) await new Promise((r) => setTimeout(r, 0));
+check(!!a._sfx['g:finish'], 'the synthesized effects finish building in the background');
 const before = Ctx.started.length;
 a.takedown();
 const layers = Ctx.started.length - before;
 a.takedown();
-check(layers === 3 && Ctx.started.length === before + 3, 'a takedown layers metal, glass and a body thump, and cannot retrigger inside its cooldown');
+check(layers === 3 && Ctx.started.length === before + 3, 'a takedown layers a crunch, shattering glass and a body thump, and cannot retrigger inside its cooldown');
 a.ctx.currentTime += 1;
 a.takedown();
 check(Ctx.started.length === before + 6, 'it plays again once the cooldown has passed');
 check(!JSON.stringify(Object.keys(a._sfx)).includes('racing-pack'), 'no effect comes from the racing pack');
-check(['g:screech', 'g:nitroLoop', 'g:hornA', 'g:blowoff', 'k:impactMetal_heavy_000'].every((k) => a._sfx[k]),
+check(['g:screech', 'g:nitroLoop', 'g:hornA', 'g:blowoff', 'g:crunch1', 'g:shatter1', 'k:impactPunch_heavy_000'].every((k) => a._sfx[k]),
   'synthesized effects and the Kenney recordings are loaded');
 a._voices = 8;
 a.ctx.currentTime += 5;
@@ -159,9 +161,12 @@ console.log('[game-audio] modelled engines');
   const v8 = engineSpecFor('charger', '');
   const idle = rms(renderSec(v8, v8.idle, 0)), pull = rms(renderSec(v8, v8.redline * 0.8, 1));
   check(idle > pull * 0.15 && idle < pull * 0.7, 'idle is audible but well below full throttle');
-  const limiter = renderSec(v8, v8.redline, 1, 1);
+  // (a car without a blower: a supercharger keeps whining through the cuts)
+  const six = engineSpecFor('r34', '');
+  const pullSix = rms(renderSec(six, six.redline * 0.8, 1));
+  const limiter = renderSec(six, six.redline, 1, 1);
   let quietBlocks = 0;
-  for (let o = 0; o < limiter.length; o += 480) if (rms(limiter.subarray(o, o + 480)) < pull * 0.25) quietBlocks++;
+  for (let o = 0; o < limiter.length; o += 480) if (rms(limiter.subarray(o, o + 480)) < pullSix * 0.25) quietBlocks++;
   check(quietBlocks > 3, 'at the redline the limiter cuts the ignition in bursts');
 }
 

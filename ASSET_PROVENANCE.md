@@ -17,8 +17,8 @@ project release and how they were created.
 | `assets/music/race_diamond_race.mp3` | "Diamond Race" by iamoneabe, https://opengameart.org/node/150386; loudness-normalised, 128 kbps | CC0 1.0 |
 | `assets/music/race_drum_and_bass.mp3` | "Drum and bass" by bertsz, https://opengameart.org/content/drum-and-bass; loudness-normalised, 128 kbps | CC0 1.0 |
 | `assets/music/race_synthwave_type.mp3` | "synthwave_type" by G_P, https://opengameart.org/content/synthwavetype; loudness-normalised, 128 kbps | CC0 1.0 |
-| `assets/sfx/impact*.mp3`, `assets/sfx/ui_*.mp3` | Kenney Impact Sounds and Interface Sounds (https://kenney.nl/assets/impact-sounds, https://kenney.nl/assets/interface-sounds), re-encoded to mono 96 kbps MP3; licence copy in assets/sfx/License-kenney.txt | CC0 1.0 |
-| Engine sounds and other effects | Synthesized at runtime by project code (js/engineWorklet.js, js/gameAudio.js) | Apache-2.0 |
+| `assets/sfx/impactPunch*.mp3`, `assets/sfx/ui_*.mp3` | Kenney Impact Sounds and Interface Sounds (https://kenney.nl/assets/impact-sounds, https://kenney.nl/assets/interface-sounds), re-encoded to mono 96 kbps MP3; licence copy in assets/sfx/License-kenney.txt | CC0 1.0 |
+| Engine sounds, crashes and other effects | Synthesized at runtime by project code (js/engineWorklet.js, js/gameAudio.js) | Apache-2.0 |
 | `textures/hdri/*.hdr` | Original environment lighting created for this project | Apache-2.0 |
 | `js/textures.js` output | Procedural Canvas textures generated at runtime by project code | Apache-2.0 |
 | `sounds/*.mp3` | Procedurally synthesised (numpy/scipy additive + filtered noise), no recordings or third-party samples | CC0 / Apache-2.0 |

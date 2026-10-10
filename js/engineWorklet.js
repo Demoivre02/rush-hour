@@ -75,10 +75,19 @@ class EngineProcessor extends AudioWorkletProcessor {
     this.spool = 0;
     this.cutT = 0;
     this.fireT = 0;
-    this.popEnv = 0;
+    // pops and bangs: a few booms ringing at once, plus the crack
+    this.booms = [{ amp: 0, ph: 0, w: 0, decay: 0 }, { amp: 0, ph: 0, w: 0, decay: 0 }, { amp: 0, ph: 0, w: 0, decay: 0 }];
+    this.boomNext = 0;
+    this.crack = 0;
+    this.crackLp = 0;
+    this.overrunT = 0;       // seconds left of the post-lift crackle window
+    this.popWait = 0;        // seconds until the next pop in that window
+    this.prevLoad = 0;
     this.configure(options?.processorOptions?.spec || {});
     this.port.onmessage = (e) => {
       if (e.data?.spec) this.configure(e.data.spec);
+      // an upshift at full load: anti-lag style bang (cars that do it)
+      if (e.data?.bang && this.s.bangs) this.pop(1.4);
     };
   }
 
@@ -91,6 +100,7 @@ class EngineProcessor extends AudioWorkletProcessor {
       pulseMs: 2.2, noise: 0.55, thumpHz: 70,
       muffler: 1800, mufflerOpen: 5200, intake: 0.25, whine: 0, whineRatio: 3.2,
       turbo: 0, turboHz: 3200, rough: 0.15, pops: 0.3, redline: 7000, idle: 850,
+      popHz: 95, bangs: false,
       vtecRpm: 0, drive: 1.6, level: 0.5,
       ...spec,
     };
@@ -129,13 +139,26 @@ class EngineProcessor extends AudioWorkletProcessor {
     // but only pumps when the car's momentum spins it faster: engine braking.
     const offAmp = 0.42 * idleness + 0.13 * (1 - idleness);
     let amp = load > 0.04 ? (0.42 + 0.58 * load) * lump : offAmp * lump;
-    // lift-off pops: unburnt fuel lighting in the hot exhaust
-    if (load < 0.05 && rpm > s.redline * 0.45 && Math.random() < s.pops * 0.06) {
-      this.popEnv = 0.9 + Math.random() * 0.6;
-      amp *= 2.2;
-    }
     bank.env = Math.max(bank.env, amp);
     bank.ph = 0;                       // each firing starts its thump afresh
+  }
+
+  /**
+   * One pop or bang: unburnt fuel lighting off in the hot exhaust. A deep
+   * boom (a decaying low tone, tuned per car), a short sharp crack, and a
+   * hard kick into the exhaust pipes so it rings with this car's note.
+   */
+  pop(size = 1) {
+    const s = this.s;
+    const b = this.booms[this.boomNext];
+    this.boomNext = (this.boomNext + 1) % this.booms.length;
+    const hz = s.popHz * (0.85 + Math.random() * 0.35);
+    b.amp = 0.3 * size * (0.7 + Math.random() * 0.6);
+    b.ph = 0;
+    b.w = TWO_PI * hz / this.sr;
+    b.decay = Math.exp(-1 / (this.sr * (0.045 + Math.random() * 0.05)));   // 45-95 ms
+    this.crack = Math.max(this.crack, 0.55 * size);
+    for (const bank of this.bankList) bank.env = Math.max(bank.env, 1.0 * size);
   }
 
   process(inputs, outputs, parameters) {
@@ -165,6 +188,25 @@ class EngineProcessor extends AudioWorkletProcessor {
     this.cutT = Math.max(0, this.cutT - 128 / sr);
     this.fireT = Math.max(0, (this.fireT || 0) - 128 / sr);
     if (wasCut && this.cutT === 0) this.fireT = 0.035;
+    // Lift off from high revs and the exhaust pops and bangs for a moment:
+    // a burst of irregular pops (a few a second), thinning out as it ends.
+    const blockSec = 128 / sr;
+    if (this.prevLoad > 0.5 && load < 0.1 && rpm > s.redline * 0.5 && s.pops > 0) {
+      this.overrunT = 0.5 + s.pops * 1.1;
+      this.popWait = 0.02 + Math.random() * 0.05;
+    }
+    if (load > 0.3) this.overrunT = 0;
+    this.prevLoad = load;
+    if (this.overrunT > 0) {
+      this.overrunT -= blockSec;
+      this.popWait -= blockSec;
+      if (this.popWait <= 0 && rpm > s.idle * 1.3) {
+        const fade = Math.min(1, this.overrunT / 0.6);
+        this.pop((0.55 + 0.6 * Math.random()) * (0.5 + 0.5 * fade));
+        // irregular spacing: tight crackle at first, sparser as it dies
+        this.popWait = (0.04 + Math.random() * 0.16) / Math.max(0.35, s.pops) * (1.6 - fade);
+      }
+    }
     // during a limiter cut the whole note drops, intake and blower included
     const cutGain = this.cutT > 0 ? 0.25 : 1;
     const level = s.level;
@@ -191,9 +233,18 @@ class EngineProcessor extends AudioWorkletProcessor {
         bank.env *= pulseDecay;
         ex += bank.step(pulse);
       }
-      if (this.popEnv > 0.001) {
-        ex += this.popEnv * this.rand() * 1.4;
-        this.popEnv *= 0.9965;
+      // pops: booms ring under the exhaust, the crack is short and bright
+      let boom = 0;
+      for (const b of this.booms) {
+        if (b.amp < 0.0005) continue;
+        boom += Math.sin(b.ph) * b.amp + Math.sin(b.ph * 2.01) * b.amp * 0.35;
+        b.ph += b.w;
+        b.amp *= b.decay;
+      }
+      if (this.crack > 0.0005) {
+        this.crackLp += (this.rand() - this.crackLp) * 0.45;
+        boom += this.crackLp * this.crack * 1.2;
+        this.crack *= 0.985;                 // ~1.5 ms
       }
       // muffler (two poles) and DC block
       this.mufLp += (ex - this.mufLp) * mufA;
@@ -202,7 +253,7 @@ class EngineProcessor extends AudioWorkletProcessor {
       const hp = y - this.dcPrev + 0.995 * this.dc;
       this.dcPrev = y;
       this.dc = hp;
-      y = hp;
+      y = hp + boom;
       // intake roar: band-limited noise
       if (intakeAmt > 0) {
         const n = this.rand();
@@ -214,7 +265,11 @@ class EngineProcessor extends AudioWorkletProcessor {
       if (s.whine) {
         this.whinePhase += whineW;
         if (this.whinePhase > TWO_PI) this.whinePhase -= TWO_PI;
-        y += Math.sin(this.whinePhase) * s.whine * revs * (0.4 + 0.6 * load) * 0.12 * cutGain;
+        // a twin-screw blower: fundamental plus 2nd and 3rd harmonics, with
+        // a slight waver, rising with revs and boost: the Hellcat's scream
+        const wv = this.whinePhase;
+        const wave = Math.sin(wv) + 0.55 * Math.sin(2 * wv + 0.3) + 0.25 * Math.sin(3 * wv + 0.9);
+        y += wave * s.whine * revs * revs * (0.35 + 0.65 * load) * 0.11 * cutGain;
       }
       if (s.turbo && this.spool > 0.02) {
         this.turboPhase += turboW;
