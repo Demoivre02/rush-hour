@@ -1089,3 +1089,4 @@ kbd { padding: 2px 5px; color: #fff; background: #282a33; border: 1px solid #454
 #event-badge span { font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; }
 #event-badge.urgent { border-left-color: #ff3b3b; }
 #event-badge.urgent span { color: #ff6a5a; }
+#touch-controls .touch-drift { width: 58px; height: 58px; color: #2ec8ff; border-color: #2ec8ff; font-size: 11px; }

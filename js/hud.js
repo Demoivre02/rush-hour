@@ -146,7 +146,8 @@ export class HUD {
         </div>
         <button type="button" class="touch-pause" data-touch="pause" aria-label="Pause">Ⅱ</button>
         <div class="touch-pedals">
-          <button type="button" class="touch-boost" data-touch="boost" aria-label="Electric override">OVR</button>
+          <button type="button" class="touch-drift" data-touch="drift" aria-label="Drift">DRIFT</button>
+          <button type="button" class="touch-boost" data-touch="boost" aria-label="Boost">OVR</button>
           <button type="button" class="touch-brake" data-touch="brake" aria-label="Brake">BRK</button>
           <button type="button" class="touch-throttle" data-touch="throttle" aria-label="Throttle">THR</button>
         </div>
@@ -180,7 +181,7 @@ export class HUD {
       const b = ev.target.closest('.tyre-btn');
       if (b && this._pitCb) { this._pitCb(b.dataset.c); }
     });
-    this.touchState = { left: false, right: false, throttle: false, brake: false, boost: false };
+    this.touchState = { left: false, right: false, throttle: false, brake: false, boost: false, drift: false };
     this.$('touch-controls').addEventListener('pointerdown', (event) => {
       const button = event.target.closest('[data-touch]');
       if (!button) return;
@@ -543,6 +544,10 @@ export class HUD {
           // the energy bar is the nitro tank outside Formula
           const ersLbl = this.$('b-ers')?.closest('.bar-row')?.querySelector('.lbl');
           if (ersLbl) ersLbl.textContent = boostLabel === 'NITRO' ? 'NOS' : 'ERS';
+          // touch: NOS for road cars; the drift button only where drifting exists
+          const tb = this.root.querySelector('.touch-boost');
+          if (tb) tb.textContent = boostLabel === 'NITRO' ? 'NOS' : 'OVR';
+          this.root.querySelector('.touch-drift')?.toggleAttribute('hidden', boostLabel !== 'NITRO');
         }
         const drift = this.$('drift-badge');
         if (drift) {

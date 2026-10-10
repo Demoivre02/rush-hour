@@ -1959,13 +1959,20 @@ class Game {
     let throttle = (k.KeyW || k.ArrowUp) ? 1 : 0;
     let brake = (k.KeyS || k.ArrowDown) ? 1 : 0;
     let boost = !!k.Space;
+    // Shift: a handbrake-style drift (as well as tapping the brake while steering)
+    let drift = !!(k.ShiftLeft || k.ShiftRight);
     const touch = this.hud.touchState;
+    const touchOn = this.hud.root?.querySelector('#touch-controls')?.classList.contains('enabled');
     if (touch) {
       if (touch.left) { digitalDir += 1; digitalSteerActive = true; }
       if (touch.right) { digitalDir -= 1; digitalSteerActive = true; }
       if (touch.throttle) throttle = 1;
       if (touch.brake) brake = 1;
       if (touch.boost) boost = true;
+      if (touch.drift) drift = true;
+      // Touch in arcade races accelerates by itself (as on mobile racers);
+      // braking or the throttle button still work. Settings can turn it off.
+      if (touchOn && this.session?.arcade && this.ui.settings.autoAccel !== false && !touch.brake) throttle = 1;
     }
     let dir = digitalDir;
     let steerInputMode = digitalSteerActive ? 'digital' : null;
@@ -2067,7 +2074,7 @@ class Game {
       this.keySteer, steeringTarget, v, dt, digitalResponse, this.ui.settings.steeringResponse,
     );
     if (dir === 0 && this.keySteer === 0) this._steerInputMode = null;
-    return { steer: this.keySteer, throttle, brake, boost, shiftUp, shiftDown, ersMode: this.ersMode ?? 1 };
+    return { steer: this.keySteer, throttle, brake, boost, drift, shiftUp, shiftDown, ersMode: this.ersMode ?? 1 };
   }
 
   // ---------- camera ----------
