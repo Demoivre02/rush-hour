@@ -1274,6 +1274,7 @@ class Game {
     const player = this.session?.player;
     const family = player?.rosterCar?.soundFamily || player?.phys?.profile?.soundFamily || '';
     this._arcadeSeen = null;
+    this._rumbleSeen = null;
     this.audio.setEngineTraits?.({ turbo: /turbo|_sc/.test(family) });
     this.audio.loadArcadeSfx?.('assets/racing-pack/audio/').catch(() => {});
     if (family && family !== 'formula' && this.audio.loadCarSoundFamily) {
@@ -2255,7 +2256,34 @@ class Game {
    * frame; takedowns, near misses and traffic hits as they happen (the race
    * counts them; this plays each new one once).
    */
+  /**
+   * Gamepad rumble, if the pad supports it (Xbox and PlayStation pads in
+   * Chrome and Edge). strong = low-frequency motor, weak = high-frequency.
+   */
+  rumble(strong, weak, ms) {
+    if (this.ui?.settings?.rumble === false || typeof navigator === 'undefined' || !navigator.getGamepads) return;
+    for (const pad of navigator.getGamepads()) {
+      const act = pad?.vibrationActuator;
+      if (!act?.playEffect) continue;
+      act.playEffect('dual-rumble', {
+        duration: Math.round(Math.min(600, ms)),
+        strongMagnitude: Math.min(1, Math.max(0, strong)),
+        weakMagnitude: Math.min(1, Math.max(0, weak)),
+      }).catch(() => {});
+    }
+  }
+
   _arcadeAudio(dt, s, p) {
+    // rumble for the arcade moments: nitro, takedowns, wrecks, traffic
+    if (p.boosting && !this._rumbleBoost) this.rumble(0.15, 0.5, 260);
+    this._rumbleBoost = !!p.boosting;
+    const seenR = this._rumbleSeen || (this._rumbleSeen = { takedowns: 0, trafficHits: 0, playerWrecks: 0 });
+    if ((s.takedowns || 0) > seenR.takedowns) this.rumble(0.8, 0.6, 380);
+    if ((s.trafficHits || 0) > seenR.trafficHits) this.rumble(0.6, 0.5, 260);
+    if ((s.playerWrecks || 0) > seenR.playerWrecks) this.rumble(1, 1, 600);
+    seenR.takedowns = s.takedowns || 0;
+    seenR.trafficHits = s.trafficHits || 0;
+    seenR.playerWrecks = s.playerWrecks || 0;
     const a = this.audio;
     if (!a.updateArcade) return;
     a.updateArcade(dt, {
@@ -2489,8 +2517,16 @@ class Game {
       if (pps && !this._pitAudio && pps.timer < 2.3) { this._pitAudio = true; this.audio.pitStop && this.audio.pitStop(); }
       if (!pps) this._pitAudio = false;
       // audio events
-      if (s._wallEvent) { this.audio.wallImpact(s._wallEvent); s._wallEvent = 0; }
-      if (s._touchEvent) { this.audio.carImpact(s._touchEvent); s._touchEvent = 0; }
+      if (s._wallEvent) {
+        const i = s._wallEvent.intensity ?? 0.5;
+        this.rumble(0.35 + i * 0.6, 0.3 + i * 0.4, 120 + i * 180);
+        this.audio.wallImpact(s._wallEvent); s._wallEvent = 0;
+      }
+      if (s._touchEvent) {
+        const i = s._touchEvent.intensity ?? 0.4;
+        this.rumble(0.2 + i * 0.5, 0.4 + i * 0.4, 90 + i * 120);
+        this.audio.carImpact(s._touchEvent); s._touchEvent = 0;
+      }
       if (s._shiftEvent) { this.audio.shift(s._shiftEvent > 0 ? 1 : -1); s._shiftEvent = false; }
 
       const p = s.player?.phys;

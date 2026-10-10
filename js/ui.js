@@ -922,7 +922,7 @@ export class UI {
       tc: 'Traction control', abs: 'Anti-lock brakes', autoGear: 'Gearbox',
       nametags: 'Driver nametags', graphicsQuality: 'Graphics quality',
       cameraProfile: 'Camera style', autoPause: 'Auto pause',
-      touchControls: 'Touch controls', volume: 'Master volume', musicVolume: 'Music volume',
+      touchControls: 'Touch controls', rumble: 'Controller rumble', volume: 'Master volume', musicVolume: 'Music volume',
       steeringResponse: 'Keyboard steering response', cockpitFov: 'Cockpit field of view',
       cockpitSeat: 'Cockpit seat position', headMotion: 'Cockpit head motion',
     };
@@ -953,7 +953,8 @@ export class UI {
           ${row('Head Motion', 'Restrained acceleration and kerb response', seg('headMotion', ['OFF', 'ON'], s.headMotion !== false ? 1 : 0))}`)}
         ${group('BEHAVIOUR', 'Device and focus handling', `
           ${row('Auto Pause', 'Pause when the game loses focus', seg('autoPause', ['OFF', 'ON'], s.autoPause !== false ? 1 : 0))}
-          ${row('Touch Controls', 'Show steering and pedal controls on touch devices', seg('touchControls', ['OFF', 'ON'], s.touchControls !== false ? 1 : 0))}`)}
+          ${row('Touch Controls', 'Show steering and pedal controls on touch devices', seg('touchControls', ['OFF', 'ON'], s.touchControls !== false ? 1 : 0))}
+          ${row('Controller Rumble', 'Vibrate the gamepad on hits, takedowns and nitro', seg('rumble', ['OFF', 'ON'], s.rumble !== false ? 1 : 0))}`)}
         ${group('AUDIO', 'Mix', `
           ${row('Master Volume', 'Everything: music, engine and effects', seg('volume', ['MUTE', '50%', '100%'], s.volume === 0 ? 0 : s.volume < 0.9 ? 1 : 2))}
           ${row('Music', 'Menu and race soundtrack', seg('musicVolume', ['OFF', '50%', '100%'], (s.musicVolume ?? 0.8) === 0 ? 0 : (s.musicVolume ?? 0.8) < 0.7 ? 1 : 2))}`)}
