@@ -48,7 +48,7 @@ function clampNum(v, lo, hi) {
 // Master switch. false = the game runs silent: init() takes the same path as
 // a browser without Web Audio, so every sound call is a no-op and no sound
 // files are downloaded. Set back to true to restore all audio.
-export const SOUND_ENABLED = false;
+export const SOUND_ENABLED = true;
 
 export class AudioEngine {
   constructor() {
@@ -465,6 +465,7 @@ export class AudioEngine {
     if (this.crowdPan) this._lfo('sine', 0.053, 0.45, this.crowdPan.pan);
 
     this._ready = true;
+    if (this._arcadeSfxBase) this.loadArcadeSfx(this._arcadeSfxBase).catch(() => {});
     if (this._carSoundFamily && this._carSoundFamily !== 'formula') {
       this.loadCarSoundFamily(this._carSoundFamily, this._carAudioBase).catch(() => {});
     }
@@ -1126,6 +1127,74 @@ export class AudioEngine {
   }
 
   _sample(name) { return (this._samples && this._samples[name]) || null; }
+
+  // ---- arcade effects (racing-pack sfx) -------------------------------------
+  // Nitro, drift, takedown, near-miss and traffic sounds come from the racing
+  // pack's recorded effects (assets/racing-pack/audio/sfx, ~430 KB). They are
+  // fetched once, the first time a race starts; until then calls are no-ops.
+
+  async loadArcadeSfx(base = 'assets/racing-pack/audio/') {
+    this._arcadeSfxBase = base;          // init() loads them if audio starts later
+    if (!SOUND_ENABLED || !this.ready || this._arcadeSfxLoading) return;
+    this._arcadeSfxLoading = true;
+    this._samples = this._samples || {};
+    const names = ['nitro_activate', 'nitro_loop', 'tyre_screech_loop', 'scrape_loop', 'collision_light',
+      'collision_medium', 'collision_heavy', 'turbo_blowoff', 'backfire_pop', 'exhaust_crackle',
+      'horn_a', 'horn_b', 'tyre_chirp', 'countdown_beep', 'countdown_go', 'race_finish', 'lap_complete'];
+    await Promise.allSettled(names.map(async (n) => {
+      const buf = await this._loadCarAudioBuffer(base, `sfx/${n}.wav`);
+      this._samples[`pk:${n}`] = buf;
+    }));
+  }
+
+  /**
+   * Per-frame arcade layers: the nitro roar while boosting, tyre screech while
+   * drifting or sliding hard, metal scrape against walls.
+   * a = { boosting, drifting, driftAngle, slip, speed, scraping }
+   */
+  updateArcade(dt, a) {
+    if (!this.ready || !this._sample('pk:nitro_loop')) return;
+    const t0 = this.ctx.currentTime;
+    const nitro = this._sampleLoop('pk:nitro_loop');
+    if (nitro) nitro.gain.setTargetAtTime(a.boosting ? 0.32 : 0, t0, a.boosting ? 0.06 : 0.18);
+    if (a.boosting && !this._wasBoosting) this._playSample('pk:nitro_activate', { gain: 0.45 });
+    this._wasBoosting = !!a.boosting;
+    const screech = this._sampleLoop('pk:tyre_screech_loop');
+    const sliding = a.drifting ? Math.min(1, 0.45 + (a.driftAngle || 0) * 1.6)
+      : a.speed > 14 && a.slip > 0.5 ? Math.min(0.6, (a.slip - 0.5) * 1.2) : 0;
+    if (screech) screech.gain.setTargetAtTime(sliding * 0.3, t0, sliding ? 0.05 : 0.12);
+    const scrape = this._sampleLoop('pk:scrape_loop');
+    if (scrape) scrape.gain.setTargetAtTime(a.scraping && a.speed > 6 ? 0.28 : 0, t0, 0.05);
+    // lifting off a turbo engine at revs: blow-off valve and a pop or two
+    if (this._lastThrottle > 0.7 && a.throttle < 0.2 && a.rpmFrac > 0.6) {
+      if (this._turbo) this._playSample('pk:turbo_blowoff', { gain: 0.28, jitter: 0.06 });
+      if (Math.random() < 0.6) this._playSample('pk:backfire_pop', { gain: 0.32, jitter: 0.1 });
+    }
+    this._lastThrottle = a.throttle || 0;
+  }
+
+  /** Engine character hints for the arcade layers (turbo blow-off). */
+  setEngineTraits({ turbo = false } = {}) { this._turbo = !!turbo; }
+
+  takedown() {
+    this._playSample('pk:collision_heavy', { gain: 0.7, jitter: 0.05, duck: 0.25 });
+    this._playSample('pk:exhaust_crackle', { gain: 0.3 });
+  }
+
+  nearMiss(side = 0) {
+    this.passBy(side, 1);
+    this._playSample('pk:tyre_chirp', { gain: 0.2, pan: side * 0.6 });
+  }
+
+  trafficHit(boosting = false) {
+    this._playSample(boosting ? 'pk:collision_medium' : 'pk:collision_heavy', { gain: boosting ? 0.45 : 0.6, jitter: 0.06 });
+    this._playSample(Math.random() < 0.5 ? 'pk:horn_a' : 'pk:horn_b', { gain: 0.35, jitter: 0.04 });
+  }
+
+  /** A car horn from the traffic, panned to its side. */
+  trafficHorn(pan = 0) {
+    this._playSample(Math.random() < 0.5 ? 'pk:horn_a' : 'pk:horn_b', { gain: 0.18, pan, jitter: 0.05 });
+  }
 
   /** Play a one-shot sample. Returns true if a sample was played. */
   _playSample(name, { gain = 1, rate = 1, jitter = 0, duck = 0, pan = 0 } = {}) {

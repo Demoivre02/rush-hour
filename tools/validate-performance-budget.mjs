@@ -79,7 +79,8 @@ const BUDGETS = {
   // +20 KB / +1 module / +1 request: js/career.js and the career screens
   // (events, stars, credits, dealership, paid garage).
   // +5 KB: per-tier pixel budgets and dynamic resolution (js/quality.js).
-  allJavaScriptBytes: 2_960_000,
+  // +6 KB: sound back on, arcade effects (nitro, drift, takedown, traffic).
+  allJavaScriptBytes: 2_966_000,
   // October 2026: +5.4 MB / +9 requests for the scanned CC0 ground materials
   // (textures/pbr/, asphalt 2K + grass and gravel 1K, colour/normal/roughness).
   sessionPhotoBytes: 18_000_000,

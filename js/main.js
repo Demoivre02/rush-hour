@@ -1271,6 +1271,9 @@ class Game {
   configureSessionAudio() {
     const player = this.session?.player;
     const family = player?.rosterCar?.soundFamily || player?.phys?.profile?.soundFamily || '';
+    this._arcadeSeen = null;
+    this.audio.setEngineTraits?.({ turbo: /turbo|_sc/.test(family) });
+    this.audio.loadArcadeSfx?.('assets/racing-pack/audio/').catch(() => {});
     if (family && family !== 'formula' && this.audio.loadCarSoundFamily) {
       this.audio.loadCarSoundFamily(family, 'assets/racing-pack/audio/').catch(() => {});
     } else {
@@ -2242,6 +2245,27 @@ class Game {
     u.aspect.value = innerWidth / Math.max(1, innerHeight);
   }
 
+  /**
+   * Arcade sound layers and events: nitro, drift screech and wall scrape every
+   * frame; takedowns, near misses and traffic hits as they happen (the race
+   * counts them; this plays each new one once).
+   */
+  _arcadeAudio(dt, s, p) {
+    const a = this.audio;
+    if (!a.updateArcade) return;
+    a.updateArcade(dt, {
+      boosting: p.boosting, drifting: p.drifting, driftAngle: p.driftAngle, slip: p.slip,
+      speed: p.v, throttle: p.throttle, rpmFrac: p.rpmFrac, scraping: (p.wallScrape || 0) > 0.05,
+    });
+    const seen = this._arcadeSeen || (this._arcadeSeen = { takedowns: 0, nearMisses: 0, trafficHits: 0 });
+    if ((s.takedowns || 0) > seen.takedowns) a.takedown();
+    if ((s.nearMisses || 0) > seen.nearMisses) a.nearMiss(Math.random() < 0.5 ? -1 : 1);
+    if ((s.trafficHits || 0) > seen.trafficHits) a.trafficHit(!!s.lastTrafficHitBoosted);
+    seen.takedowns = s.takedowns || 0;
+    seen.nearMisses = s.nearMisses || 0;
+    seen.trafficHits = s.trafficHits || 0;
+  }
+
   /** Traffic cars at their pose between the last two simulation ticks. */
   _drawTraffic(traffic, alpha) {
     const bodies = this._trafficBodies;
@@ -2489,6 +2513,7 @@ class Game {
           regen: p.ersMode === 0,
           opponents: this._nearbyOpponentAudio(s, p),
         });
+        if (s.arcade) this._arcadeAudio(renderDt, s, p);
         // close high-speed passes: panned doppler whoosh (audio has its own cooldown)
         if (this.audio.passBy && s.entries) {
           const fx = Math.sin(p.heading), fz = Math.cos(p.heading);

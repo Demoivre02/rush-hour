@@ -192,6 +192,31 @@ function modelPerformance(perf, base = {}) {
  * handling, sound and performance figures and takes the model's name. Ids are
  * `model-<id>`, the same in every discipline, so a saved pick survives.
  */
+/**
+ * The racing pack's engine recording that fits a model's engine description
+ * (assets/racing-pack/audio/audio_manifest.json): "Twin-Turbo Inline-6" is
+ * i6_turbo, a non-turbo Honda/Acura four is the VTEC, and so on.
+ */
+export function soundFamilyFor(spec) {
+  const e = String(spec.engine || '').toLowerCase();
+  const boosted = /turbo/.test(e);
+  if (/electric/.test(e)) return 'electric';
+  if (/rotary/.test(e)) return boosted ? 'rotary2_turbo' : 'rotary2';
+  if (/w16|v16/.test(e)) return 'v16_turbo';
+  if (/v12/.test(e)) return boosted ? 'v12_turbo' : 'v12';
+  if (/v10/.test(e)) return 'v10';
+  if (/v8/.test(e)) return /supercharg/.test(e) ? 'v8_sc' : boosted ? 'v8_turbo' : 'v8';
+  if (/v6/.test(e)) return boosted ? 'v6_turbo' : 'v6';
+  if (/flat-?6/.test(e)) return boosted ? 'flat6_turbo' : 'flat6';
+  if (/flat-?4/.test(e)) return 'flat4';
+  if (/inline-?6|i6/.test(e)) return 'i6_turbo';
+  if (/inline-?4|i4/.test(e)) {
+    if (boosted) return 'i4_turbo';
+    return /honda|acura/i.test(spec.make || '') ? 'i4_vtec' : 'i4';
+  }
+  return null;
+}
+
 export function modelRoster(rosterCars, { race = false } = {}) {
   const used = new Set();
   const out = [];
@@ -208,6 +233,8 @@ export function modelRoster(rosterCars, { race = false } = {}) {
       model: spec.model,
       year: spec.year,
       engine: spec.engine || base.engine,
+      // the model's own engine note, not the borrowed handling car's
+      soundFamily: soundFamilyFor(spec) || base.soundFamily,
       name: `${spec.make} ${spec.model}`,
       modelId: id,
       thumb: `${LOCAL}thumbs/${id}.png`,

@@ -1716,6 +1716,8 @@ export class RaceSession {
   _trafficTick(dt) {
     for (const hit of this.traffic.update(dt, this.entries)) {
       if (!hit.entry.isPlayer) continue;
+      this.trafficHits = (this.trafficHits || 0) + 1;     // js/main.js plays the crash
+      this.lastTrafficHitBoosted = hit.boosting;
       const p = hit.entry.phys;
       if (hit.boosting) {
         p.battery = Math.min(1, (p.battery || 0) + 0.08);
