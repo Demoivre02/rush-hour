@@ -29,6 +29,8 @@ class Ctx {
   createStereoPanner() { return new Node(); }
   createDynamicsCompressor() { const n = new Node(); for (const k of ['threshold', 'knee', 'ratio', 'attack', 'release']) n[k] = new Param(); return n; }
   createBufferSource() { return new Src(); }
+  get sampleRate() { return 8000; }
+  createBuffer(ch, n) { const d = new Float32Array(n); return { length: n, getChannelData: () => d }; }
   createMediaElementSource() { return new Node(); }
   decodeAudioData(b) { return Promise.resolve({ fake: b }); }
   resume() {}
@@ -93,11 +95,15 @@ await a.loadArcadeSfx();
 await new Promise((r) => setTimeout(r, 0));
 const before = Ctx.started.length;
 a.takedown();
+const layers = Ctx.started.length - before;
 a.takedown();
-check(Ctx.started.length === before + 1, 'an effect cannot retrigger inside its cooldown');
+check(layers === 3 && Ctx.started.length === before + 3, 'a takedown layers metal, glass and a body thump, and cannot retrigger inside its cooldown');
 a.ctx.currentTime += 1;
 a.takedown();
-check(Ctx.started.length === before + 2, 'it plays again once the cooldown has passed');
+check(Ctx.started.length === before + 6, 'it plays again once the cooldown has passed');
+check(!JSON.stringify(Object.keys(a._sfx)).includes('racing-pack'), 'no effect comes from the racing pack');
+check(['g:screech', 'g:nitroLoop', 'g:hornA', 'g:blowoff', 'k:impactMetal_heavy_000'].every((k) => a._sfx[k]),
+  'synthesized effects and the Kenney recordings are loaded');
 a._voices = 8;
 a.ctx.currentTime += 5;
 check(!a._play('crashLight'), 'no more than eight effects at once');
@@ -118,6 +124,46 @@ a.playMusic('race');
 check(a._music.kind === 'race' && audioEls.at(-1).src.includes('race_'), 'races switch to the race playlist');
 a.playMusic(null);
 check(a._music === null, 'music can be stopped');
+
+console.log('[game-audio] modelled engines');
+{
+  const { engineSpecFor } = await import('../js/gameAudio.js');
+  const { MODEL_CARS } = await import('../js/modelCars.js');
+  check(Object.keys(MODEL_CARS).every((id) => engineSpecFor(id, '') !== engineSpecFor('', '') || id === 'r34'),
+    'every car model has its own engine spec');
+  check(engineSpecFor('', 'formula').redline >= 14000, 'the open-wheel car revs to 15,000');
+  // run the worklet's processor directly
+  let Proc = null;
+  globalThis.sampleRate = 48000;
+  globalThis.AudioWorkletProcessor = class { constructor() { this.port = {}; } };
+  globalThis.registerProcessor = (name, cls) => { Proc = cls; };
+  await import('../js/engineWorklet.js');
+  const renderSec = (spec, rpm, load, secs = 1) => {
+    const p = new Proc({ processorOptions: { spec } });
+    const out = new Float32Array(Math.round(secs * 48000 / 128) * 128);
+    for (let o = 0; o < out.length; o += 128) {
+      const ch = new Float32Array(128);
+      p.process([], [[ch]], { rpm: [rpm], load: [load], boost: [load] });
+      out.set(ch, o);
+    }
+    return out;
+  };
+  const rms = (x) => Math.sqrt(x.reduce((a, v) => a + v * v, 0) / x.length);
+  let clean = true;
+  for (const id of Object.keys(MODEL_CARS)) {
+    const sp = engineSpecFor(id, '');
+    const x = renderSec(sp, sp.redline * 0.7, 1, 0.5);
+    if (!x.every(Number.isFinite) || x.some((v) => Math.abs(v) > 1)) clean = false;
+  }
+  check(clean, 'every engine renders clean output (finite, never clipping)');
+  const v8 = engineSpecFor('charger', '');
+  const idle = rms(renderSec(v8, v8.idle, 0)), pull = rms(renderSec(v8, v8.redline * 0.8, 1));
+  check(idle > pull * 0.15 && idle < pull * 0.7, 'idle is audible but well below full throttle');
+  const limiter = renderSec(v8, v8.redline, 1, 1);
+  let quietBlocks = 0;
+  for (let o = 0; o < limiter.length; o += 480) if (rms(limiter.subarray(o, o + 480)) < pull * 0.25) quietBlocks++;
+  check(quietBlocks > 3, 'at the redline the limiter cuts the ignition in bursts');
+}
 
 if (fails) { console.log(`\n[game-audio] ${fails} FAILED`); process.exit(1); }
 console.log('\n[game-audio] ALL GAME AUDIO CHECKS PASSED');

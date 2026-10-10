@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Engine Lab</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; padding: 24px; background: #0b0f16; color: #e8eef6; font: 15px/1.5 system-ui, sans-serif; }
+  h1 { margin: 0 0 4px; font-style: italic; }
+  p { margin: 0 0 18px; opacity: .75; }
+  .cars { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px; margin-bottom: 20px; }
+  button { padding: 10px 12px; border: 1px solid #2a3a50; border-radius: 6px; background: #141c28; color: inherit; font: inherit; cursor: pointer; text-align: left; }
+  button.on { border-color: #2ec8ff; background: #10324a; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 10px 0; }
+  .act button { text-align: center; min-width: 120px; }
+  label { display: flex; gap: 10px; align-items: center; min-width: 320px; }
+  input[type=range] { flex: 1; }
+  .read { font-variant-numeric: tabular-nums; opacity: .85; }
+</style>
+</head>
+<body>
+<h1>Engine Lab</h1>
+<p>Each car's modelled engine (js/engineWorklet.js, specs in js/gameAudio.js). Pick a car, then try a pull, a blip or the sliders. Headphones help.</p>
+<div class="cars" id="cars"></div>
+<div class="row act">
+  <button id="pull">Full-throttle pull</button>
+  <button id="blip">Rev blip</button>
+  <button id="idle">Idle</button>
+  <button id="limiter">Hold on the limiter</button>
+  <button id="stop">Stop</button>
+</div>
+<div class="row"><label>RPM <input id="rpm" type="range" min="0" max="1" step="0.001" value="0"><span class="read" id="rpmRead"></span></label></div>
+<div class="row"><label>Throttle <input id="load" type="range" min="0" max="1" step="0.01" value="0"><span class="read" id="loadRead"></span></label></div>
+<script type="module">
+import { ENGINE_CARS, engineSpecFor } from '../js/gameAudio.js';
+let ctx = null, node = null, gain = null, spec = engineSpecFor(ENGINE_CARS[0], ''), anim = null;
+const $ = (id) => document.getElementById(id);
+const carsEl = $('cars');
+for (const id of ENGINE_CARS) {
+  const b = document.createElement('button');
+  b.textContent = id;
+  b.onclick = () => pick(id, b);
+  carsEl.append(b);
+}
+async function ensure() {
+  if (ctx) return;
+  ctx = new AudioContext();
+  await ctx.audioWorklet.addModule('../js/engineWorklet.js');
+  node = new AudioWorkletNode(ctx, 'rush-engine', { numberOfInputs: 0, outputChannelCount: [1], processorOptions: { spec } });
+  gain = ctx.createGain();
+  gain.gain.value = 0.8;
+  node.connect(gain).connect(ctx.destination);
+}
+async function pick(id, btn) {
+  await ensure();
+  spec = engineSpecFor(id, '');
+  node.port.postMessage({ spec });
+  for (const b of carsEl.children) b.classList.toggle('on', b === btn);
+  set(0, 0);
+}
+function set(frac, load) {
+  if (!node) return;
+  const rpm = spec.idle + frac * (spec.redline - spec.idle);
+  const t = ctx.currentTime;
+  node.parameters.get('rpm').setTargetAtTime(rpm, t, 0.02);
+  node.parameters.get('load').setTargetAtTime(load, t, 0.03);
+  node.parameters.get('boost').setTargetAtTime(load, t, 0.1);
+  $('rpm').value = frac; $('load').value = load;
+  $('rpmRead').textContent = `${Math.round(rpm)} rpm`;
+  $('loadRead').textContent = `${Math.round(load * 100)}%`;
+}
+function run(steps) {
+  cancelAnimationFrame(anim);
+  const t0 = performance.now();
+  const total = steps.reduce((a, s) => a + s[0], 0);
+  const tick = () => {
+    let t = (performance.now() - t0) / 1000;
+    if (t > total) return;
+    for (const [dur, f0, f1, load] of steps) {
+      if (t <= dur) { set(f0 + (f1 - f0) * (t / dur), load); break; }
+      t -= dur;
+    }
+    anim = requestAnimationFrame(tick);
+  };
+  tick();
+}
+$('pull').onclick = async () => { await ensure(); run([[0.8, 0, 0, 0], [4, 0.05, 1, 1], [0.5, 1, 1, 1], [2, 0.95, 0.15, 0], [1, 0, 0, 0]]); };
+$('blip').onclick = async () => { await ensure(); run([[0.4, 0, 0, 0], [0.35, 0, 0.6, 1], [1.4, 0.6, 0, 0]]); };
+$('idle').onclick = async () => { await ensure(); cancelAnimationFrame(anim); set(0, 0); };
+$('limiter').onclick = async () => { await ensure(); cancelAnimationFrame(anim); set(1, 1); };
+$('stop').onclick = () => { cancelAnimationFrame(anim); ctx?.suspend(); ctx = null; node = null; };
+$('rpm').oninput = async (e) => { await ensure(); cancelAnimationFrame(anim); set(+e.target.value, +$('load').value); };
+$('load').oninput = async (e) => { await ensure(); cancelAnimationFrame(anim); set(+$('rpm').value, +e.target.value); };
+</script>
+</body>
+</html>

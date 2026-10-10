@@ -842,6 +842,7 @@ export class UI {
       ['Music: "Drum and bass"', 'bertsz', 'https://opengameart.org/content/drum-and-bass', 'CC0'],
       ['Music: "synthwave_type"', 'G_P', 'https://opengameart.org/content/synthwavetype', 'CC0'],
       ['City Kit (Commercial, Suburban), Mini Characters', 'Kenney', 'https://kenney.nl', 'CC0'],
+      ['Impact Sounds, Interface Sounds', 'Kenney', 'https://kenney.nl/assets/impact-sounds', 'CC0'],
       ['Road, gravel and grass scans', 'Poly Haven, ambientCG', 'https://polyhaven.com', 'CC0'],
       ['three.js', 'the three.js authors', 'https://threejs.org', 'MIT'],
       ['Based on APEX FORMULA 2026', 'Avi Hacker', 'https://github.com/ahacker-1/apex-formula-2026', 'Apache-2.0'],

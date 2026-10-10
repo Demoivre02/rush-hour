@@ -33,30 +33,191 @@ const MUSIC = Object.freeze({
 
 const BANDS = ['idle', 'low', 'mid', 'high', 'redline'];
 
-// Effects used, by event: [file in the pack's sfx folder, gain, cooldown s].
+// Effects by event: layers played together (one random variant from each),
+// gain and cooldown. 'k:' = a recording in assets/sfx (Kenney, CC0),
+// 'g:' = synthesized at start-up (synthEffects() below). Nothing comes from
+// the racing pack any more.
+const v3 = (name) => [0, 1, 2].map((i) => `k:${name}_00${i}`);
 const SFX = Object.freeze({
-  nitroOn: ['nitro_activate', 0.42, 0.6],
-  takedown: ['collision_heavy', 0.62, 0.3],
-  crashHeavy: ['collision_heavy', 0.5, 0.35],
-  crashMedium: ['collision_medium', 0.42, 0.25],
-  crashLight: ['collision_light', 0.32, 0.18],
-  blowoff: ['turbo_blowoff', 0.22, 1.2],
-  backfire: ['backfire_pop', 0.26, 0.5],
-  hornA: ['horn_a', 0.22, 1.5],
-  hornB: ['horn_b', 0.22, 1.5],
-  shiftUp: ['gearshift_up', 0.16, 0.12],
-  shiftDown: ['gearshift_down', 0.16, 0.12],
-  beep: ['countdown_beep', 0.38, 0.3],
-  go: ['countdown_go', 0.45, 0.5],
-  finish: ['race_finish', 0.45, 2],
-  uiSelect: ['ui_select', 0.18, 0.05],
-  uiConfirm: ['ui_confirm', 0.22, 0.1],
-  chirp: ['tyre_chirp', 0.16, 0.6],
+  nitroOn: { layers: [['g:nitroOn']], gain: 0.5, cool: 0.6 },
+  takedown: { layers: [v3('impactMetal_heavy'), v3('impactGlass_heavy'), v3('impactPunch_heavy')], gain: 0.75, cool: 0.3 },
+  crashHeavy: { layers: [v3('impactMetal_heavy'), v3('impactPlate_heavy')], gain: 0.62, cool: 0.35 },
+  crashMedium: { layers: [v3('impactMetal_medium'), v3('impactGlass_medium')], gain: 0.5, cool: 0.25 },
+  crashLight: { layers: [v3('impactMetal_light')], gain: 0.42, cool: 0.18 },
+  blowoff: { layers: [['g:blowoff']], gain: 0.3, cool: 1.2 },
+  backfire: { layers: [['g:pop1', 'g:pop2']], gain: 0.36, cool: 0.35 },
+  hornA: { layers: [['g:hornA']], gain: 0.26, cool: 1.5 },
+  hornB: { layers: [['g:hornB']], gain: 0.26, cool: 1.5 },
+  shiftUp: { layers: [['g:shift']], gain: 0.22, cool: 0.12 },
+  shiftDown: { layers: [['g:shift']], gain: 0.2, cool: 0.12 },
+  beep: { layers: [['g:beep']], gain: 0.4, cool: 0.3 },
+  go: { layers: [['g:go']], gain: 0.45, cool: 0.5 },
+  finish: { layers: [['g:finish']], gain: 0.4, cool: 2 },
+  uiSelect: { layers: [['k:ui_click_002']], gain: 0.35, cool: 0.05 },
+  uiConfirm: { layers: [['k:ui_confirmation_002']], gain: 0.4, cool: 0.1 },
+  whoosh: { layers: [['g:whoosh']], gain: 0.4, cool: 0.6 },
 });
-const LOOPS = Object.freeze({ nitro: 'nitro_loop', screech: 'tyre_screech_loop', scrape: 'scrape_loop' });
+const LOOPS = Object.freeze({ nitro: 'g:nitroLoop', screech: 'g:screech', scrape: 'g:scrape' });
+
+// ---- synthesized effects ------------------------------------------------------
+// Rendered once into buffers when audio starts: small, licence-free, and
+// shaped for this game rather than borrowed.
+function synthEffects(ctx) {
+  const sr = ctx.sampleRate;
+  let seed = 12345;
+  const rnd = () => { seed ^= seed << 13; seed ^= seed >>> 17; seed ^= seed << 5; return ((seed >>> 0) / 4294967296) * 2 - 1; };
+  const make = (secs, fn) => {
+    const n = Math.round(secs * sr);
+    const buf = ctx.createBuffer(1, n, sr);
+    const d = buf.getChannelData(0);
+    const st = {};
+    for (let i = 0; i < n; i++) d[i] = fn(i / sr, i, st, n);
+    // normalise to a sane peak
+    let peak = 0;
+    for (let i = 0; i < n; i++) peak = Math.max(peak, Math.abs(d[i]));
+    if (peak > 0) for (let i = 0; i < n; i++) d[i] *= 0.85 / peak;
+    return buf;
+  };
+  // a two-pole resonant band-pass, per call state in `st`
+  const bp = (st, k, x, f, q) => {
+    const w = 2 * Math.PI * f / sr, a = Math.sin(w) / (2 * q), c = Math.cos(w);
+    const b0 = a / (1 + a), a1 = -2 * c / (1 + a), a2 = (1 - a) / (1 + a);
+    const z1 = st[k + '1'] || 0, z2 = st[k + '2'] || 0, y1 = st[k + 'y1'] || 0, y2 = st[k + 'y2'] || 0;
+    const y = b0 * x - b0 * z2 - a1 * y1 - a2 * y2;
+    st[k + '2'] = z1; st[k + '1'] = x; st[k + 'y2'] = y1; st[k + 'y1'] = y;
+    return y;
+  };
+  const lp = (st, k, x, f) => { const a = 1 - Math.exp(-2 * Math.PI * f / sr); st[k] = (st[k] || 0) + (x - (st[k] || 0)) * a; return st[k]; };
+  const loopFade = (t, n, secs) => Math.min(1, t / 0.05, (secs - t) / 0.05);   // soft ends so loops do not click
+  const out = {};
+  // tyre squeal: rubber stick-slip, a resonant band of noise that wanders in pitch
+  out.screech = make(2, (t, i, st) => {
+    const f = 1500 + 260 * Math.sin(t * 2 * Math.PI * 3.1) + 120 * Math.sin(t * 2 * Math.PI * 7.7);
+    return (bp(st, 'a', rnd(), f, 14) * 0.9 + bp(st, 'b', rnd(), f * 2.03, 18) * 0.35) * loopFade(t, 0, 2);
+  });
+  // nitro: rushing gas, low roar plus hiss, with a slight flutter
+  out.nitroLoop = make(2, (t, i, st) => {
+    const flutter = 0.85 + 0.15 * Math.sin(t * 2 * Math.PI * 9);
+    return (lp(st, 'l', rnd(), 700) * 1.6 + bp(st, 'h', rnd(), 4200, 0.8) * 0.5) * flutter * loopFade(t, 0, 2);
+  });
+  out.nitroOn = make(0.9, (t, i, st) => {
+    const env = Math.min(1, t / 0.06) * Math.exp(-t * 3.2);
+    const f = 300 + 3000 * Math.min(1, t / 0.5);
+    return (bp(st, 's', rnd(), f, 1.4) * 1.2 + lp(st, 'l', rnd(), 500)) * env;
+  });
+  // metal scraping along a wall: grinding band noise with crackles
+  out.scrape = make(2, (t, i, st) => {
+    const crack = rnd() > 0.995 ? rnd() * 4 : 0;
+    return (bp(st, 'a', rnd(), 2300 + 400 * Math.sin(t * 13), 3) + bp(st, 'b', rnd(), 900, 2) * 0.6 + crack) * loopFade(t, 0, 2);
+  });
+  // turbo blow-off valve: a hiss falling in pitch
+  out.blowoff = make(0.45, (t, i, st) => bp(st, 'a', rnd(), 3600 - 2600 * (t / 0.45), 2.2) * Math.exp(-t * 7) * Math.min(1, t / 0.01));
+  // exhaust pops: a low thump and a sharp crack
+  const pop = (pitch) => make(0.16, (t, i, st) => (Math.sin(2 * Math.PI * pitch * t) * Math.exp(-t * 40) + lp(st, 'n', rnd(), 2500) * Math.exp(-t * 60) * 1.4));
+  out.pop1 = pop(70); out.pop2 = pop(95);
+  // car horns: two notes together, a little buzzy, as real horns are
+  const horn = (f1, f2) => make(0.55, (t, i, st) => {
+    const env = Math.min(1, t / 0.02) * Math.min(1, (0.55 - t) / 0.06);
+    const sq = (f) => Math.tanh(Math.sin(2 * Math.PI * f * t) * 4);
+    return lp(st, 'h', (sq(f1) + sq(f2)) * 0.5, 2600) * env;
+  });
+  out.hornA = horn(415, 520); out.hornB = horn(350, 440);
+  // gear change: a short mechanical clunk
+  out.shift = make(0.09, (t, i, st) => (Math.sin(2 * Math.PI * 140 * t) * 0.8 + lp(st, 'n', rnd(), 1800) * 0.7) * Math.exp(-t * 55));
+  // near-miss: air ripped past the car, sweeping down
+  out.whoosh = make(0.6, (t, i, st) => bp(st, 'a', rnd(), 2400 - 1800 * (t / 0.6), 1.2) * Math.sin(Math.PI * Math.min(1, t / 0.6)) ** 2);
+  // start lights and the flag
+  const tone = (f, secs, harm = 0.3) => make(secs, (t) => (Math.sin(2 * Math.PI * f * t) + harm * Math.sin(4 * Math.PI * f * t)) * Math.min(1, t / 0.005) * Math.exp(-t * (3 / secs)));
+  out.beep = tone(880, 0.18);
+  out.go = tone(1320, 0.5, 0.45);
+  out.finish = make(1.4, (t) => {
+    const notes = [523.25, 659.25, 783.99, 1046.5];
+    let y = 0;
+    notes.forEach((f, k) => { const s0 = k * 0.12; if (t > s0) y += Math.sin(2 * Math.PI * f * (t - s0)) * Math.exp(-(t - s0) * 2.2); });
+    return y * 0.4;
+  });
+  return out;
+}
+
 const MAX_VOICES = 8;
 
 const clamp = (v, lo, hi) => (v < lo ? lo : v > hi ? hi : v);
+
+// ---- engines: one physically modelled engine per car (js/engineWorklet.js) --
+// Firing angles over the 720° four-stroke cycle and the exhaust bank each
+// cylinder feeds; the layouts are what give each engine its voice.
+const LAYOUT = {
+  i4: { firing: [0, 180, 360, 540], banks: [0, 0, 0, 0] },
+  boxer4: { firing: [0, 180, 360, 540], banks: [0, 1, 0, 1] },            // unequal headers: the rumble
+  i6: { firing: [0, 120, 240, 360, 480, 600], banks: [0, 0, 0, 0, 0, 0] },
+  i6twin: { firing: [0, 120, 240, 360, 480, 600], banks: [0, 1, 0, 1, 0, 1] }, // 1-5-3-6-2-4, front/rear turbo
+  v6: { firing: [0, 120, 240, 360, 480, 600], banks: [0, 1, 0, 1, 0, 1] },
+  flat6: { firing: [0, 120, 240, 360, 480, 600], banks: [0, 1, 0, 1, 0, 1] },
+  // crossplane V8, 1-8-4-3-6-5-7-2: uneven pulses into each bank, the burble
+  v8cross: { firing: [0, 90, 180, 270, 360, 450, 540, 630], banks: [0, 1, 1, 0, 1, 0, 0, 1] },
+  // flat-plane V8 alternates banks evenly: the shriek
+  v8flat: { firing: [0, 90, 180, 270, 360, 450, 540, 630], banks: [0, 1, 0, 1, 0, 1, 0, 1] },
+  v10: { firing: [0, 72, 144, 216, 288, 360, 432, 504, 576, 648], banks: [0, 1, 0, 1, 0, 1, 0, 1, 0, 1] },
+  v12: { firing: [0, 60, 120, 180, 240, 300, 360, 420, 480, 540, 600, 660], banks: [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1] },
+};
+
+const eng = (layout, o) => Object.freeze({ ...LAYOUT[layout], ...o });
+
+// Per car, from the real engine: layout, rev range, exhaust pipe resonance
+// (pipeMs), how open the exhaust is (muffler / mufflerOpen Hz), induction
+// (intake), forced induction (turbo / whine), cam lope (rough), pops.
+const ENGINE_SPECS = Object.freeze({
+  // Honda B18C / K20A: high-revving VTEC fours, the cam change at the top
+  integra: eng('i4', { idle: 850, redline: 8400, vtecRpm: 5800, pipeMs: [2.3], fb: 0.5, damp: 0.45, muffler: 2100, mufflerOpen: 7200, intake: 0.55, noise: 0.62, pops: 0.15, rough: 0.05, drive: 1.8 }),
+  rsx: eng('i4', { idle: 800, redline: 8100, vtecRpm: 6000, pipeMs: [2.5], fb: 0.52, damp: 0.42, muffler: 1900, mufflerOpen: 6600, intake: 0.5, noise: 0.6, pops: 0.15, rough: 0.05, drive: 1.8 }),
+  giulietta: eng('i4', { idle: 800, redline: 6500, pipeMs: [2.8], fb: 0.5, muffler: 1500, mufflerOpen: 4300, intake: 0.3, turbo: 0.8, turboHz: 3600, pops: 0.5, drive: 1.7 }),
+  crv: eng('i4', { idle: 750, redline: 6300, pipeMs: [3.0], fb: 0.45, muffler: 1000, mufflerOpen: 2600, intake: 0.15, turbo: 0.35, turboHz: 3000, pops: 0, level: 0.38 }),
+  // Nissan RB26 / Toyota 2JZ / B58 / L28: straight-sixes, smooth and turbo-whistly
+  r34: eng('i6twin', { idle: 950, redline: 8000, pipeMs: [3.0, 3.1], fb: 0.56, muffler: 1600, mufflerOpen: 5600, intake: 0.35, turbo: 1, turboHz: 4200, pops: 0.4, drive: 2 }),
+  supramk4: eng('i6twin', { idle: 800, redline: 7200, pipeMs: [3.4, 3.5], fb: 0.58, muffler: 1400, mufflerOpen: 5000, intake: 0.3, turbo: 1.1, turboHz: 3400, pops: 0.35, drive: 2 }),
+  grsupraveilside: eng('i6', { idle: 750, redline: 7000, pipeMs: [3.3], fb: 0.55, muffler: 1300, mufflerOpen: 4800, intake: 0.25, turbo: 0.6, turboHz: 3800, pops: 0.9, drive: 2 }),
+  fairladyz: eng('i6twin', { idle: 900, redline: 7000, pipeMs: [3.1, 3.3], fb: 0.5, muffler: 1800, mufflerOpen: 5200, noise: 0.7, intake: 0.4, turbo: 0.8, turboHz: 3300, rough: 0.25, pops: 0.6, drive: 2.1 }),
+  // American V8s: crossplane burble, lumpy cams, the Charger's blower whine
+  charger: eng('v8cross', { idle: 700, redline: 6500, pipeMs: [4.2, 4.4], fb: 0.6, damp: 0.3, thumpHz: 55, muffler: 1100, mufflerOpen: 3700, intake: 0.3, whine: 1, whineRatio: 2.6, rough: 0.6, pops: 0.5, drive: 2.4 }),
+  cuda: eng('v8cross', { idle: 700, redline: 6800, pipeMs: [4.0, 4.3], fb: 0.62, damp: 0.3, thumpHz: 52, muffler: 1200, mufflerOpen: 3900, intake: 0.35, rough: 0.7, pops: 0.5, drive: 2.4 }),
+  slsamg: eng('v8cross', { idle: 750, redline: 7200, pipeMs: [3.6, 3.8], fb: 0.62, damp: 0.32, thumpHz: 60, muffler: 1300, mufflerOpen: 4800, intake: 0.35, rough: 0.25, pops: 0.75, drive: 2.4 }),
+  // flat-plane V8s: high and shrieking
+  jesko: eng('v8flat', { idle: 1000, redline: 8500, pipeMs: [2.6, 2.6], fb: 0.55, muffler: 2000, mufflerOpen: 7500, intake: 0.4, turbo: 0.8, turboHz: 3800, noise: 0.65, pops: 0.6, drive: 2.2 }),
+  sf90xx: eng('v8flat', { idle: 1000, redline: 8000, pipeMs: [2.7, 2.7], fb: 0.52, muffler: 1700, mufflerOpen: 6200, intake: 0.35, turbo: 0.6, turboHz: 3600, pops: 0.4, level: 0.48, drive: 2 }),
+  mclaren720gt3: eng('v8flat', { idle: 1100, redline: 8000, pipeMs: [2.4, 2.4], fb: 0.55, muffler: 2400, mufflerOpen: 8000, intake: 0.4, turbo: 0.7, turboHz: 3900, pops: 1, drive: 2.6 }),
+  audia4dtm: eng('v8flat', { idle: 1200, redline: 9000, pipeMs: [2.3, 2.3], fb: 0.56, muffler: 2600, mufflerOpen: 8500, intake: 0.45, pops: 0.8, drive: 2.8 }),
+  mercedesccoupedtm: eng('v8flat', { idle: 1200, redline: 9000, pipeMs: [2.5, 2.5], fb: 0.56, muffler: 2500, mufflerOpen: 8200, intake: 0.45, pops: 0.8, drive: 2.8 }),
+  mercedesclkdtm: eng('v8cross', { idle: 1200, redline: 8800, pipeMs: [2.7, 2.8], fb: 0.58, muffler: 2400, mufflerOpen: 8000, intake: 0.45, rough: 0.2, pops: 0.8, drive: 2.8 }),
+  // V6s: the NSX's induction howl, the 296's "piccolo V12", a 11k-rpm race V6
+  acuransx: eng('v6', { idle: 900, redline: 8000, pipeMs: [2.8, 2.8], fb: 0.52, muffler: 1800, mufflerOpen: 6400, intake: 0.6, noise: 0.55, pops: 0.2, drive: 1.9 }),
+  ferrari296gt3: eng('v6', { idle: 1100, redline: 8500, pipeMs: [2.3, 2.3], fb: 0.55, muffler: 2400, mufflerOpen: 8200, intake: 0.4, turbo: 0.7, turboHz: 4000, pops: 0.9, drive: 2.5 }),
+  opelcalibradtm: eng('v6', { idle: 1500, redline: 11500, pipeMs: [2.0, 2.0], fb: 0.55, muffler: 3000, mufflerOpen: 9000, intake: 0.5, noise: 0.7, pops: 0.6, drive: 2.6 }),
+  // V12s: overlapping firings, a smooth scream
+  eb110: eng('v12', { idle: 1000, redline: 8250, pipeMs: [2.6, 2.6], fb: 0.5, muffler: 1800, mufflerOpen: 6500, intake: 0.35, turbo: 1.2, turboHz: 4500, pops: 0.4, drive: 1.9 }),
+  db11: eng('v12', { idle: 750, redline: 7000, pipeMs: [3.1, 3.1], fb: 0.6, muffler: 1300, mufflerOpen: 4600, intake: 0.3, turbo: 0.5, turboHz: 3400, pops: 0.55, drive: 1.9 }),
+  // Porsche flat-sixes and Subaru's boxer four
+  porsche996gt300: eng('flat6', { idle: 1100, redline: 8800, pipeMs: [2.4, 2.6], fb: 0.56, muffler: 2600, mufflerOpen: 8500, intake: 0.45, noise: 0.62, pops: 0.6, drive: 2.6 }),
+  porsche992gt3r: eng('flat6', { idle: 1100, redline: 9400, pipeMs: [2.5, 2.7], fb: 0.56, muffler: 2500, mufflerOpen: 8800, intake: 0.5, noise: 0.62, pops: 0.6, drive: 2.6 }),
+  brzgt300: eng('boxer4', { idle: 1000, redline: 8000, pipeMs: [2.6, 4.0], fb: 0.58, muffler: 2200, mufflerOpen: 7000, intake: 0.4, turbo: 0.8, turboHz: 3700, pops: 0.9, rough: 0.2, drive: 2.4 }),
+});
+
+// Cars without a model of their own (spec class cars, the open-wheel car)
+// by the racing pack's engine family.
+const FAMILY_SPECS = Object.freeze({
+  formula: eng('v6', { idle: 4000, redline: 15000, pipeMs: [1.6, 1.6], fb: 0.5, muffler: 3500, mufflerOpen: 10000, intake: 0.4, turbo: 0.3, turboHz: 5200, pops: 0.2, drive: 2.2 }),
+  v8: ENGINE_SPECS.slsamg, v8_sc: ENGINE_SPECS.charger, v8_turbo: ENGINE_SPECS.jesko,
+  v10: eng('v10', { idle: 900, redline: 9000, pipeMs: [2.4, 2.4], fb: 0.55, muffler: 2200, mufflerOpen: 8000, intake: 0.45, pops: 0.5, drive: 2.3 }),
+  v12: ENGINE_SPECS.db11, v12_turbo: ENGINE_SPECS.eb110, v6: ENGINE_SPECS.acuransx, v6_turbo: ENGINE_SPECS.ferrari296gt3,
+  i6_turbo: ENGINE_SPECS.r34, i4: ENGINE_SPECS.rsx, i4_vtec: ENGINE_SPECS.integra, i4_turbo: ENGINE_SPECS.giulietta,
+  flat6: ENGINE_SPECS.porsche996gt300, flat6_turbo: ENGINE_SPECS.porsche992gt3r, flat4: ENGINE_SPECS.brzgt300,
+});
+
+/** Every car with an engine of its own (tools/engine-lab.html lists them). */
+export const ENGINE_CARS = Object.freeze(Object.keys(ENGINE_SPECS));
+
+export function engineSpecFor(modelId, family) {
+  return ENGINE_SPECS[modelId] || FAMILY_SPECS[family] || ENGINE_SPECS.r34;
+}
 
 export class GameAudio {
   constructor() {
@@ -117,7 +278,22 @@ export class GameAudio {
     this.sfxGain = ctx.createGain();
     this.sfxGain.gain.value = 0.9;
     this.sfxGain.connect(this.master);
+    // the continuous effect loops (nitro, screech, scrape) share a bus that
+    // dips under one-shot crashes, so the two never pile on top of each other
+    this.loopBus = ctx.createGain();
+    this.loopBus.connect(this.sfxGain);
+    // the nearest rival's engine: its own gain and stereo position
+    this.rivalGain = ctx.createGain();
+    this.rivalGain.gain.value = 0;
+    this.rivalPan = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
+    if (this.rivalPan) this.rivalGain.connect(this.rivalPan).connect(this.master);
+    else this.rivalGain.connect(this.master);
     this._ready = true;
+    // the modelled engines run on the audio thread; until (or unless) the
+    // worklet loads, the recorded loops are the fallback
+    ctx.audioWorklet?.addModule('js/engineWorklet.js')
+      .then(() => this._buildVoices())
+      .catch(() => {});
     this.loadArcadeSfx(this._packBase);
     if (this._family) this.loadCarSoundFamily(this._family, this._packBase);
     if (this._wantMusic) this.playMusic(this._wantMusic);
@@ -208,20 +384,22 @@ export class GameAudio {
     }, seconds * 1000 + 200);
   }
 
-  /** Dip the music under a big moment. */
+  /** Dip the music, and the effect loops, under a big moment. */
   _duck(amount = 0.45, hold = 0.35) {
     if (!this._ready) return;
     const t = this.ctx.currentTime;
-    const g = this.musicDuck.gain;
-    g.cancelScheduledValues(t);
-    g.setTargetAtTime(1 - amount, t, 0.03);
-    g.setTargetAtTime(1, t + hold, 0.4);
+    for (const [g, depth] of [[this.musicDuck.gain, amount], [this.loopBus.gain, Math.min(0.85, amount + 0.3)]]) {
+      g.cancelScheduledValues(t);
+      g.setTargetAtTime(1 - depth, t, 0.03);
+      g.setTargetAtTime(1, t + hold, 0.4);
+    }
   }
 
   // ---- engine ----------------------------------------------------------------
 
   async loadCarSoundFamily(family, base = this._packBase) {
     this._packBase = base || this._packBase;
+    if (this._voice) return true;        // the modelled engine is in charge
     // the open-wheel car has no recording of its own: the screaming V10 fits
     this._family = family && family !== 'formula' ? family : 'v10';
     if (!this._ready) return false;
@@ -272,6 +450,33 @@ export class GameAudio {
     }
   }
 
+  _buildVoices() {
+    const mk = (spec) => new AudioWorkletNode(this.ctx, 'rush-engine', {
+      numberOfInputs: 0, numberOfOutputs: 1, outputChannelCount: [1], processorOptions: { spec },
+    });
+    this._playerSpec = this._playerSpec || engineSpecFor(this._modelId, this._family);
+    this._voice = mk(this._playerSpec);
+    this._voice.connect(this.engineGain);
+    this._rival = mk(engineSpecFor('', 'v8'));
+    this._rival.connect(this.rivalGain);
+    this._rivalId = null;
+    this._rpm = this._playerSpec.idle;
+    this._load01 = 0;
+    // the recorded loops are only the fallback now
+    this._disposeEngine();
+  }
+
+  /** The player's car: picks its modelled engine (by model, else engine family). */
+  setPlayerCar(modelId, family) {
+    this._modelId = modelId || '';
+    this._family = family && family !== 'formula' ? family : (family || 'v10');
+    this._playerSpec = engineSpecFor(this._modelId, family);
+    this._rpm = this._playerSpec.idle;
+    this._load01 = 0;
+    this._started = false;
+    this._voice?.port.postMessage({ spec: this._playerSpec });
+  }
+
   startEngine() {
     this._engineOn = true;
     if (!this._ready) return;
@@ -306,16 +511,22 @@ export class GameAudio {
    *   the filter closes, the muffled burble of engine braking.
    */
   update(dt, s) {
-    if (!this._ready) return;
-    const e = this._engine;
-    if (!e || !s) return;
+    if (!this._ready || !s) return;
     dt = clamp(dt || 0.016, 0.001, 0.1);
+    this._updateRival(dt, s);
+    const voice = this._voice;
+    const e = this._engine;
+    const spec = voice ? this._playerSpec : null;
+    const idle = spec ? spec.idle : e?.idle;
+    const redline = spec ? spec.redline : e?.redline;
+    if (!idle || !redline) return;
     const t = this.ctx.currentTime;
-    const range = e.redline - e.idle;
+    const range = redline - idle;
     const thr = clamp(s.throttle || 0, 0, 1);
     const speed = s.speed || 0;
-    let target = e.idle + clamp(s.rpmFrac || 0, 0, 1) * range;
-    if (speed < 2) target = e.idle + thr * 0.62 * range;          // free revs on the grid
+    let target = idle + clamp(s.rpmFrac || 0, 0, 1) * range;
+    if (speed < 2) target = idle + thr * 0.62 * range;          // free revs on the grid
+    if (thr > 0.9 && speed < 2) target = Math.max(target, redline);   // hold it flat: the limiter
     // gear changes: an upshift drops the revs in a blink
     const shifted = s.gear != null && this._gear != null && s.gear !== this._gear;
     this._gear = s.gear;
@@ -323,15 +534,25 @@ export class GameAudio {
     this._shiftT = Math.max(0, (this._shiftT || 0) - dt);
     const rise = (thr > 0.1 ? 1.6 : 0.5) * range;               // rpm per second
     const fall = this._shiftT > 0 ? 12 * range : (thr > 0.1 ? 1.4 : 0.55) * range;
+    if (!(this._rpm > 0)) this._rpm = idle;
     const d = target - this._rpm;
     this._rpm += d > 0 ? Math.min(d, rise * dt) : Math.max(d, -fall * dt);
     const rpm = this._rpm;
-    const revs = clamp((rpm - e.idle) / range, 0, 1);
+    const revs = clamp((rpm - idle) / range, 0, 1);
     // load follows the throttle with a little lag; braking means none
-    const loadTarget = (s.brake || 0) > 0.1 ? 0 : thr;
+    const loadTarget = (s.brake || 0) > 0.1 || this._shiftT > 0 ? 0 : thr;
     this._load01 += (loadTarget - this._load01) * Math.min(1, dt * 9);
     const load = this._load01;
-    // the two bands either side of the rpm, equal-power crossfade, pitched
+
+    if (voice) {
+      const p = voice.parameters;
+      p.get('rpm').setTargetAtTime(rpm, t, 0.015);
+      p.get('load').setTargetAtTime(load, t, 0.03);
+      p.get('boost').setTargetAtTime(s.boost ? 1 : load, t, 0.1);
+      return;
+    }
+
+    // fallback: the recorded loops (no AudioWorklet)
     let hi = e.layers.findIndex((l) => l.rpm >= rpm);
     if (hi < 0) hi = e.layers.length - 1;
     const lo = Math.max(0, hi - 1);
@@ -344,14 +565,47 @@ export class GameAudio {
       l.src.playbackRate.setTargetAtTime(clamp(rpm / l.rpm, 0.5, 2), t, 0.03);
     });
     if (e.decel) {
-      // the overrun loop carries the sound while coasting and braking
       const overrun = (1 - load) * clamp(revs * 1.6, 0, 1) * (speed > 3 ? 0.75 : 0.2);
       e.decel.gain.gain.setTargetAtTime(overrun, t, 0.05);
       e.decel.src.playbackRate.setTargetAtTime(clamp(0.7 + revs * 0.6, 0.5, 1.6), t, 0.05);
     }
-    // the exhaust note opens up with load and revs
     const cutoff = 700 + (2200 + 9000 * load) * (0.55 + 0.45 * revs);
     this.engineFilter.frequency.setTargetAtTime(cutoff, t, 0.04);
+  }
+
+  /**
+   * The nearest rival's engine, heard as it closes and passes: its own
+   * modelled engine at its revs, louder as it nears, panned to its side and
+   * Doppler-shifted (higher approaching, dropping as it pulls away).
+   */
+  _updateRival(dt, s) {
+    const node = this._rival;
+    if (!node) return;
+    const t = this.ctx.currentTime;
+    const cue = (s.opponents || []).find((c) => c.distance < 60);
+    if (!cue || !this._engineOn) {
+      this.rivalGain.gain.setTargetAtTime(0, t, 0.25);
+      return;
+    }
+    const key = cue.modelId || cue.family || 'v8';
+    if (key !== this._rivalId) {
+      this._rivalId = key;
+      this._rivalSpec = engineSpecFor(cue.modelId, cue.family);
+      node.port.postMessage({ spec: this._rivalSpec });
+    }
+    const spec = this._rivalSpec;
+    const frac = clamp(((cue.rpmFrac || 0) - 0.18) / 0.86, 0, 1);
+    // closing speed along the line between the cars: + when coming together
+    const along = Math.abs(cue.ahead || 0) / Math.max(1, cue.distance);
+    const closing = (cue.relativeSpeed || 0) * (cue.ahead < 0 ? 1 : -1) * along;
+    const doppler = clamp(343 / (343 - closing), 0.82, 1.22);
+    const rpm = (spec.idle + frac * (spec.redline - spec.idle)) * doppler;
+    node.parameters.get('rpm').setTargetAtTime(rpm, t, 0.04);
+    node.parameters.get('load').setTargetAtTime(clamp(cue.throttle ?? 0.8, 0, 1), t, 0.06);
+    node.parameters.get('boost').setTargetAtTime(cue.throttle ?? 0.8, t, 0.2);
+    const gain = 0.55 / (1 + (cue.distance / 9) ** 2);
+    this.rivalGain.gain.setTargetAtTime(gain, t, 0.06);
+    if (this.rivalPan) this.rivalPan.pan.setTargetAtTime(clamp(cue.side * Math.min(1, 6 / Math.max(1, cue.distance) + 0.3), -0.85, 0.85), t, 0.06);
   }
 
   // ---- effects -------------------------------------------------------------
@@ -360,37 +614,44 @@ export class GameAudio {
     this._packBase = base || this._packBase;
     if (!this._ready || this._sfxLoading) return;
     this._sfxLoading = true;
-    const names = new Set([...Object.values(SFX).map((v) => v[0]), ...Object.values(LOOPS)]);
-    await Promise.allSettled([...names].map(async (n) => {
-      this._sfx[n] = await this._load(this._pack(`sfx/${n}.wav`));
+    for (const [name, buf] of Object.entries(synthEffects(this.ctx))) this._sfx[`g:${name}`] = buf;
+    const files = new Set(Object.values(SFX).flatMap((d) => d.layers.flat()).filter((n) => n.startsWith('k:')));
+    await Promise.allSettled([...files].map(async (n) => {
+      this._sfx[n] = await this._load(`assets/sfx/${n.slice(2)}.mp3`);
     }));
   }
 
-  /** Play one effect, respecting its cooldown and the voice cap. */
+  /** Play one effect (all its layers), respecting its cooldown and the voice cap. */
   _play(event, { gain = 1, rate = 1, pan = 0, jitter = 0.04 } = {}) {
     const def = SFX[event];
     if (!this._ready || !def) return false;
-    const buffer = this._sfx[def[0]];
     const now = this.ctx.currentTime;
-    if (!buffer || now < (this._cool[event] || 0) || this._voices >= MAX_VOICES) return false;
-    this._cool[event] = now + def[2];              // next time this event may sound
-    const src = this.ctx.createBufferSource();
-    src.buffer = buffer;
-    src.playbackRate.value = rate * (1 + (Math.random() - 0.5) * 2 * jitter);
-    const g = this.ctx.createGain();
-    g.gain.value = def[1] * gain;
-    let out = g;
+    if (now < (this._cool[event] || 0) || this._voices >= MAX_VOICES) return false;
+    const buffers = def.layers.map((variants) => this._sfx[variants[Math.floor(Math.random() * variants.length)]]).filter(Boolean);
+    if (!buffers.length) return false;
+    this._cool[event] = now + def.cool;              // next time this event may sound
+    let out = this.sfxGain;
     if (pan && this.ctx.createStereoPanner) {
       const p = this.ctx.createStereoPanner();
       p.pan.value = clamp(pan, -1, 1);
-      g.connect(p);
+      p.connect(this.sfxGain);
       out = p;
     }
-    src.connect(g);
-    out.connect(this.sfxGain);
-    this._voices++;
-    src.onended = () => { this._voices--; try { src.disconnect(); g.disconnect(); out.disconnect(); } catch { /* gone */ } };
-    src.start();
+    let live = buffers.length;
+    for (const buffer of buffers) {
+      const src = this.ctx.createBufferSource();
+      src.buffer = buffer;
+      src.playbackRate.value = rate * (1 + (Math.random() - 0.5) * 2 * jitter);
+      const g = this.ctx.createGain();
+      g.gain.value = def.gain * gain / Math.sqrt(buffers.length);
+      src.connect(g).connect(out);
+      this._voices++;
+      src.onended = () => {
+        this._voices--;
+        try { src.disconnect(); g.disconnect(); if (--live === 0 && out !== this.sfxGain) out.disconnect(); } catch { /* gone */ }
+      };
+      src.start();
+    }
     return true;
   }
 
@@ -403,7 +664,7 @@ export class GameAudio {
     src.loop = true;
     const gain = this.ctx.createGain();
     gain.gain.value = 0;
-    src.connect(gain).connect(this.sfxGain);
+    src.connect(gain).connect(this.loopBus);
     src.start();
     return (this._loops[name] = { src, gain });
   }
@@ -432,7 +693,7 @@ export class GameAudio {
   setEngineTraits({ turbo = false } = {}) { this._turbo = !!turbo; }
 
   takedown() { if (this._play('takedown')) this._duck(0.5, 0.45); }
-  nearMiss(side = 0) { this._play('chirp', { pan: side * 0.5 }); }
+  nearMiss(side = 0) { this._play('whoosh', { pan: side * 0.6 }); }
   trafficHit(boosting = false) {
     this._play(boosting ? 'crashMedium' : 'crashHeavy');
     this._play(Math.random() < 0.5 ? 'hornA' : 'hornB', { pan: (Math.random() - 0.5) });
@@ -440,7 +701,7 @@ export class GameAudio {
   }
   trafficHorn(pan = 0) { this._play(Math.random() < 0.5 ? 'hornA' : 'hornB', { pan, gain: 0.7 }); }
 
-  shift(dir) { this._play(dir > 0 ? 'shiftUp' : 'shiftDown'); }
+  shift(dir) { this._play(dir > 0 ? 'shiftUp' : 'shiftDown', { rate: dir > 0 ? 1 : 0.85 }); }
 
   wallImpact(event) {
     const i = clamp(typeof event === 'number' ? event : (event?.intensity ?? 1), 0, 1);

@@ -1281,6 +1281,7 @@ class Game {
   configureSessionAudio() {
     const player = this.session?.player;
     const family = player?.rosterCar?.soundFamily || player?.phys?.profile?.soundFamily || '';
+    this.audio.setPlayerCar?.(player?.rosterCar?.modelId || '', family);
     this._arcadeSeen = null;
     this._rumbleSeen = null;
     this.audio.setEngineTraits?.({ turbo: /turbo|_sc/.test(family) });
@@ -1947,6 +1948,12 @@ class Game {
       cue.relativeSpeed = other.v - player.v;
       cue.rpmFrac = other.rpmFrac;
       cue.intensity = Math.max(0, 1 - cue.distance / 70);
+      // for the rival's own engine voice (js/gameAudio.js): which car, and
+      // whether it is ahead (+) or behind (-) along your heading (Doppler)
+      cue.modelId = entries[i].rosterCar?.modelId || '';
+      cue.family = entries[i].rosterCar?.soundFamily || other.profile?.soundFamily || '';
+      cue.ahead = dx * fx + dz * fz;
+      cue.throttle = other.throttle || 0;
       cues.push(cue);
     }
     return cues;
